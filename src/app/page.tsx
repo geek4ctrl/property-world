@@ -77,7 +77,7 @@ export default function HomePage() {
                       Featured Properties
                     </h2>
                     <p className="text-gray-600 max-w-2xl mx-auto">
-                      Discover our handpicked selection of premium properties across South Africa's most desirable locations.
+                      Discover our handpicked selection of premium properties across South Africa&apos;s most desirable locations.
                     </p>
                   </div>
                   <PropertyGrid properties={featuredProperties} />
@@ -120,7 +120,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Search</h3>
-                <p className="text-gray-600">Advanced filters to find exactly what you're looking for.</p>
+                <p className="text-gray-600">Advanced filters to find exactly what you&apos;re looking for.</p>
               </div>
 
               <div className="text-center">

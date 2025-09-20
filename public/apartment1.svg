@@ -1,0 +1,25 @@
+<!-- SVG placeholder for apartment -->
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#ddd6fe"/>
+  <rect x="150" y="100" width="500" height="450" fill="#6366f1"/>
+  <rect x="170" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="250" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="330" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="410" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="490" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="570" y="120" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="170" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="250" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="330" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="410" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="490" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="570" y="200" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="170" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="250" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="330" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="410" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="490" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="570" y="280" width="60" height="60" fill="#e0e7ff"/>
+  <rect x="300" y="450" width="200" height="100" fill="#4338ca"/>
+  <text x="400" y="550" text-anchor="middle" fill="#312e81" font-family="Arial" font-size="24">Luxury Apartment</text>
+</svg>

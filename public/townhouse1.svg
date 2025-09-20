@@ -1,0 +1,23 @@
+<!-- SVG placeholder for townhouse -->
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#fef3c7"/>
+  <rect x="100" y="250" width="200" height="300" fill="#92400e"/>
+  <polygon points="100,250 200,150 300,250" fill="#78350f"/>
+  <rect x="400" y="250" width="200" height="300" fill="#92400e"/>
+  <polygon points="400,250 500,150 600,250" fill="#78350f"/>
+  <rect x="650" y="250" width="100" height="300" fill="#92400e"/>
+  <polygon points="650,250 700,200 750,250" fill="#78350f"/>
+  <rect x="130" y="350" width="40" height="80" fill="#451a03"/>
+  <rect x="200" y="350" width="80" height="120" fill="#1c1917"/>
+  <rect x="220" y="380" width="20" height="20" fill="#fbbf24"/>
+  <rect x="240" y="380" width="20" height="20" fill="#fbbf24"/>
+  <rect x="220" y="420" width="20" height="20" fill="#fbbf24"/>
+  <rect x="240" y="420" width="20" height="20" fill="#fbbf24"/>
+  <rect x="430" y="350" width="40" height="80" fill="#451a03"/>
+  <rect x="500" y="350" width="80" height="120" fill="#1c1917"/>
+  <rect x="520" y="380" width="20" height="20" fill="#fbbf24"/>
+  <rect x="540" y="380" width="20" height="20" fill="#fbbf24"/>
+  <rect x="520" y="420" width="20" height="20" fill="#fbbf24"/>
+  <rect x="540" y="420" width="20" height="20" fill="#fbbf24"/>
+  <text x="400" y="580" text-anchor="middle" fill="#92400e" font-family="Arial" font-size="24">Townhouse Complex</text>
+</svg>

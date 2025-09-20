@@ -48,7 +48,7 @@ export default function PropertyCard({ property, className = '' }: PropertyCardP
       <Link href={`/properties/${property.id}`}>
         <div className="relative">
           {/* Property Image */}
-          <div className="aspect-[4/3] relative">
+          <div className="aspect-[4/3] relative bg-gray-200">
             <Image
               src={primaryImage?.url || '/placeholder-property.jpg'}
               alt={primaryImage?.alt || property.title}

@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">PropertyWorld</h3>
             <p className="text-gray-400 mb-4">
-              South Africa's leading property portal, connecting buyers, sellers, and renters 
+              South Africa&apos;s leading property portal, connecting buyers, sellers, and renters 
               with their perfect properties.
             </p>
             <div className="flex space-x-4">

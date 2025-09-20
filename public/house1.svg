@@ -1,0 +1,15 @@
+<!-- SVG placeholder for house 1 -->
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#e2e8f0"/>
+  <rect x="50" y="250" width="700" height="300" fill="#64748b"/>
+  <polygon points="50,250 400,100 750,250" fill="#475569"/>
+  <rect x="150" y="350" width="80" height="120" fill="#1e293b"/>
+  <rect x="300" y="350" width="200" height="120" fill="#0f172a"/>
+  <rect x="350" y="380" width="50" height="50" fill="#94a3b8"/>
+  <rect x="420" y="380" width="50" height="50" fill="#94a3b8"/>
+  <rect x="350" y="450" width="50" height="50" fill="#94a3b8"/>
+  <rect x="420" y="450" width="50" height="50" fill="#94a3b8"/>
+  <rect x="600" y="350" width="80" height="120" fill="#1e293b"/>
+  <rect x="610" y="380" width="60" height="80" fill="#475569"/>
+  <text x="400" y="550" text-anchor="middle" fill="#334155" font-family="Arial" font-size="24">Modern House</text>
+</svg>

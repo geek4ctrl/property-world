@@ -1,4 +1,4 @@
-import { Property, PropertyType, ListingType } from '@/types';
+import { Property, PropertyType, ListingType, SearchFilters } from '@/types';
 
 export const formatPrice = (price: number, currency: string = 'ZAR'): string => {
   if (currency === 'ZAR') {
@@ -53,7 +53,7 @@ export const generatePropertyUrl = (property: Property): string => {
   return `/properties/${property.id}/${title}`;
 };
 
-export const filterProperties = (properties: Property[], filters: any): Property[] => {
+export const filterProperties = (properties: Property[], filters: SearchFilters): Property[] => {
   return properties.filter(property => {
     return (
       matchesListingType(property, filters.listingType) &&
@@ -67,11 +67,11 @@ export const filterProperties = (properties: Property[], filters: any): Property
   });
 };
 
-const matchesListingType = (property: Property, listingType: any): boolean => {
+const matchesListingType = (property: Property, listingType?: ListingType): boolean => {
   return !listingType || property.listingType === listingType;
 };
 
-const matchesPropertyType = (property: Property, propertyTypes: any[]): boolean => {
+const matchesPropertyType = (property: Property, propertyTypes?: PropertyType[]): boolean => {
   return !propertyTypes || propertyTypes.length === 0 || propertyTypes.includes(property.propertyType);
 };
 

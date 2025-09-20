@@ -25,14 +25,14 @@ export const sampleProperties: Property[] = [
     images: [
       {
         id: 'img1',
-        url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800',
-        alt: 'Front view of modern house',
+        url: '/house1.svg',
+        alt: 'Modern house exterior',
         isPrimary: true,
         order: 1
       },
       {
         id: 'img2',
-        url: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800',
+        url: '/placeholder-property.jpg',
         alt: 'Kitchen and living area',
         isPrimary: false,
         order: 2
@@ -81,14 +81,14 @@ export const sampleProperties: Property[] = [
     images: [
       {
         id: 'img3',
-        url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-        alt: 'Waterfront apartment view',
+        url: '/apartment1.svg',
+        alt: 'Waterfront apartment building',
         isPrimary: true,
         order: 1
       },
       {
         id: 'img4',
-        url: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+        url: '/placeholder-property.jpg',
         alt: 'Modern apartment interior',
         isPrimary: false,
         order: 2
@@ -138,14 +138,14 @@ export const sampleProperties: Property[] = [
     images: [
       {
         id: 'img5',
-        url: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+        url: '/townhouse1.svg',
         alt: 'Townhouse exterior',
         isPrimary: true,
         order: 1
       },
       {
         id: 'img6',
-        url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
+        url: '/placeholder-property.jpg',
         alt: 'Living room interior',
         isPrimary: false,
         order: 2
@@ -194,14 +194,14 @@ export const sampleProperties: Property[] = [
     images: [
       {
         id: 'img7',
-        url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800',
+        url: '/student1.svg',
         alt: 'Student flat exterior',
         isPrimary: true,
         order: 1
       },
       {
         id: 'img8',
-        url: 'https://images.unsplash.com/photo-1586105251261-72a756497a11?w=800',
+        url: '/placeholder-property.jpg',
         alt: 'Compact living space',
         isPrimary: false,
         order: 2
@@ -250,14 +250,14 @@ export const sampleProperties: Property[] = [
     images: [
       {
         id: 'img9',
-        url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
+        url: '/office1.svg',
         alt: 'Modern office building',
         isPrimary: true,
         order: 1
       },
       {
         id: 'img10',
-        url: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800',
+        url: '/placeholder-property.jpg',
         alt: 'Office interior space',
         isPrimary: false,
         order: 2
