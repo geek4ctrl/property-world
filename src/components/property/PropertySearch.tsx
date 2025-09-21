@@ -49,15 +49,15 @@ export default function PropertySearch({
 
   return (
     <div className={`${className}`}>
-      <form onSubmit={handleSubmit} className={`bg-white rounded-lg shadow-lg p-6 ${isCompact ? 'border' : ''}`}>
+      <form onSubmit={handleSubmit} className={`${isCompact ? '' : 'bg-white rounded-lg shadow-lg p-6 border'}`}>
         {/* Listing Type Tabs */}
-        <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+        <div className={`flex mb-4 ${isCompact ? 'bg-gray-50' : 'bg-gray-100'} rounded-lg p-1`}>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.FOR_SALE }))}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
               filters.listingType === ListingType.FOR_SALE
-                ? 'bg-white text-blue-600 shadow-sm'
+                ? `${isCompact ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} shadow-sm`
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
@@ -66,9 +66,9 @@ export default function PropertySearch({
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.TO_RENT }))}
-            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
               filters.listingType === ListingType.TO_RENT
-                ? 'bg-white text-blue-600 shadow-sm'
+                ? `${isCompact ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} shadow-sm`
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
@@ -77,10 +77,10 @@ export default function PropertySearch({
         </div>
 
         {/* Search Fields */}
-        <div className={`grid gap-4 ${isCompact ? 'grid-cols-1 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
+        <div className={`grid gap-3 ${isCompact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
           {/* Location */}
           <div>
-            <label htmlFor="location-input" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="location-input" className={`block font-medium text-gray-700 mb-1 ${isCompact ? 'text-xs' : 'text-sm'}`}>
               Location
             </label>
             <input
@@ -89,13 +89,13 @@ export default function PropertySearch({
               placeholder="City, suburb, or area"
               value={filters.location || ''}
               onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isCompact ? 'py-2 text-sm' : 'py-2'}`}
             />
           </div>
 
           {/* Property Type */}
           <div>
-            <label htmlFor="property-type-select" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="property-type-select" className={`block font-medium text-gray-700 mb-1 ${isCompact ? 'text-xs' : 'text-sm'}`}>
               Property Type
             </label>
             <select
@@ -105,7 +105,7 @@ export default function PropertySearch({
                 ...prev, 
                 propertyType: e.target.value ? [e.target.value as PropertyType] : []
               }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isCompact ? 'py-2 text-sm' : 'py-2'}`}
             >
               <option value="">Any Type</option>
               <option value={PropertyType.HOUSE}>House</option>
@@ -118,7 +118,7 @@ export default function PropertySearch({
 
           {/* Price Range */}
           <div>
-            <label htmlFor="price-range-select" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="price-range-select" className={`block font-medium text-gray-700 mb-1 ${isCompact ? 'text-xs' : 'text-sm'}`}>
               Price Range
             </label>
             <select
@@ -131,7 +131,7 @@ export default function PropertySearch({
                   maxPrice: selectedRange.max
                 }));
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isCompact ? 'py-2 text-sm' : 'py-2'}`}
             >
               {priceRanges.map((range, index) => (
                 <option key={`price-range-${range.label}`} value={index}>
@@ -143,7 +143,7 @@ export default function PropertySearch({
 
           {/* Bedrooms */}
           <div>
-            <label htmlFor="bedrooms-select" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="bedrooms-select" className={`block font-medium text-gray-700 mb-1 ${isCompact ? 'text-xs' : 'text-sm'}`}>
               Bedrooms
             </label>
             <select
@@ -153,7 +153,7 @@ export default function PropertySearch({
                 ...prev, 
                 bedrooms: e.target.value ? parseInt(e.target.value) : undefined
               }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isCompact ? 'py-2 text-sm' : 'py-2'}`}
             >
               {bedroomOptions.map((option) => (
                 <option key={`bedroom-${option.label}`} value={option.value || ''}>
@@ -165,15 +165,15 @@ export default function PropertySearch({
         </div>
 
         {/* Search Button */}
-        <div className="mt-6">
+        <div className={isCompact ? 'mt-4' : 'mt-6'}>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className={`w-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg ${isCompact ? 'py-2.5 px-4 text-sm' : 'py-3 px-6'}`}
           >
-            <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`inline mr-2 ${isCompact ? 'w-4 h-4' : 'w-5 h-5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            Search Properties
+            {isCompact ? 'Search' : 'Search Properties'}
           </button>
         </div>
       </form>

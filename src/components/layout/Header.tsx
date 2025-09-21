@@ -30,6 +30,12 @@ export default function Header() {
               >
                 Properties
               </Link>
+              <Link 
+                href="/map" 
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Map View
+              </Link>
               <div className="relative group">
                 <button className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
                   Buy
