@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -43,11 +45,16 @@ export default function Header() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <div className="py-1">
-                    <Link href="/properties?type=house" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Houses</Link>
-                    <Link href="/properties?type=apartment" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Apartments</Link>
-                    <Link href="/properties?type=townhouse" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Townhouses</Link>
+                    <Link href="/buy" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium">🏡 Buy Home Portal</Link>
+                    <div className="border-t border-gray-100 my-1"></div>
+                    <Link href="/buy/calculator" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">💰 Mortgage Calculator</Link>
+                    <Link href="/buy/guide" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📖 Buying Guide</Link>
+                    <div className="border-t border-gray-100 my-1"></div>
+                    <Link href="/properties?listing=sale&type=house" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Houses for Sale</Link>
+                    <Link href="/properties?listing=sale&type=apartment" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Apartments for Sale</Link>
+                    <Link href="/properties?listing=sale&type=townhouse" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Townhouses for Sale</Link>
                   </div>
                 </div>
               </div>
@@ -116,7 +123,7 @@ export default function Header() {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
               <Link href="/" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</Link>
               <Link href="/properties" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Properties</Link>
-              <Link href="/properties?listing=sale" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Buy</Link>
+              <Link href="/buy" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Buy</Link>
               <Link href="/properties?listing=rent" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Rent</Link>
               <Link href="/agents" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Find an Agent</Link>
               <Link href="/saved" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Saved Properties</Link>
