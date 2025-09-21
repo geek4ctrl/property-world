@@ -19,6 +19,7 @@ export interface Property {
   dateUpdated: Date;
   isActive: boolean;
   isFeatured: boolean;
+  isNew?: boolean;
   views: number;
   coordinates?: {
     lat: number;
