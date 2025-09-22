@@ -8,6 +8,7 @@ interface PropertySearchProps {
   readonly onSearch: (filters: SearchFilters) => void;
   readonly className?: string;
   readonly variant?: 'hero' | 'compact';
+  readonly loading?: boolean;
 }
 
 // Helper functions to reduce complexity

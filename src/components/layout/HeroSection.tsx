@@ -4,9 +4,10 @@ import { useTranslation } from '@/i18n/translation';
 
 interface HeroSectionProps {
   readonly onSearch: (filters: SearchFilters) => void;
+  readonly loading?: boolean;
 }
 
-export default function HeroSection({ onSearch }: HeroSectionProps) {
+export default function HeroSection({ onSearch, loading = false }: HeroSectionProps) {
   const { t } = useTranslation();
   
   return (
@@ -50,7 +51,7 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
 
         {/* Search Form */}
         <div className="max-w-4xl mx-auto">
-          <PropertySearch onSearch={onSearch} />
+          <PropertySearch onSearch={onSearch} loading={loading} />
         </div>
       </div>
     </section>

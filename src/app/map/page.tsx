@@ -14,11 +14,17 @@ export default function MapViewPage() {
   const [searchResults, setSearchResults] = useState<Property[]>(sampleProperties);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   const handleSearch = (filters: SearchFilters) => {
-    const filtered = filterProperties(sampleProperties, filters);
-    setSearchResults(filtered);
+    setLoading(true);
+    // Simulate API delay
+    setTimeout(() => {
+      const filtered = filterProperties(sampleProperties, filters);
+      setSearchResults(filtered);
+      setLoading(false);
+    }, 500);
   };
 
   const handlePropertySelect = (property: Property) => {

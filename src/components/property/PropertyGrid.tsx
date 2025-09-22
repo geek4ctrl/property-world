@@ -1,5 +1,6 @@
 import { Property } from '@/types';
 import PropertyCard from './PropertyCard';
+import PropertyGridSkeleton from '@/components/ui/PropertyGridSkeleton';
 import { memo, useMemo } from 'react';
 
 interface PropertyGridProps {
@@ -8,38 +9,11 @@ interface PropertyGridProps {
   emptyMessage?: string;
 }
 
-const SkeletonCard = memo(function SkeletonCard() {
-  return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-      <div className="aspect-[4/3] bg-gray-300"></div>
-      <div className="p-4">
-        <div className="h-6 bg-gray-300 rounded mb-2"></div>
-        <div className="h-4 bg-gray-300 rounded mb-2 w-3/4"></div>
-        <div className="h-4 bg-gray-300 rounded mb-3 w-1/2"></div>
-        <div className="flex gap-4 mb-3">
-          <div className="h-4 bg-gray-300 rounded w-16"></div>
-          <div className="h-4 bg-gray-300 rounded w-16"></div>
-          <div className="h-4 bg-gray-300 rounded w-16"></div>
-        </div>
-        <div className="flex items-center pt-3 border-t border-gray-200">
-          <div className="h-4 bg-gray-300 rounded w-24"></div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
 const PropertyGrid = memo(function PropertyGrid({ 
   properties, 
   loading = false, 
   emptyMessage = "No properties found" 
 }: PropertyGridProps) {
-  const skeletonItems = useMemo(() => 
-    Array.from({ length: 6 }, (_, index) => (
-      <SkeletonCard key={`skeleton-${index}`} />
-    )), []
-  );
-
   const renderedProperties = useMemo(() => 
     properties.map((property) => (
       <PropertyCard 
@@ -51,11 +25,7 @@ const PropertyGrid = memo(function PropertyGrid({
   );
 
   if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {skeletonItems}
-      </div>
-    );
+    return <PropertyGridSkeleton count={6} />;
   }
 
   if (properties.length === 0) {
