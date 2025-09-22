@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import LazyPropertyMapGrid from '@/components/map/LazyPropertyMapGrid';
 import PropertySearch from '@/components/property/PropertySearch';
+import { MapErrorBoundary, SearchErrorBoundary, PropertyErrorBoundary } from '@/components/ui/SpecializedErrorBoundaries';
 import { SearchFilters, Property, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, formatListingType } from '@/lib/utils';
@@ -85,7 +86,9 @@ export default function MapViewPage() {
                   </h2>
                 </div>
                 <div className="p-4">
-                  <PropertySearch onSearch={handleSearch} variant="compact" />
+                  <SearchErrorBoundary>
+                    <PropertySearch onSearch={handleSearch} variant="compact" />
+                  </SearchErrorBoundary>
                 </div>
               </div>
               
@@ -216,11 +219,13 @@ export default function MapViewPage() {
                 </p>
               </div>
               
-              <LazyPropertyMapGrid 
-                properties={searchResults}
-                onPropertySelect={handlePropertySelect}
-                className="w-full"
-              />
+              <MapErrorBoundary>
+                <LazyPropertyMapGrid 
+                  properties={searchResults}
+                  onPropertySelect={handlePropertySelect}
+                  className="w-full"
+                />
+              </MapErrorBoundary>
             </div>
 
             {/* Map Instructions */}

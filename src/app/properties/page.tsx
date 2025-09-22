@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import PropertySearch from '@/components/property/PropertySearch';
+import { PropertyErrorBoundary, SearchErrorBoundary } from '@/components/ui/SpecializedErrorBoundaries';
 import { SearchFilters, Property, PropertyType, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, sortProperties } from '@/lib/utils';
@@ -94,11 +95,13 @@ export default function PropertiesPage() {
             
             {/* Search Bar */}
             <div className="lg:w-1/3">
-              <PropertySearch 
-                onSearch={handleSearch}
-                variant="compact"
-                className="w-full"
-              />
+              <SearchErrorBoundary>
+                <PropertySearch 
+                  onSearch={handleSearch}
+                  variant="compact"
+                  className="w-full"
+                />
+              </SearchErrorBoundary>
             </div>
           </div>
         </div>
@@ -340,11 +343,13 @@ export default function PropertiesPage() {
             </div>
 
             {/* Properties Grid */}
-            <PropertyGrid 
-              properties={paginationData.currentProperties}
-              loading={loading}
-              emptyMessage="No properties match your search criteria"
-            />
+            <PropertyErrorBoundary>
+              <PropertyGrid 
+                properties={paginationData.currentProperties}
+                loading={loading}
+                emptyMessage="No properties match your search criteria"
+              />
+            </PropertyErrorBoundary>
 
             {/* Pagination */}
             {paginationData.totalPages > 1 && (

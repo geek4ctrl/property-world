@@ -7,6 +7,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PropertyMap from "@/components/map/PropertyMap";
+import { PropertyErrorBoundary, MapErrorBoundary } from "@/components/ui/SpecializedErrorBoundaries";
 import { sampleProperties } from "@/data/sampleProperties";
 import { formatPrice, formatPropertyType } from "@/lib/utils";
 import { ListingType } from "@/types";
@@ -76,8 +77,9 @@ export default function PropertyDetailsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Images and Details */}
           <div className="lg:col-span-2">
-            {/* Image Gallery */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+            <PropertyErrorBoundary>
+              {/* Image Gallery */}
+              <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
               {/* Main Image */}
               <div className="aspect-[16/10] relative">
                 <Image
@@ -290,19 +292,23 @@ export default function PropertyDetailsPage() {
                 
                 {/* Interactive Map */}
                 <div className="mt-4">
-                  <PropertyMap 
-                    property={property} 
-                    className="w-full h-64 rounded-lg border border-gray-200"
-                  />
+                  <MapErrorBoundary>
+                    <PropertyMap 
+                      property={property} 
+                      className="w-full h-64 rounded-lg border border-gray-200"
+                    />
+                  </MapErrorBoundary>
                 </div>
               </div>
             </div>
+            </PropertyErrorBoundary>
           </div>
 
           {/* Right Column - Agent Info and Contact */}
           <div className="lg:col-span-1">
-            {/* Agent Card */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <PropertyErrorBoundary>
+              {/* Agent Card */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 {t('property.contact_agent')}
               </h2>
@@ -492,6 +498,7 @@ export default function PropertyDetailsPage() {
                 </button>
               </div>
             </div>
+            </PropertyErrorBoundary>
           </div>
         </div>
       </div>

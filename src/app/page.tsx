@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroSection from '@/components/layout/HeroSection';
 import PropertyGrid from '@/components/property/PropertyGrid';
+import { PropertyErrorBoundary, SearchErrorBoundary } from '@/components/ui/SpecializedErrorBoundaries';
 import { SearchFilters } from '@/types';
 import { sampleProperties, featuredProperties, recentProperties } from '@/data/sampleProperties';
 import { useTranslation } from '@/i18n/translation';
@@ -53,7 +54,9 @@ export default function HomePage() {
       
       <main>
         {/* Hero Section */}
-        <HeroSection onSearch={handleSearch} />
+        <SearchErrorBoundary>
+          <HeroSection onSearch={handleSearch} />
+        </SearchErrorBoundary>
 
         {/* Search Results or Featured/Recent Properties */}
         <section className="py-16 bg-gray-50">
@@ -71,7 +74,9 @@ export default function HomePage() {
                     })}
                   </p>
                 </div>
-                <PropertyGrid properties={searchResults} />
+                <PropertyErrorBoundary>
+                  <PropertyGrid properties={searchResults} />
+                </PropertyErrorBoundary>
               </>
             ) : (
               <>
@@ -85,7 +90,9 @@ export default function HomePage() {
                       {t('homepage.featured_description')}
                     </p>
                   </div>
-                  <PropertyGrid properties={featuredProperties} />
+                  <PropertyErrorBoundary>
+                    <PropertyGrid properties={featuredProperties} />
+                  </PropertyErrorBoundary>
                 </div>
 
                 {/* Recent Properties */}
@@ -98,7 +105,9 @@ export default function HomePage() {
                       {t('homepage.recent_description')}
                     </p>
                   </div>
-                  <PropertyGrid properties={recentProperties} />
+                  <PropertyErrorBoundary>
+                    <PropertyGrid properties={recentProperties} />
+                  </PropertyErrorBoundary>
                 </div>
               </>
             )}

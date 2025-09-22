@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientProviders from "@/components/providers/ClientProviders";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import ErrorOverlay from "@/components/debug/ErrorOverlay";
 
 export const metadata: Metadata = {
   title: "PropertyWorld - Find Your Perfect Home",
@@ -15,9 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <ClientProviders>
-          {children}
-        </ClientProviders>
+        <ErrorBoundary>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        </ErrorBoundary>
+        <ErrorOverlay />
       </body>
     </html>
   );
