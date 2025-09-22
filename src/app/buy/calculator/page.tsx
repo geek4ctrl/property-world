@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { useTranslation } from '@/i18n/translation';
 
 interface MortgageCalculation {
   monthlyPayment: number;
@@ -12,6 +13,7 @@ interface MortgageCalculation {
 }
 
 export default function MortgageCalculatorPage() {
+  const { t } = useTranslation();
   const [propertyPrice, setPropertyPrice] = useState<number>(2000000);
   const [deposit, setDeposit] = useState<number>(10);
   const [interestRate, setInterestRate] = useState<number>(11.5);
@@ -64,9 +66,9 @@ export default function MortgageCalculatorPage() {
       <section className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Mortgage Calculator</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('calculator.mortgage_calculator')}</h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Calculate your monthly mortgage payments and assess affordability for your dream home purchase
+              {t('calculator.description')}
             </p>
           </div>
         </div>
@@ -77,16 +79,17 @@ export default function MortgageCalculatorPage() {
           {/* Calculator Form */}
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Property & Loan Details</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('calculator.property_loan_details')}</h2>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Property Price
+                  <label htmlFor="property-price" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('calculator.property_price')}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">R</span>
                     <input
+                      id="property-price"
                       type="number"
                       value={propertyPrice}
                       onChange={(e) => setPropertyPrice(Number(e.target.value))}
@@ -97,11 +100,12 @@ export default function MortgageCalculatorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Deposit Percentage
+                  <label htmlFor="deposit-percentage" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('calculator.deposit_percentage')}
                   </label>
                   <div className="relative">
                     <input
+                      id="deposit-percentage"
                       type="number"
                       value={deposit}
                       onChange={(e) => setDeposit(Number(e.target.value))}
@@ -112,16 +116,17 @@ export default function MortgageCalculatorPage() {
                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">%</span>
                   </div>
                   <div className="mt-1 text-sm text-gray-500">
-                    Deposit Amount: R{((propertyPrice * deposit) / 100).toLocaleString()}
+                    {t('calculator.deposit_amount')}: R{((propertyPrice * deposit) / 100).toLocaleString()}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Interest Rate (per annum)
+                  <label htmlFor="interest-rate" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('calculator.interest_rate')}
                   </label>
                   <div className="relative">
                     <input
+                      id="interest-rate"
                       type="number"
                       step="0.1"
                       value={interestRate}
@@ -133,10 +138,11 @@ export default function MortgageCalculatorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Loan Term
+                  <label htmlFor="loan-term" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('calculator.loan_term')}
                   </label>
                   <select
+                    id="loan-term"
                     value={loanTerm}
                     onChange={(e) => setLoanTerm(Number(e.target.value))}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -157,12 +163,13 @@ export default function MortgageCalculatorPage() {
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="monthly-income" className="block text-sm font-medium text-gray-700 mb-2">
                     Monthly Gross Income
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">R</span>
                     <input
+                      id="monthly-income"
                       type="number"
                       value={monthlyIncome}
                       onChange={(e) => setMonthlyIncome(Number(e.target.value))}
@@ -173,12 +180,13 @@ export default function MortgageCalculatorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="monthly-expenses" className="block text-sm font-medium text-gray-700 mb-2">
                     Monthly Expenses
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">R</span>
                     <input
+                      id="monthly-expenses"
                       type="number"
                       value={monthlyExpenses}
                       onChange={(e) => setMonthlyExpenses(Number(e.target.value))}

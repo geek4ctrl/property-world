@@ -4,47 +4,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
+import { useTranslation, formatPrice as formatPriceI18n, formatPropertyType } from '@/i18n/translation';
 
 interface PropertyCardProps {
-  property: Property;
-  className?: string;
-  variant?: 'default' | 'compact' | 'featured';
+  readonly property: Property;
+  readonly className?: string;
+  readonly variant?: 'default' | 'compact' | 'featured';
 }
 
 export default function PropertyCard({ property, className = '', variant = 'default' }: PropertyCardProps) {
+  const { t, locale } = useTranslation();
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const formatPrice = (price: number, currency: string) => {
-    if (currency === 'ZAR') {
-      return `R ${price.toLocaleString()}`;
-    }
-    return `${currency} ${price.toLocaleString()}`;
+    return formatPriceI18n(price, currency, locale);
   };
 
   const getPropertyTypeLabel = (type: PropertyType) => {
-    const labels = {
-      [PropertyType.HOUSE]: 'House',
-      [PropertyType.APARTMENT]: 'Apartment',
-      [PropertyType.TOWNHOUSE]: 'Townhouse',
-      [PropertyType.FLAT]: 'Flat',
-      [PropertyType.VACANT_LAND]: 'Vacant Land',
-      [PropertyType.COMMERCIAL]: 'Commercial',
-      [PropertyType.INDUSTRIAL]: 'Industrial',
-      [PropertyType.FARM]: 'Farm',
-      [PropertyType.OFFICE]: 'Office',
-      [PropertyType.RETAIL]: 'Retail'
-    };
-    return labels[type] || type;
+    return formatPropertyType(type, locale);
   };
 
   const getListingTypeLabel = (type: ListingType) => {
     const labels = {
-      [ListingType.FOR_SALE]: 'For Sale',
-      [ListingType.TO_RENT]: 'To Rent',
-      [ListingType.SOLD]: 'Sold',
-      [ListingType.RENTED]: 'Rented'
+      [ListingType.FOR_SALE]: t('property.for_sale'),
+      [ListingType.TO_RENT]: t('property.to_rent'),
+      [ListingType.SOLD]: t('property.sold'),
+      [ListingType.RENTED]: t('property.rented')
     };
     return labels[type] || type;
   };
@@ -84,7 +71,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
         <div className="relative overflow-hidden">
           {/* Property Image */}
           <div className={`relative bg-gray-200 overflow-hidden ${
-            isCompact ? 'aspect-[4/3]' : 'aspect-[4/3]'
+            isCompact ? 'aspect-[3/2]' : 'aspect-[4/3]'
           }`}>
             {imageLoading && (
               <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
@@ -186,9 +173,9 @@ export default function PropertyCard({ property, className = '', variant = 'defa
           {/* Image dots */}
           {property.images.length > 1 && (
             <div className="absolute bottom-3 left-3 flex gap-1">
-              {property.images.map((_, index) => (
+              {property.images.map((image, index) => (
                 <button
-                  key={index}
+                  key={`image-${property.id}-${index}`}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -212,7 +199,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             <p className={`font-bold text-gray-900 ${isCompact ? 'text-xl' : 'text-2xl'}`}>
               {formatPrice(property.price, property.currency)}
               {property.listingType === ListingType.TO_RENT && (
-                <span className="text-sm font-normal text-gray-600 ml-1">/month</span>
+                <span className="text-sm font-normal text-gray-600 ml-1">/{t('common.month')}</span>
               )}
             </p>
           </div>

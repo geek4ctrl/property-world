@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { SearchFilters, PropertyType, ListingType } from '@/types';
 
 interface AdvancedFiltersProps {
-  filters: SearchFilters;
-  onFiltersChange: (filters: SearchFilters) => void;
-  onClose?: () => void;
-  className?: string;
+  readonly filters: SearchFilters;
+  readonly onFiltersChange: (filters: SearchFilters) => void;
+  readonly onClose?: () => void;
+  readonly className?: string;
 }
 
 const PRICE_RANGES = [
@@ -129,9 +129,10 @@ export default function AdvancedFilters({
       <div className="space-y-6">
         {/* Location with Autocomplete */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">Location</label>
+          <label htmlFor="location-autocomplete" className="block text-sm font-semibold text-gray-900 mb-2">Location</label>
           <div className="relative" ref={locationInputRef}>
             <input
+              id="location-autocomplete"
               type="text"
               value={locationQuery}
               onChange={(e) => {
@@ -151,7 +152,7 @@ export default function AdvancedFilters({
               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                 {filteredLocations.map((location, index) => (
                   <button
-                    key={index}
+                    key={`location-${location}-${index}`}
                     onClick={() => handleLocationSelect(location)}
                     className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
                   >
@@ -170,7 +171,7 @@ export default function AdvancedFilters({
 
         {/* Listing Type */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Listing Type</label>
+          <span className="block text-sm font-semibold text-gray-900 mb-3">Listing Type</span>
           <div className="flex gap-3">
             {[
               { value: undefined, label: 'All', color: 'gray' },
@@ -194,7 +195,7 @@ export default function AdvancedFilters({
 
         {/* Property Types */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Property Type</label>
+          <span className="block text-sm font-semibold text-gray-900 mb-3">Property Type</span>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {Object.values(PropertyType).map((type) => {
               const isSelected = localFilters.propertyType?.includes(type) || false;
@@ -223,11 +224,11 @@ export default function AdvancedFilters({
 
         {/* Price Range */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Price Range</label>
+          <span className="block text-sm font-semibold text-gray-900 mb-3">Price Range</span>
           <div className="space-y-2">
             {PRICE_RANGES.map((range, index) => (
               <button
-                key={index}
+                key={`price-range-${range.min}-${range.max}-${index}`}
                 onClick={() => updateFilters({ minPrice: range.min, maxPrice: range.max })}
                 className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
                   selectedPriceRange === range
@@ -243,8 +244,9 @@ export default function AdvancedFilters({
           {/* Custom Price Range */}
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Min Price (R)</label>
+              <label htmlFor="min-price-advanced" className="block text-xs text-gray-600 mb-1">Min Price (R)</label>
               <input
+                id="min-price-advanced"
                 type="number"
                 placeholder="0"
                 value={localFilters.minPrice || ''}
@@ -256,8 +258,9 @@ export default function AdvancedFilters({
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Max Price (R)</label>
+              <label htmlFor="max-price-advanced" className="block text-xs text-gray-600 mb-1">Max Price (R)</label>
               <input
+                id="max-price-advanced"
                 type="number"
                 placeholder="No limit"
                 value={localFilters.maxPrice || ''}
@@ -274,8 +277,9 @@ export default function AdvancedFilters({
         {/* Bedrooms & Bathrooms */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Min Bedrooms</label>
+            <label htmlFor="bedrooms-advanced" className="block text-sm font-semibold text-gray-900 mb-2">Min Bedrooms</label>
             <select
+              id="bedrooms-advanced"
               value={localFilters.bedrooms || ''}
               onChange={(e) => updateFilters({ 
                 bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
@@ -289,8 +293,9 @@ export default function AdvancedFilters({
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Min Bathrooms</label>
+            <label htmlFor="bathrooms-advanced" className="block text-sm font-semibold text-gray-900 mb-2">Min Bathrooms</label>
             <select
+              id="bathrooms-advanced"
               value={localFilters.bathrooms || ''}
               onChange={(e) => updateFilters({ 
                 bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
@@ -307,7 +312,7 @@ export default function AdvancedFilters({
 
         {/* Property Size */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Property Size (m²)</label>
+          <span className="block text-sm font-semibold text-gray-900 mb-3">Property Size (m²)</span>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <input
@@ -336,7 +341,7 @@ export default function AdvancedFilters({
 
         {/* Features */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Features</label>
+          <span className="block text-sm font-semibold text-gray-900 mb-3">Features</span>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
             {PROPERTY_FEATURES.map((feature) => {
               const isSelected = localFilters.features?.includes(feature) || false;

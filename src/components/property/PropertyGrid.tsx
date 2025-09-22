@@ -1,5 +1,6 @@
 import { Property } from '@/types';
 import PropertyCard from './PropertyCard';
+import { memo, useMemo } from 'react';
 
 interface PropertyGridProps {
   properties: Property[];
@@ -7,36 +8,52 @@ interface PropertyGridProps {
   emptyMessage?: string;
 }
 
-export default function PropertyGrid({ 
+const SkeletonCard = memo(function SkeletonCard() {
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+      <div className="aspect-[4/3] bg-gray-300"></div>
+      <div className="p-4">
+        <div className="h-6 bg-gray-300 rounded mb-2"></div>
+        <div className="h-4 bg-gray-300 rounded mb-2 w-3/4"></div>
+        <div className="h-4 bg-gray-300 rounded mb-3 w-1/2"></div>
+        <div className="flex gap-4 mb-3">
+          <div className="h-4 bg-gray-300 rounded w-16"></div>
+          <div className="h-4 bg-gray-300 rounded w-16"></div>
+          <div className="h-4 bg-gray-300 rounded w-16"></div>
+        </div>
+        <div className="flex items-center pt-3 border-t border-gray-200">
+          <div className="h-4 bg-gray-300 rounded w-24"></div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+const PropertyGrid = memo(function PropertyGrid({ 
   properties, 
   loading = false, 
   emptyMessage = "No properties found" 
 }: PropertyGridProps) {
+  const skeletonItems = useMemo(() => 
+    Array.from({ length: 6 }, (_, index) => (
+      <SkeletonCard key={`skeleton-${index}`} />
+    )), []
+  );
+
+  const renderedProperties = useMemo(() => 
+    properties.map((property) => (
+      <PropertyCard 
+        key={property.id} 
+        property={property} 
+        className="h-full"
+      />
+    )), [properties]
+  );
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }, (_, index) => `skeleton-${index}-${Date.now()}`).map((skeletonId) => (
-          <div key={skeletonId} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-            <div className="aspect-[4/3] bg-gray-300"></div>
-            <div className="p-4">
-              <div className="h-6 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2 w-3/4"></div>
-              <div className="h-4 bg-gray-300 rounded mb-3 w-1/2"></div>
-              <div className="flex gap-4 mb-3">
-                <div className="h-4 bg-gray-300 rounded w-16"></div>
-                <div className="h-4 bg-gray-300 rounded w-16"></div>
-                <div className="h-4 bg-gray-300 rounded w-16"></div>
-              </div>
-              <div className="flex items-center pt-3 border-t border-gray-200">
-                <div className="w-8 h-8 bg-gray-300 rounded-full mr-3"></div>
-                <div>
-                  <div className="h-3 bg-gray-300 rounded w-20 mb-1"></div>
-                  <div className="h-3 bg-gray-300 rounded w-24"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+        {skeletonItems}
       </div>
     );
   }
@@ -55,9 +72,9 @@ export default function PropertyGrid({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
-      ))}
+      {renderedProperties}
     </div>
   );
-}
+});
+
+export default PropertyGrid;

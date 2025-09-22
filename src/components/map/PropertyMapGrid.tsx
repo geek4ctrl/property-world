@@ -22,6 +22,16 @@ const getMarkerColor = (propertyType: string) => {
   }
 };
 
+// Helper function to get property type icon
+const getPropertyTypeIcon = (propertyType: string): string => {
+  switch (propertyType) {
+    case 'house': return 'H';
+    case 'apartment': return 'A';
+    case 'townhouse': return 'T';
+    default: return 'O';
+  }
+};
+
 // Helper function to handle marker click
 const handleMarkerClick = (property: Property, onPropertySelect?: (property: Property) => void) => {
   if (onPropertySelect) {
@@ -51,9 +61,7 @@ const createPropertyMarker = (L: any, property: Property, map: any, onPropertySe
         <circle cx="18" cy="18" r="10" fill="white" stroke="${color}" stroke-width="2"/>
         <circle cx="18" cy="18" r="6" fill="${color}"/>
         <text x="18" y="22" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Arial">
-          ${property.propertyType === 'house' ? 'H' : 
-            property.propertyType === 'apartment' ? 'A' : 
-            property.propertyType === 'townhouse' ? 'T' : 'O'}
+          ${getPropertyTypeIcon(property.propertyType)}
         </text>
       </svg>
     `),

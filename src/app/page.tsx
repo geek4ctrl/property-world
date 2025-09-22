@@ -7,8 +7,10 @@ import HeroSection from '@/components/layout/HeroSection';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import { SearchFilters } from '@/types';
 import { sampleProperties, featuredProperties, recentProperties } from '@/data/sampleProperties';
+import { useTranslation } from '@/i18n/translation';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const [searchResults, setSearchResults] = useState<typeof sampleProperties | null>(null);
 
   const handleSearch = (filters: SearchFilters) => {
@@ -60,10 +62,13 @@ export default function HomePage() {
               <>
                 <div className="mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                    Search Results
+                    {t('common.search_results')}
                   </h2>
                   <p className="text-gray-600">
-                    Found {searchResults.length} propert{searchResults.length !== 1 ? 'ies' : 'y'} matching your criteria
+                    {t('common.found_properties', { 
+                      count: searchResults.length,
+                      properties: searchResults.length !== 1 ? t('common.properties') : t('common.property')
+                    })}
                   </p>
                 </div>
                 <PropertyGrid properties={searchResults} />
@@ -74,10 +79,10 @@ export default function HomePage() {
                 <div className="mb-16">
                   <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                      Featured Properties
+                      {t('homepage.featured_properties')}
                     </h2>
                     <p className="text-gray-600 max-w-2xl mx-auto">
-                      Discover our handpicked selection of premium properties across South Africa&apos;s most desirable locations.
+                      {t('homepage.featured_description')}
                     </p>
                   </div>
                   <PropertyGrid properties={featuredProperties} />
@@ -87,10 +92,10 @@ export default function HomePage() {
                 <div>
                   <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                      Recently Added
+                      {t('homepage.recently_added')}
                     </h2>
                     <p className="text-gray-600 max-w-2xl mx-auto">
-                      Fresh listings from trusted agents and property owners.
+                      {t('homepage.recent_description')}
                     </p>
                   </div>
                   <PropertyGrid properties={recentProperties} />
@@ -105,10 +110,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Why Choose PropertyWorld?
+                {t('homepage.why_choose_title')}
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                We make finding and selling properties simple, secure, and stress-free.
+                {t('homepage.why_choose_description')}
               </p>
             </div>
 
@@ -119,8 +124,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Search</h3>
-                <p className="text-gray-600">Advanced filters to find exactly what you&apos;re looking for.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('homepage.smart_search')}</h3>
+                <p className="text-gray-600">{t('homepage.smart_search_desc')}</p>
               </div>
 
               <div className="text-center">
@@ -129,8 +134,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Verified Listings</h3>
-                <p className="text-gray-600">All properties are verified by our trusted agent network.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('homepage.verified_listings')}</h3>
+                <p className="text-gray-600">{t('homepage.verified_listings_desc')}</p>
               </div>
 
               <div className="text-center">
@@ -139,8 +144,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Agents</h3>
-                <p className="text-gray-600">Connect with experienced professionals in your area.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('homepage.expert_agents')}</h3>
+                <p className="text-gray-600">{t('homepage.expert_agents_desc')}</p>
               </div>
 
               <div className="text-center">
@@ -149,8 +154,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Market Insights</h3>
-                <p className="text-gray-600">Get property valuations and market trends data.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('homepage.market_insights')}</h3>
+                <p className="text-gray-600">{t('homepage.market_insights_desc')}</p>
               </div>
             </div>
           </div>

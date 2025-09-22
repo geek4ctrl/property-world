@@ -1,11 +1,14 @@
 import { SearchFilters } from '@/types';
 import PropertySearch from '../property/PropertySearch';
+import { useTranslation } from '@/i18n/translation';
 
 interface HeroSectionProps {
-  onSearch: (filters: SearchFilters) => void;
+  readonly onSearch: (filters: SearchFilters) => void;
 }
 
 export default function HeroSection({ onSearch }: HeroSectionProps) {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 py-20">
       {/* Background Image Overlay */}
@@ -22,26 +25,25 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Find Your Perfect Home
+            {t('hero.title')}
           </h1>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-            Discover thousands of properties for sale and rent across South Africa. 
-            From luxury homes to affordable apartments, find your dream property today.
+            {t('hero.subtitle')}
           </p>
           
           {/* Statistics */}
           <div className="flex flex-wrap justify-center gap-8 mb-12">
             <div className="text-center">
               <div className="text-3xl font-bold text-white">50,000+</div>
-              <div className="text-blue-200">Properties Listed</div>
+              <div className="text-blue-200">{t('hero.properties_listed')}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white">15,000+</div>
-              <div className="text-blue-200">Happy Clients</div>
+              <div className="text-blue-200">{t('hero.happy_clients')}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white">2,500+</div>
-              <div className="text-blue-200">Trusted Agents</div>
+              <div className="text-blue-200">{t('hero.trusted_agents')}</div>
             </div>
           </div>
         </div>

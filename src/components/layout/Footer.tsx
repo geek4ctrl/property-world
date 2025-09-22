@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { useTranslation } from '@/i18n/translation';
 
 export default function Footer() {
+  const { t } = useTranslation();
+  
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -9,8 +12,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">PropertyWorld</h3>
             <p className="text-gray-400 mb-4">
-              South Africa&apos;s leading property portal, connecting buyers, sellers, and renters 
-              with their perfect properties.
+              {t('footer.company_description')}
             </p>
             <div className="flex space-x-4">
               <a href="https://twitter.com/propertyworld" className="text-gray-400 hover:text-white transition-colors" aria-label="Follow us on Twitter">
@@ -33,31 +35,31 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.quick_links')}</h3>
             <ul className="space-y-2">
-              <li><Link href="/properties" className="text-gray-400 hover:text-white transition-colors">All Properties</Link></li>
-              <li><Link href="/properties?listing=sale" className="text-gray-400 hover:text-white transition-colors">Properties for Sale</Link></li>
-              <li><Link href="/properties?listing=rent" className="text-gray-400 hover:text-white transition-colors">Properties to Rent</Link></li>
-              <li><Link href="/agents" className="text-gray-400 hover:text-white transition-colors">Find an Agent</Link></li>
-              <li><Link href="/valuations" className="text-gray-400 hover:text-white transition-colors">Property Valuations</Link></li>
+              <li><Link href="/properties" className="text-gray-400 hover:text-white transition-colors">{t('footer.all_properties')}</Link></li>
+              <li><Link href="/properties?listing=sale" className="text-gray-400 hover:text-white transition-colors">{t('footer.properties_for_sale')}</Link></li>
+              <li><Link href="/properties?listing=rent" className="text-gray-400 hover:text-white transition-colors">{t('footer.properties_to_rent')}</Link></li>
+              <li><Link href="/agents" className="text-gray-400 hover:text-white transition-colors">{t('footer.find_agent')}</Link></li>
+              <li><Link href="/valuations" className="text-gray-400 hover:text-white transition-colors">{t('footer.property_valuations')}</Link></li>
             </ul>
           </div>
 
           {/* Property Types */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Property Types</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.property_types')}</h3>
             <ul className="space-y-2">
-              <li><Link href="/properties?type=house" className="text-gray-400 hover:text-white transition-colors">Houses</Link></li>
-              <li><Link href="/properties?type=apartment" className="text-gray-400 hover:text-white transition-colors">Apartments</Link></li>
-              <li><Link href="/properties?type=townhouse" className="text-gray-400 hover:text-white transition-colors">Townhouses</Link></li>
-              <li><Link href="/properties?type=flat" className="text-gray-400 hover:text-white transition-colors">Flats</Link></li>
-              <li><Link href="/properties?type=commercial" className="text-gray-400 hover:text-white transition-colors">Commercial</Link></li>
+              <li><Link href="/properties?type=house" className="text-gray-400 hover:text-white transition-colors">{t('property.houses')}</Link></li>
+              <li><Link href="/properties?type=apartment" className="text-gray-400 hover:text-white transition-colors">{t('property.apartments')}</Link></li>
+              <li><Link href="/properties?type=townhouse" className="text-gray-400 hover:text-white transition-colors">{t('property.townhouses')}</Link></li>
+              <li><Link href="/properties?type=flat" className="text-gray-400 hover:text-white transition-colors">{t('property.flats')}</Link></li>
+              <li><Link href="/properties?type=commercial" className="text-gray-400 hover:text-white transition-colors">{t('property.commercial')}</Link></li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.contact_us')}</h3>
             <ul className="space-y-2 text-gray-400">
               <li className="flex items-center">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,12 +88,12 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 PropertyWorld. All rights reserved.
+            {t('footer.copyright')}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</Link>
-            <Link href="/sitemap" className="text-gray-400 hover:text-white text-sm transition-colors">Sitemap</Link>
+            <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">{t('footer.privacy_policy')}</Link>
+            <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">{t('footer.terms_of_service')}</Link>
+            <Link href="/sitemap" className="text-gray-400 hover:text-white text-sm transition-colors">{t('footer.sitemap')}</Link>
           </div>
         </div>
       </div>

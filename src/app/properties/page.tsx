@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -12,7 +12,6 @@ import { filterProperties, sortProperties } from '@/lib/utils';
 
 export default function PropertiesPage() {
   const searchParams = useSearchParams();
-  const [properties, setProperties] = useState<Property[]>(sampleProperties);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(sampleProperties);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +22,21 @@ export default function PropertiesPage() {
 
   const propertiesPerPage = 12;
 
-  // Initialize filters from URL params
+  const handleSearch = useCallback((searchFilters: SearchFilters) => {
+    setLoading(true);
+    setFilters(searchFilters);
+    
+    // Simulate API delay
+    setTimeout(() => {
+      const filtered = filterProperties(sampleProperties, searchFilters);
+      const sorted = sortProperties(filtered, sortBy);
+      setFilteredProperties(sorted);
+      setCurrentPage(1);
+      setLoading(false);
+    }, 300);
+  }, [sortBy]);
+
+  // Initialize filters from URL parameters
   useEffect(() => {
     const urlFilters: SearchFilters = {};
     
@@ -39,38 +52,28 @@ export default function PropertiesPage() {
     
     setFilters(urlFilters);
     handleSearch(urlFilters);
-  }, [searchParams]);
+  }, [searchParams, handleSearch]);
 
-  const handleSearch = (searchFilters: SearchFilters) => {
-    setLoading(true);
-    setFilters(searchFilters);
-    
-    // Simulate API delay
-    setTimeout(() => {
-      const filtered = filterProperties(properties, searchFilters);
-      const sorted = sortProperties(filtered, sortBy);
-      setFilteredProperties(sorted);
-      setCurrentPage(1);
-      setLoading(false);
-    }, 300);
-  };
-
-  const handleSort = (newSortBy: string) => {
+  const handleSort = useCallback((newSortBy: string) => {
     setSortBy(newSortBy);
     const sorted = sortProperties(filteredProperties, newSortBy);
     setFilteredProperties(sorted);
-  };
+  }, [filteredProperties]);
 
-  // Pagination
-  const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
-  const startIndex = (currentPage - 1) * propertiesPerPage;
-  const endIndex = startIndex + propertiesPerPage;
-  const currentProperties = filteredProperties.slice(startIndex, endIndex);
+  // Memoize pagination calculations
+  const paginationData = useMemo(() => {
+    const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
+    const startIndex = (currentPage - 1) * propertiesPerPage;
+    const endIndex = startIndex + propertiesPerPage;
+    const currentProperties = filteredProperties.slice(startIndex, endIndex);
+    
+    return { totalPages, startIndex, endIndex, currentProperties };
+  }, [filteredProperties, currentPage, propertiesPerPage]);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -190,8 +193,9 @@ export default function PropertiesPage() {
                 <h4 className="text-sm font-medium text-gray-900 mb-3">Price Range</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">Min Price</label>
+                    <label htmlFor="min-price-input" className="block text-xs text-gray-600 mb-1">Min Price</label>
                     <input
+                      id="min-price-input"
                       type="number"
                       placeholder="0"
                       value={filters.minPrice || ''}
@@ -203,8 +207,9 @@ export default function PropertiesPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">Max Price</label>
+                    <label htmlFor="max-price-input" className="block text-xs text-gray-600 mb-1">Max Price</label>
                     <input
+                      id="max-price-input"
                       type="number"
                       placeholder="No limit"
                       value={filters.maxPrice || ''}
@@ -221,8 +226,9 @@ export default function PropertiesPage() {
               {/* Bedrooms & Bathrooms */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Bedrooms</label>
+                  <label htmlFor="bedrooms-select" className="block text-sm font-medium text-gray-900 mb-2">Bedrooms</label>
                   <select
+                    id="bedrooms-select"
                     value={filters.bedrooms || ''}
                     onChange={(e) => handleSearch({ 
                       ...filters, 
@@ -239,8 +245,9 @@ export default function PropertiesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Bathrooms</label>
+                  <label htmlFor="bathrooms-select" className="block text-sm font-medium text-gray-900 mb-2">Bathrooms</label>
                   <select
+                    id="bathrooms-select"
                     value={filters.bathrooms || ''}
                     onChange={(e) => handleSearch({ 
                       ...filters, 
@@ -277,7 +284,7 @@ export default function PropertiesPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-gray-600">
-                    Showing {startIndex + 1}-{Math.min(endIndex, filteredProperties.length)} of {filteredProperties.length} properties
+                    Showing {paginationData.startIndex + 1}-{Math.min(paginationData.endIndex, filteredProperties.length)} of {filteredProperties.length} properties
                   </p>
                   
                   {/* Mobile Filter Toggle */}
@@ -295,8 +302,9 @@ export default function PropertiesPage() {
                 <div className="flex items-center gap-4">
                   {/* Sort Dropdown */}
                   <div className="flex items-center gap-2">
-                    <label className="text-sm text-gray-600">Sort by:</label>
+                    <label htmlFor="sort-select" className="text-sm text-gray-600">Sort by:</label>
                     <select
+                      id="sort-select"
                       value={sortBy}
                       onChange={(e) => handleSort(e.target.value)}
                       className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
@@ -333,13 +341,13 @@ export default function PropertiesPage() {
 
             {/* Properties Grid */}
             <PropertyGrid 
-              properties={currentProperties}
+              properties={paginationData.currentProperties}
               loading={loading}
               emptyMessage="No properties match your search criteria"
             />
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {paginationData.totalPages > 1 && (
               <div className="mt-8 flex justify-center">
                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                   <button
@@ -353,7 +361,7 @@ export default function PropertiesPage() {
                     </svg>
                   </button>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  {Array.from({ length: paginationData.totalPages }, (_, i) => i + 1).map((page) => (
                     <button
                       key={page}
                       onClick={() => handlePageChange(page)}
@@ -369,7 +377,7 @@ export default function PropertiesPage() {
 
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === paginationData.totalPages}
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="sr-only">Next</span>

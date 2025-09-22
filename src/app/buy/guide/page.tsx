@@ -478,7 +478,7 @@ export default function BuyingGuidePage() {
                           { week: "Week 7-8", title: "Registration Preparation", desc: "Final documentation submitted to Deeds Office" },
                           { week: "Week 9-12", title: "Registration & Transfer", desc: "Property registration at Deeds Office, keys handed over" }
                         ].map((phase, index) => (
-                          <div key={index} className="flex items-start space-x-4">
+                          <div key={`transfer-phase-${phase.week.replace(/\s+/g, '-').toLowerCase()}`} className="flex items-start space-x-4">
                             <div className="w-20 text-sm font-medium text-green-600 flex-shrink-0">
                               {phase.week}
                             </div>
@@ -753,7 +753,7 @@ export default function BuyingGuidePage() {
                             <h4 className="font-semibold text-gray-900 mb-2">{period.day}</h4>
                             <ul className="text-sm text-gray-600 space-y-1">
                               {period.tasks.map((task, index) => (
-                                <li key={index}>• {task}</li>
+                                <li key={`${period.day}-task-${index}-${task.slice(0, 10).replace(/\s+/g, '-')}`}>• {task}</li>
                               ))}
                             </ul>
                           </div>

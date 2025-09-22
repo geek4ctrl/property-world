@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ClientProviders from "@/components/providers/ClientProviders";
 
 export const metadata: Metadata = {
   title: "PropertyWorld - Find Your Perfect Home",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );
