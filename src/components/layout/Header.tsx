@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, useCallback, memo } from 'react';
 import { useTranslation } from '@/i18n/translation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
@@ -8,6 +9,24 @@ import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 const Header = memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const pathname = usePathname();
+
+  // Helper function to determine if a link is active
+  const isActive = (path: string, exact = false) => {
+    if (exact) {
+      return pathname === path;
+    }
+    return pathname.startsWith(path);
+  };
+
+  // Helper function to get navigation link classes
+  const getNavLinkClasses = (path: string, exact = false) => {
+    const baseClasses = "px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap relative";
+    const activeClasses = "text-blue-600 border-b-2 border-blue-600";
+    const inactiveClasses = "text-gray-700 hover:text-blue-600";
+    
+    return `${baseClasses} ${isActive(path, exact) ? activeClasses : inactiveClasses}`;
+  };
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(prev => !prev);
@@ -33,27 +52,29 @@ const Header = memo(function Header() {
             <div className="flex items-center justify-center space-x-6">
               <Link 
                 href="/" 
-                className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                className={getNavLinkClasses('/', true)}
                 prefetch={true}
               >
                 {t('navigation.home')}
               </Link>
               <Link 
                 href="/properties" 
-                className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                className={getNavLinkClasses('/properties')}
                 prefetch={true}
               >
                 {t('navigation.properties')}
               </Link>
               <Link 
                 href="/map" 
-                className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                className={getNavLinkClasses('/map')}
                 prefetch={true}
               >
                 {t('navigation.map_view')}
               </Link>
               <div className="relative group">
-                <button className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap">
+                <button className={`px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap relative ${
+                  isActive('/buy') ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-700 hover:text-blue-600'
+                }`}>
                   {t('navigation.buy')}
                   <svg className="w-3 h-3 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -73,7 +94,9 @@ const Header = memo(function Header() {
                 </div>
               </div>
               <div className="relative group">
-                <button className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap">
+                <button className={`px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap relative ${
+                  pathname.includes('listing=rent') ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-700 hover:text-blue-600'
+                }`}>
                   {t('navigation.rent')}
                   <svg className="w-3 h-3 ml-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -89,7 +112,7 @@ const Header = memo(function Header() {
               </div>
               <Link 
                 href="/agents" 
-                className="text-gray-700 hover:text-blue-600 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                className={getNavLinkClasses('/agents')}
               >
                 {t('navigation.find_agent')}
               </Link>
@@ -136,12 +159,51 @@ const Header = memo(function Header() {
         {isMenuOpen && (
           <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-              <Link href="/" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu} prefetch={true}>{t('navigation.home')}</Link>
-              <Link href="/properties" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu} prefetch={true}>{t('navigation.properties')}</Link>
-              <Link href="/buy" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu} prefetch={true}>{t('navigation.buy')}</Link>
-              <Link href="/properties?listing=rent" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu}>{t('navigation.rent')}</Link>
-              <Link href="/agents" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu}>{t('navigation.find_agent')}</Link>
-              <Link href="/saved" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={closeMenu}>{t('common.favorite')}</Link>
+              <Link 
+                href="/" 
+                className={`block px-3 py-2 ${isActive('/', true) ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu} 
+                prefetch={true}
+              >
+                {t('navigation.home')}
+              </Link>
+              <Link 
+                href="/properties" 
+                className={`block px-3 py-2 ${isActive('/properties') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu} 
+                prefetch={true}
+              >
+                {t('navigation.properties')}
+              </Link>
+              <Link 
+                href="/buy" 
+                className={`block px-3 py-2 ${isActive('/buy') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu} 
+                prefetch={true}
+              >
+                {t('navigation.buy')}
+              </Link>
+              <Link 
+                href="/properties?listing=rent" 
+                className={`block px-3 py-2 ${pathname.includes('listing=rent') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu}
+              >
+                {t('navigation.rent')}
+              </Link>
+              <Link 
+                href="/agents" 
+                className={`block px-3 py-2 ${isActive('/agents') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu}
+              >
+                {t('navigation.find_agent')}
+              </Link>
+              <Link 
+                href="/saved" 
+                className={`block px-3 py-2 ${isActive('/saved') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                onClick={closeMenu}
+              >
+                {t('common.favorite')}
+              </Link>
               <div className="px-3 py-2">
                 <LanguageSwitcher />
               </div>

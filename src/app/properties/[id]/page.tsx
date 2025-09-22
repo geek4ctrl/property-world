@@ -10,10 +10,12 @@ import PropertyMap from "@/components/map/PropertyMap";
 import { sampleProperties } from "@/data/sampleProperties";
 import { formatPrice, formatPropertyType } from "@/lib/utils";
 import { ListingType } from "@/types";
+import { useTranslation } from "@/i18n/translation";
 
 export default function PropertyDetailsPage() {
   const params = useParams();
   const propertyId = params.id as string;
+  const { t } = useTranslation();
 
   // Find the property by ID
   const property = sampleProperties.find((p) => p.id === propertyId);
@@ -27,16 +29,16 @@ export default function PropertyDetailsPage() {
         <Header />
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Property Not Found
+            {t('property.property_not_found')}
           </h1>
           <p className="text-gray-600 mb-8">
-            The property you&apos;re looking for doesn&apos;t exist.
+            {t('property.property_not_found_desc')}
           </p>
           <Link
             href="/"
             className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
           >
-            Back to Home
+            {t('property.back_to_home')}
           </Link>
         </div>
         <Footer />
@@ -58,11 +60,11 @@ export default function PropertyDetailsPage() {
         <div className="container mx-auto px-4 py-4">
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
             <Link href="/" className="hover:text-primary-600">
-              Home
+              {t('navigation.home')}
             </Link>
             <span>/</span>
             <Link href="/" className="hover:text-primary-600">
-              Properties
+              {t('navigation.properties')}
             </Link>
             <span>/</span>
             <span className="text-gray-900">{property.title}</span>
@@ -186,12 +188,12 @@ export default function PropertyDetailsPage() {
                     {formatPrice(property.price, property.currency)}
                     {property.listingType === ListingType.TO_RENT && (
                       <span className="text-lg font-normal text-gray-600">
-                        /month
+                        {t('property.per_month')}
                       </span>
                     )}
                   </div>
                   <div className="text-gray-600">
-                    {formatPropertyType(property.propertyType)}
+                    {formatPropertyType(property.propertyType, t)}
                   </div>
                 </div>
                 <div
@@ -201,7 +203,7 @@ export default function PropertyDetailsPage() {
                       : "bg-blue-100 text-blue-800"
                   }`}
                 >
-                  {property.listingType === ListingType.FOR_SALE ? "For Sale" : "To Rent"}
+                  {property.listingType === ListingType.FOR_SALE ? t('property.for_sale') : t('property.to_rent')}
                 </div>
               </div>
 
@@ -211,19 +213,19 @@ export default function PropertyDetailsPage() {
                   <div className="text-2xl font-bold text-gray-900">
                     {property.bedrooms}
                   </div>
-                  <div className="text-sm text-gray-600">Bedrooms</div>
+                  <div className="text-sm text-gray-600">{t('property.bedrooms')}</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900">
                     {property.bathrooms}
                   </div>
-                  <div className="text-sm text-gray-600">Bathrooms</div>
+                  <div className="text-sm text-gray-600">{t('property.bathrooms')}</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900">
                     {property.garages || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Garages</div>
+                  <div className="text-sm text-gray-600">{t('property.garages')}</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900">
@@ -236,7 +238,7 @@ export default function PropertyDetailsPage() {
               {/* Description */}
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                  Description
+                  {t('property.description')}
                 </h2>
                 <p className="text-gray-700 leading-relaxed">
                   {property.description}
@@ -247,7 +249,7 @@ export default function PropertyDetailsPage() {
               {property.features && property.features.length > 0 && (
                 <div className="mb-6">
                   <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    Features & Amenities
+                    {t('property.features_amenities')}
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {property.features.map((feature, index) => (
@@ -273,7 +275,7 @@ export default function PropertyDetailsPage() {
               {/* Location */}
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                  Location
+                  {t('property.location')}
                 </h2>
                 <div className="text-gray-700 mb-4">
                   <p>{property.address.street}</p>
@@ -302,7 +304,7 @@ export default function PropertyDetailsPage() {
             {/* Agent Card */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                Contact Agent
+                {t('property.contact_agent')}
               </h2>
 
               <div className="flex items-center space-x-4 mb-4">
@@ -364,7 +366,7 @@ export default function PropertyDetailsPage() {
                 onClick={() => setShowContactForm(!showContactForm)}
                 className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium"
               >
-                Send Message
+                {t('property.send_message')}
               </button>
 
               {/* Contact Form */}
@@ -376,13 +378,13 @@ export default function PropertyDetailsPage() {
                         htmlFor="name"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Your Name
+                        {t('property.your_name')}
                       </label>
                       <input
                         type="text"
                         id="name"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                        placeholder="Enter your name"
+                        placeholder={t('property.enter_your_name')}
                       />
                     </div>
 
@@ -391,13 +393,13 @@ export default function PropertyDetailsPage() {
                         htmlFor="email"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Email Address
+                        {t('property.email_address')}
                       </label>
                       <input
                         type="email"
                         id="email"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                        placeholder="Enter your email"
+                        placeholder={t('property.enter_your_email')}
                       />
                     </div>
 
@@ -406,13 +408,13 @@ export default function PropertyDetailsPage() {
                         htmlFor="phone"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Phone Number
+                        {t('property.phone_number')}
                       </label>
                       <input
                         type="tel"
                         id="phone"
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                        placeholder="Enter your phone"
+                        placeholder={t('property.enter_your_phone')}
                       />
                     </div>
 
@@ -421,13 +423,13 @@ export default function PropertyDetailsPage() {
                         htmlFor="message"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Message
+                        {t('property.message')}
                       </label>
                       <textarea
                         id="message"
                         rows={4}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                        placeholder="I'm interested in this property..."
+                        placeholder={t('property.message_placeholder')}
                       />
                     </div>
 
@@ -435,7 +437,7 @@ export default function PropertyDetailsPage() {
                       type="submit"
                       className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium"
                     >
-                      Send Message
+                      {t('property.send_message')}
                     </button>
                   </form>
                 </div>
@@ -445,7 +447,7 @@ export default function PropertyDetailsPage() {
             {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Quick Actions
+                {t('property.quick_actions')}
               </h3>
               <div className="space-y-3">
                 <button className="w-full flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -460,7 +462,7 @@ export default function PropertyDetailsPage() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-gray-700">Save to Favorites</span>
+                  <span className="text-gray-700">{t('property.save_to_favorites')}</span>
                 </button>
 
                 <button className="w-full flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -471,7 +473,7 @@ export default function PropertyDetailsPage() {
                   >
                     <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
                   </svg>
-                  <span className="text-gray-700">Share Property</span>
+                  <span className="text-gray-700">{t('property.share')}</span>
                 </button>
 
                 <button className="w-full flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -486,7 +488,7 @@ export default function PropertyDetailsPage() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-gray-700">Schedule Viewing</span>
+                  <span className="text-gray-700">{t('property.schedule_viewing')}</span>
                 </button>
               </div>
             </div>

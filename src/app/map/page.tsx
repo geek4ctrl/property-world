@@ -7,12 +7,14 @@ import LazyPropertyMapGrid from '@/components/map/LazyPropertyMapGrid';
 import PropertySearch from '@/components/property/PropertySearch';
 import { SearchFilters, Property, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
-import { filterProperties } from '@/lib/utils';
+import { filterProperties, formatListingType } from '@/lib/utils';
+import { useTranslation } from '@/i18n/translation';
 
 export default function MapViewPage() {
   const [searchResults, setSearchResults] = useState<Property[]>(sampleProperties);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleSearch = (filters: SearchFilters) => {
     const filtered = filterProperties(sampleProperties, filters);
@@ -102,13 +104,13 @@ export default function MapViewPage() {
                         <div className="text-lg font-bold text-green-700">
                           {searchResults.filter(p => p.listingType === ListingType.FOR_SALE).length}
                         </div>
-                        <div className="text-xs text-green-600 font-medium">For Sale</div>
+                        <div className="text-xs text-green-600 font-medium">{t('property.for_sale')}</div>
                       </div>
                       <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <div className="text-lg font-bold text-blue-700">
                           {searchResults.filter(p => p.listingType === ListingType.TO_RENT).length}
                         </div>
-                        <div className="text-xs text-blue-600 font-medium">To Rent</div>
+                        <div className="text-xs text-blue-600 font-medium">{t('property.to_rent')}</div>
                       </div>
                     </div>
                   </div>
@@ -154,7 +156,7 @@ export default function MapViewPage() {
                             {selectedProperty.price.toLocaleString()}
                           </span>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {selectedProperty.listingType === ListingType.FOR_SALE ? 'For Sale' : 'To Rent'}
+                            {formatListingType(selectedProperty.listingType, t)}
                           </span>
                         </div>
                         
@@ -162,11 +164,11 @@ export default function MapViewPage() {
                         <div className="grid grid-cols-3 gap-2 mb-4">
                           <div className="text-center p-2 bg-gray-50 rounded">
                             <div className="text-sm font-bold text-gray-900">{selectedProperty.bedrooms}</div>
-                            <div className="text-xs text-gray-600">Beds</div>
+                            <div className="text-xs text-gray-600">{t('property.beds')}</div>
                           </div>
                           <div className="text-center p-2 bg-gray-50 rounded">
                             <div className="text-sm font-bold text-gray-900">{selectedProperty.bathrooms}</div>
-                            <div className="text-xs text-gray-600">Baths</div>
+                            <div className="text-xs text-gray-600">{t('property.baths')}</div>
                           </div>
                           <div className="text-center p-2 bg-gray-50 rounded">
                             <div className="text-sm font-bold text-gray-900">{selectedProperty.squareMeters}</div>

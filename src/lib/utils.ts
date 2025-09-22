@@ -7,34 +7,64 @@ export const formatPrice = (price: number, currency: string = 'ZAR'): string => 
   return `${currency} ${price.toLocaleString()}`;
 };
 
-export const formatPropertyType = (type: PropertyType): string => {
+// Note: These functions now accept a t function to support translations
+export const formatPropertyType = (type: PropertyType, t?: (key: string) => string): string => {
+  if (!t) {
+    // Fallback to English if no translation function provided
+    const typeMap: Record<PropertyType, string> = {
+      [PropertyType.HOUSE]: 'House',
+      [PropertyType.APARTMENT]: 'Apartment',
+      [PropertyType.TOWNHOUSE]: 'Townhouse',
+      [PropertyType.FLAT]: 'Flat',
+      [PropertyType.VACANT_LAND]: 'Vacant Land',
+      [PropertyType.COMMERCIAL]: 'Commercial',
+      [PropertyType.INDUSTRIAL]: 'Industrial',
+      [PropertyType.FARM]: 'Farm',
+      [PropertyType.OFFICE]: 'Office',
+      [PropertyType.RETAIL]: 'Retail'
+    };
+    return typeMap[type] || type;
+  }
+
   const typeMap: Record<PropertyType, string> = {
-    [PropertyType.HOUSE]: 'House',
-    [PropertyType.APARTMENT]: 'Apartment',
-    [PropertyType.TOWNHOUSE]: 'Townhouse',
-    [PropertyType.FLAT]: 'Flat',
-    [PropertyType.VACANT_LAND]: 'Vacant Land',
-    [PropertyType.COMMERCIAL]: 'Commercial',
-    [PropertyType.INDUSTRIAL]: 'Industrial',
-    [PropertyType.FARM]: 'Farm',
-    [PropertyType.OFFICE]: 'Office',
-    [PropertyType.RETAIL]: 'Retail'
+    [PropertyType.HOUSE]: t('property.house'),
+    [PropertyType.APARTMENT]: t('property.apartment'),
+    [PropertyType.TOWNHOUSE]: t('property.townhouse'),
+    [PropertyType.FLAT]: t('property.flat'),
+    [PropertyType.VACANT_LAND]: t('property.vacant_land'),
+    [PropertyType.COMMERCIAL]: t('property.commercial'),
+    [PropertyType.INDUSTRIAL]: t('property.commercial'), // Using commercial as fallback
+    [PropertyType.FARM]: t('property.vacant_land'), // Using vacant_land as fallback
+    [PropertyType.OFFICE]: t('property.commercial'), // Using commercial as fallback
+    [PropertyType.RETAIL]: t('property.commercial') // Using commercial as fallback
   };
   return typeMap[type] || type;
 };
 
-export const formatListingType = (type: ListingType): string => {
+export const formatListingType = (type: ListingType, t?: (key: string) => string): string => {
+  if (!t) {
+    // Fallback to English if no translation function provided
+    const typeMap: Record<ListingType, string> = {
+      [ListingType.FOR_SALE]: 'For Sale',
+      [ListingType.TO_RENT]: 'To Rent',
+      [ListingType.SOLD]: 'Sold',
+      [ListingType.RENTED]: 'Rented'
+    };
+    return typeMap[type] || type;
+  }
+
   const typeMap: Record<ListingType, string> = {
-    [ListingType.FOR_SALE]: 'For Sale',
-    [ListingType.TO_RENT]: 'To Rent',
-    [ListingType.SOLD]: 'Sold',
-    [ListingType.RENTED]: 'Rented'
+    [ListingType.FOR_SALE]: t('property.for_sale'),
+    [ListingType.TO_RENT]: t('property.to_rent'),
+    [ListingType.SOLD]: t('property.sold'),
+    [ListingType.RENTED]: t('property.rented')
   };
   return typeMap[type] || type;
 };
 
-export const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-ZA', {
+export const formatDate = (date: Date, locale: string = 'en'): string => {
+  const localeCode = locale === 'fr' ? 'fr-FR' : 'en-ZA';
+  return date.toLocaleDateString(localeCode, {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
