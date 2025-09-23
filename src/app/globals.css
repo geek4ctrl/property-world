@@ -2,12 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import custom map styles */
+/* Import custom styles */
 @import '../styles/map.css';
 
+/* Simple animations for better UX */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -90,32 +93,50 @@ a {
   box-shadow: 0 0 0 2px var(--ring-color, #3b82f6);
 }
 
-/* Animation for property cards */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+/* Simple, Clean Animations */
+
+/* Basic transitions for interactive elements */
+button, a, .interactive {
+  transition: all var(--transition-normal);
+}
+
+button:hover, a:hover {
+  transform: translateY(-1px);
+}
+
+button:active, a:active {
+  transform: translateY(0);
+}
+
+/* Subtle fade in for content */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+/* Simple card hover effect */
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-normal);
 }
 
-/* Loading animation */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+/* Simple loading animation */
+.loading {
+  opacity: 0.6;
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

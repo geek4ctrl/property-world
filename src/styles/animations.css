@@ -1,0 +1,444 @@
+/* Animation Utilities */
+:root {
+  /* Animation Duration Variables */
+  --animation-duration-fast: 150ms;
+  --animation-duration-normal: 250ms;
+  --animation-duration-slow: 350ms;
+  --animation-duration-slower: 500ms;
+
+  /* Animation Timing Functions */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Modal and Overlay Animations */
+  --modal-backdrop-duration: 300ms;
+  --modal-content-duration: 250ms;
+  --modal-scale-start: 0.95;
+  --modal-scale-end: 1;
+
+  /* Navigation Animations */
+  --nav-transition-duration: 200ms;
+  --nav-hover-scale: 1.05;
+  --nav-active-scale: 0.98;
+
+  /* Card and Component Animations */
+  --card-hover-duration: 200ms;
+  --card-hover-scale: 1.02;
+  --card-shadow-hover: 0 10px 25px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* Utility Classes for Animations */
+.animate-fade-in {
+  animation: fadeIn var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut var(--animation-duration-normal) var(--ease-in) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-left {
+  animation: slideLeft var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--animation-duration-normal) var(--ease-bounce) forwards;
+}
+
+.animate-scale-out {
+  animation: scaleOut var(--animation-duration-fast) var(--ease-in) forwards;
+}
+
+.animate-bounce-in {
+  animation: bounceIn var(--animation-duration-slow) var(--ease-bounce) forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Transition Utilities */
+.transition-all-fast {
+  transition: all var(--animation-duration-fast) var(--ease-in-out);
+}
+
+.transition-all-normal {
+  transition: all var(--animation-duration-normal) var(--ease-in-out);
+}
+
+.transition-all-slow {
+  transition: all var(--animation-duration-slow) var(--ease-in-out);
+}
+
+.transition-transform {
+  transition: transform var(--animation-duration-normal) var(--ease-in-out);
+}
+
+.transition-opacity {
+  transition: opacity var(--animation-duration-normal) var(--ease-in-out);
+}
+
+.transition-colors {
+  transition: color var(--animation-duration-normal) var(--ease-in-out),
+              background-color var(--animation-duration-normal) var(--ease-in-out),
+              border-color var(--animation-duration-normal) var(--ease-in-out);
+}
+
+.transition-shadow {
+  transition: box-shadow var(--animation-duration-normal) var(--ease-in-out);
+}
+
+/* Hover and State Utilities */
+.hover-lift {
+  transition: transform var(--card-hover-duration) var(--ease-out),
+              box-shadow var(--card-hover-duration) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(var(--card-hover-scale));
+  box-shadow: var(--card-shadow-hover);
+}
+
+.hover-scale {
+  transition: transform var(--animation-duration-fast) var(--ease-out);
+}
+
+.hover-scale:hover {
+  transform: scale(var(--nav-hover-scale));
+}
+
+.active-scale:active {
+  transform: scale(var(--nav-active-scale));
+}
+
+.hover-glow {
+  transition: box-shadow var(--animation-duration-normal) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(var(--modal-scale-start));
+  }
+  to {
+    opacity: 1;
+    transform: scale(var(--modal-scale-end));
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(var(--modal-scale-end));
+  }
+  to {
+    opacity: 0;
+    transform: scale(var(--modal-scale-start));
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  40% {
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  80% {
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Loading States */
+.loading-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+.loading-skeleton {
+  background-color: #e5e7eb;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border-radius: 0.375rem;
+}
+
+/* Modal Specific Animations */
+.modal-backdrop {
+  transition: opacity var(--modal-backdrop-duration) var(--ease-out);
+}
+
+.modal-backdrop.entering {
+  opacity: 0;
+}
+
+.modal-backdrop.entered {
+  opacity: 1;
+}
+
+.modal-backdrop.exiting {
+  opacity: 0;
+}
+
+.modal-content {
+  transition: transform var(--modal-content-duration) var(--ease-out),
+              opacity var(--modal-content-duration) var(--ease-out);
+}
+
+.modal-content.entering {
+  opacity: 0;
+  transform: scale(var(--modal-scale-start)) translateY(-20px);
+}
+
+.modal-content.entered {
+  opacity: 1;
+  transform: scale(var(--modal-scale-end)) translateY(0);
+}
+
+.modal-content.exiting {
+  opacity: 0;
+  transform: scale(var(--modal-scale-start)) translateY(-20px);
+}
+
+/* Navigation Animations */
+.nav-item {
+  position: relative;
+  transition: color var(--nav-transition-duration) var(--ease-out);
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width var(--nav-transition-duration) var(--ease-out);
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+.nav-item:hover {
+  transform: translateY(-1px);
+}
+
+/* Button Animations */
+.btn-animated {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--animation-duration-normal) var(--ease-out);
+}
+
+.btn-animated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--animation-duration-slow) var(--ease-out);
+}
+
+.btn-animated:hover::before {
+  left: 100%;
+}
+
+.btn-animated:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-animated:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Animations */
+.form-input {
+  transition: border-color var(--animation-duration-fast) var(--ease-out),
+              box-shadow var(--animation-duration-fast) var(--ease-out),
+              transform var(--animation-duration-fast) var(--ease-out);
+}
+
+.form-input:focus {
+  transform: scale(1.01);
+}
+
+.form-label {
+  transition: color var(--animation-duration-fast) var(--ease-out),
+              transform var(--animation-duration-fast) var(--ease-out);
+}
+
+/* Stagger Animation for Lists */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp var(--animation-duration-normal) var(--ease-out) forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-item:nth-child(2) { animation-delay: 50ms; }
+.stagger-item:nth-child(3) { animation-delay: 100ms; }
+.stagger-item:nth-child(4) { animation-delay: 150ms; }
+.stagger-item:nth-child(5) { animation-delay: 200ms; }
+.stagger-item:nth-child(6) { animation-delay: 250ms; }
+.stagger-item:nth-child(7) { animation-delay: 300ms; }
+.stagger-item:nth-child(8) { animation-delay: 350ms; }
+.stagger-item:nth-child(9) { animation-delay: 400ms; }
+.stagger-item:nth-child(10) { animation-delay: 450ms; }
+
+/* Scroll Animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s var(--ease-out),
+              transform 0.6s var(--ease-out);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Page Transition Animations */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity var(--animation-duration-slow) var(--ease-out),
+              transform var(--animation-duration-slow) var(--ease-out);
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity var(--animation-duration-normal) var(--ease-in),
+              transform var(--animation-duration-normal) var(--ease-in);
+}
+
+/* Responsive Animation Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

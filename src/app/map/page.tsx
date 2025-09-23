@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import LazyPropertyMapGrid from '@/components/map/LazyPropertyMapGrid';
@@ -140,11 +141,13 @@ export default function MapViewPage() {
                   <div className="p-4">
                     <div className="space-y-4">
                       {/* Property Image */}
-                      <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                        <img 
+                      <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
+                        <Image 
                           src={selectedProperty.images[0]?.url || '/placeholder-property.jpg'} 
                           alt={selectedProperty.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          sizes="320px"
                         />
                       </div>
                       

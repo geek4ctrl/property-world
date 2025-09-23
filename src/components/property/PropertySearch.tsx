@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { PropertyType, ListingType, SearchFilters } from '@/types';
 import { useTranslation } from '@/i18n/translation';
+import { Button, Input, Select } from '@/components/ui/FormComponents';
 
 interface PropertySearchProps {
   readonly onSearch: (filters: SearchFilters) => void;
@@ -94,14 +95,14 @@ export default function PropertySearch({
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.FOR_SALE }))}
-            className={getTabButtonClasses(filters.listingType === ListingType.FOR_SALE, isCompact)}
+            className={`${getTabButtonClasses(filters.listingType === ListingType.FOR_SALE, isCompact)} btn-animated hover-scale`}
           >
             {t('navigation.buy')}
           </button>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.TO_RENT }))}
-            className={getTabButtonClasses(filters.listingType === ListingType.TO_RENT, isCompact)}
+            className={`${getTabButtonClasses(filters.listingType === ListingType.TO_RENT, isCompact)} btn-animated hover-scale`}
           >
             {t('navigation.rent')}
           </button>
@@ -110,102 +111,83 @@ export default function PropertySearch({
         {/* Search Fields */}
         <div className={`grid gap-3 ${isCompact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
           {/* Location */}
-          <div>
-            <label htmlFor="location-input" className={getLabelClasses(isCompact)}>
-              {t('common.location')}
-            </label>
-            <input
-              id="location-input"
-              type="text"
-              placeholder={t('search.city_suburb_area')}
-              value={filters.location || ''}
-              onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
-              className={getInputClasses(isCompact)}
-            />
-          </div>
+          <Input
+            label={t('common.location')}
+            placeholder={t('search.city_suburb_area')}
+            value={filters.location || ''}
+            onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
+            leftIcon={
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            }
+          />
 
           {/* Property Type */}
-          <div>
-            <label htmlFor="property-type-select" className={getLabelClasses(isCompact)}>
-              {t('common.property_type')}
-            </label>
-            <select
-              id="property-type-select"
-              value={filters.propertyType?.[0] || ''}
-              onChange={(e) => setFilters(prev => ({ 
-                ...prev, 
-                propertyType: e.target.value ? [e.target.value as PropertyType] : []
-              }))}
-              className={getInputClasses(isCompact)}
-            >
-              <option value="">{t('search.any_type')}</option>
-              <option value={PropertyType.HOUSE}>{t('property.house')}</option>
-              <option value={PropertyType.APARTMENT}>{t('property.apartment')}</option>
-              <option value={PropertyType.TOWNHOUSE}>{t('property.townhouse')}</option>
-              <option value={PropertyType.FLAT}>{t('property.flat')}</option>
-              <option value={PropertyType.COMMERCIAL}>{t('property.commercial')}</option>
-            </select>
-          </div>
+          <Select
+            label={t('common.property_type')}
+            value={filters.propertyType?.[0] || ''}
+            onChange={(e) => setFilters(prev => ({ 
+              ...prev, 
+              propertyType: e.target.value ? [e.target.value as PropertyType] : []
+            }))}
+            options={[
+              { value: '', label: t('search.any_type') },
+              { value: PropertyType.HOUSE, label: t('property.house') },
+              { value: PropertyType.APARTMENT, label: t('property.apartment') },
+              { value: PropertyType.TOWNHOUSE, label: t('property.townhouse') },
+              { value: PropertyType.FLAT, label: t('property.flat') },
+              { value: PropertyType.COMMERCIAL, label: t('property.commercial') }
+            ]}
+          />
 
           {/* Price Range */}
-          <div>
-            <label htmlFor="price-range-select" className={getLabelClasses(isCompact)}>
-              {t('common.price')}
-            </label>
-            <select
-              id="price-range-select"
-              onChange={(e) => {
-                const selectedRange = priceRanges[parseInt(e.target.value)];
-                setFilters(prev => ({
-                  ...prev,
-                  minPrice: selectedRange.min,
-                  maxPrice: selectedRange.max
-                }));
-              }}
-              className={getInputClasses(isCompact)}
-            >
-              {priceRanges.map((range, index) => (
-                <option key={`price-range-${range.label}`} value={index}>
-                  {range.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label={t('common.price')}
+            onChange={(e) => {
+              const selectedRange = priceRanges[parseInt(e.target.value)];
+              setFilters(prev => ({
+                ...prev,
+                minPrice: selectedRange.min,
+                maxPrice: selectedRange.max
+              }));
+            }}
+            options={priceRanges.map((range, index) => ({
+              value: index.toString(),
+              label: range.label
+            }))}
+          />
 
           {/* Bedrooms */}
-          <div>
-            <label htmlFor="bedrooms-select" className={getLabelClasses(isCompact)}>
-              {t('common.bedrooms')}
-            </label>
-            <select
-              id="bedrooms-select"
-              value={filters.bedrooms || ''}
-              onChange={(e) => setFilters(prev => ({ 
-                ...prev, 
-                bedrooms: e.target.value ? parseInt(e.target.value) : undefined
-              }))}
-              className={getInputClasses(isCompact)}
-            >
-              {bedroomOptions.map((option) => (
-                <option key={`bedroom-${option.label}`} value={option.value || ''}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label={t('common.bedrooms')}
+            value={filters.bedrooms?.toString() || ''}
+            onChange={(e) => setFilters(prev => ({ 
+              ...prev, 
+              bedrooms: e.target.value ? parseInt(e.target.value) : undefined
+            }))}
+            options={bedroomOptions.map((option) => ({
+              value: option.value?.toString() || '',
+              label: option.label
+            }))}
+          />
         </div>
 
         {/* Search Button */}
         <div className={isCompact ? 'mt-4' : 'mt-6'}>
-          <button
+          <Button
             type="submit"
-            className={getButtonClasses(isCompact)}
+            className="w-full"
+            size={isCompact ? 'md' : 'lg'}
+            leftIcon={
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            }
           >
-            <svg className={getIconClasses(isCompact)} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
             {isCompact ? t('common.search') : t('search.search_properties')}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

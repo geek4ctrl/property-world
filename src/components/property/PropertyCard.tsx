@@ -17,6 +17,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const formatPrice = (price: number, currency: string) => {
     return formatPriceI18n(price, currency, locale);
@@ -62,20 +63,24 @@ export default function PropertyCard({ property, className = '', variant = 'defa
   const isFeatured = variant === 'featured';
 
   return (
-    <div className={`group bg-white rounded-xl overflow-hidden transition-all duration-300 ${
-      isFeatured 
-        ? 'shadow-xl hover:shadow-2xl border-2 border-yellow-200' 
-        : 'shadow-md hover:shadow-xl border border-gray-200'
-    } hover:-translate-y-1 ${className}`}>
-      <Link href={`/properties/${property.id}`}>
+    <div 
+      className={`group bg-white rounded-xl overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
+        isFeatured 
+          ? 'shadow-xl border-2 border-yellow-200' 
+          : 'shadow-md'
+      } ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Link href={`/properties/${property.id}`} className="block">
         <div className="relative overflow-hidden">
           {/* Property Image */}
           <div className={`relative bg-gray-200 overflow-hidden ${
             isCompact ? 'aspect-[3/2]' : 'aspect-[4/3]'
           }`}>
             {imageLoading && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-                <svg className="w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <div className="absolute inset-0 loading-skeleton flex items-center justify-center">
+                <svg className="w-10 h-10 text-gray-400 animate-pulse-slow" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -84,15 +89,17 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               src={currentImage?.url || '/placeholder-property.jpg'}
               alt={currentImage?.alt || property.title}
               fill
-              className={`object-cover transition-all duration-700 group-hover:scale-105 ${
-                imageLoading ? 'opacity-0' : 'opacity-100'
-              }`}
+              className={`object-cover transition-transform duration-500 ${
+                isHovered ? 'scale-105' : 'scale-100'
+              } ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onLoad={() => setImageLoading(false)}
             />
             
             {/* Image overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className={`absolute inset-0 bg-gradient-to-t from-black/30 to-transparent transition-opacity duration-300 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`} />
           </div>
           
           {/* Badges */}
@@ -119,7 +126,9 @@ export default function PropertyCard({ property, className = '', variant = 'defa
           {/* Save Button */}
           <button 
             onClick={handleFavoriteClick}
-            className="absolute top-3 right-3 p-2.5 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg hover:scale-110 z-10"
+            className={`absolute top-3 right-3 p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg z-10 transition-all duration-200 hover:scale-105 ${
+              isFavorited ? 'text-red-500 bg-red-50/90' : 'text-gray-600 hover:bg-white'
+            }`}
           >
             <svg 
               className={`w-5 h-5 transition-colors duration-200 ${
