@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
 import { useTranslation, formatPrice as formatPriceI18n, formatPropertyType } from '@/i18n/translation';
+import { useComparison } from '@/contexts/ComparisonContext';
 
 interface PropertyCardProps {
   readonly property: Property;
@@ -14,6 +15,7 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property, className = '', variant = 'default' }: PropertyCardProps) {
   const { t, locale } = useTranslation();
+  const { addToComparison, removeFromComparison, isInComparison, maxReached } = useComparison();
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -42,6 +44,23 @@ export default function PropertyCard({ property, className = '', variant = 'defa
     e.stopPropagation();
     setIsFavorited(!isFavorited);
   };
+
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isInComparison(property.id)) {
+      removeFromComparison(property.id);
+    } else {
+      const added = addToComparison(property);
+      if (!added && maxReached) {
+        // Could show a toast notification here
+        alert('You can only compare up to 3 properties at once.');
+      }
+    }
+  };
+
+  const isInCompare = isInComparison(property.id);
 
   const handleImageNavigation = (e: React.MouseEvent, direction: 'prev' | 'next') => {
     e.preventDefault();
@@ -123,29 +142,60 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             )}
           </div>
 
-          {/* Save Button */}
-          <button 
-            onClick={handleFavoriteClick}
-            className={`absolute top-3 right-3 p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg z-10 transition-all duration-200 hover:scale-105 ${
-              isFavorited ? 'text-red-500 bg-red-50/90' : 'text-gray-600 hover:bg-white'
-            }`}
-          >
-            <svg 
-              className={`w-5 h-5 transition-colors duration-200 ${
-                isFavorited ? 'text-red-500 fill-current' : 'text-gray-600'
-              }`} 
-              fill={isFavorited ? 'currentColor' : 'none'} 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
+          {/* Action Buttons */}
+          <div className="absolute top-3 right-3 flex space-x-2 z-10">
+            {/* Compare Button */}
+            <button 
+              onClick={handleCompareClick}
+              disabled={maxReached && !isInCompare}
+              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${
+                isInCompare 
+                  ? 'text-blue-600 bg-blue-50/90' 
+                  : maxReached 
+                    ? 'text-gray-400 bg-gray-50/90 cursor-not-allowed' 
+                    : 'text-gray-600 hover:bg-white hover:text-blue-600'
+              }`}
+              title={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
-              />
-            </svg>
-          </button>
+              <svg 
+                className="w-5 h-5 transition-colors duration-200" 
+                fill={isInCompare ? 'currentColor' : 'none'} 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" 
+                />
+              </svg>
+            </button>
+
+            {/* Save Button */}
+            <button 
+              onClick={handleFavoriteClick}
+              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${
+                isFavorited ? 'text-red-500 bg-red-50/90' : 'text-gray-600 hover:bg-white'
+              }`}
+            >
+              <svg 
+                className={`w-5 h-5 transition-colors duration-200 ${
+                  isFavorited ? 'text-red-500 fill-current' : 'text-gray-600'
+                }`} 
+                fill={isFavorited ? 'currentColor' : 'none'} 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
+                />
+              </svg>
+            </button>
+          </div>
 
           {/* Image Navigation */}
           {property.images.length > 1 && (

@@ -3,6 +3,7 @@ import "./globals.css";
 import ClientProviders from "@/components/providers/ClientProviders";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import ErrorOverlay from "@/components/debug/ErrorOverlay";
+import ComparisonBar from "@/components/property/ComparisonBar";
 
 export const metadata: Metadata = {
   title: "PropertyWorld - Find Your Perfect Home",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <ClientProviders>
             {children}
+            <ComparisonBar />
           </ClientProviders>
         </ErrorBoundary>
         <ErrorOverlay />
