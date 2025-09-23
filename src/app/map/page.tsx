@@ -10,6 +10,8 @@ import { MapErrorBoundary, SearchErrorBoundary, PropertyErrorBoundary } from '@/
 import { SearchFilters, Property, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, formatListingType } from '@/lib/utils';
+import { filterPropertiesByBounds } from '@/lib/mapUtils';
+import type { MapBounds } from '@/components/map/PropertyMapGrid';
 import { useTranslation } from '@/i18n/translation';
 
 export default function MapViewPage() {
@@ -17,16 +19,39 @@ export default function MapViewPage() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentFilters, setCurrentFilters] = useState<SearchFilters | null>(null);
+  const [mapSearchActive, setMapSearchActive] = useState(false);
   const { t } = useTranslation();
 
   const handleSearch = (filters: SearchFilters) => {
     setLoading(true);
+    setCurrentFilters(filters);
+    setMapSearchActive(false); // Reset map search when doing filter search
+    
     // Simulate API delay
     setTimeout(() => {
       const filtered = filterProperties(sampleProperties, filters);
       setSearchResults(filtered);
       setLoading(false);
     }, 500);
+  };
+
+  const handleMapBoundsChange = (bounds: MapBounds) => {
+    setLoading(true);
+    setMapSearchActive(true);
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // First apply existing filters if any
+      let filteredProperties = currentFilters 
+        ? filterProperties(sampleProperties, currentFilters)
+        : sampleProperties;
+      
+      // Then filter by map bounds
+      const boundsFiltered = filterPropertiesByBounds(filteredProperties, bounds);
+      setSearchResults(boundsFiltered);
+      setLoading(false);
+    }, 300);
   };
 
   const handlePropertySelect = (property: Property) => {
@@ -226,6 +251,8 @@ export default function MapViewPage() {
                 <LazyPropertyMapGrid 
                   properties={searchResults}
                   onPropertySelect={handlePropertySelect}
+                  onMapBoundsChange={handleMapBoundsChange}
+                  showSearchButton={true}
                   className="w-full"
                 />
               </MapErrorBoundary>

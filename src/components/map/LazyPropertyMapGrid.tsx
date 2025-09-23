@@ -2,14 +2,18 @@
 
 import { Suspense, lazy } from 'react';
 import { Property } from '@/types';
+import { MapBounds } from './PropertyMapGrid';
 
 // Lazy load the map component
-const PropertyMapGrid = lazy(() => import('./PropertyMapGrid'));
+const PropertyMapGrid = lazy(() => import('./PropertyMapGrid_fixed'));
 
 interface LazyPropertyMapGridProps {
   properties: Property[];
   className?: string;
   onPropertySelect?: (property: Property) => void;
+  onMapBoundsChange?: (bounds: MapBounds) => void;
+  onMapMoved?: () => void;
+  showSearchButton?: boolean;
 }
 
 // Fallback component for loading state
@@ -32,13 +36,23 @@ const MapSkeleton = () => (
   </div>
 );
 
-const LazyPropertyMapGrid = ({ properties, className = '', onPropertySelect }: LazyPropertyMapGridProps) => {
+const LazyPropertyMapGrid = ({ 
+  properties, 
+  className = '', 
+  onPropertySelect,
+  onMapBoundsChange,
+  onMapMoved,
+  showSearchButton
+}: LazyPropertyMapGridProps) => {
   return (
     <Suspense fallback={<MapSkeleton />}>
       <PropertyMapGrid 
         properties={properties} 
         className={className} 
-        onPropertySelect={onPropertySelect} 
+        onPropertySelect={onPropertySelect}
+        onMapBoundsChange={onMapBoundsChange}
+        onMapMoved={onMapMoved}
+        showSearchButton={showSearchButton}
       />
     </Suspense>
   );

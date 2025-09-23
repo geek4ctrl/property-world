@@ -1,12 +1,66 @@
 'use client';
 
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { Property, ListingType } from '@/types';
+import { useRef, useState, useMemo, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { Property, ListingType, PropertyType } from '@/types';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default markers in React Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
 
 interface PropertyMapGridProps {
   properties: Property[];
   className?: string;
   onPropertySelect?: (property: Property) => void;
+  onMapBoundsChange?: (bounds: MapBounds) => void;
+  onMapMoved?: (center: { lat: number; lng: number }, zoom: number) => void;
+  showSearchButton?: boolean;
+}
+
+export interface MapBounds {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+  center: { lat: number; lng: number };
+  zoom: number;
+}
+
+const PropertyMapGrid = ({ 
+  properties, 
+  className = '', 
+  onPropertySelect,
+  onMapBoundsChange,
+  onMapMoved,
+  showSearchButton = false
+}: PropertyMapGridProps) => {
+  return (
+    <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-200">
+      <div 
+        className={`bg-gradient-to-br from-blue-50 to-indigo-100 ${className} rounded-xl`}
+        style={{ minHeight: '600px', height: '70vh' }}
+      >
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-200 border-top-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600 font-medium">Map is loading...</p>
+            <p className="text-gray-500 text-sm">Please wait while we load the interactive map</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PropertyMapGrid;
+  center: { lat: number; lng: number };
+  zoom: number;
 }
 
 // Helper function to get marker color based on property type
@@ -16,6 +70,92 @@ const getMarkerColor = (propertyType: string) => {
     case 'apartment': return '#3b82f6'; // blue
     case 'townhouse': return '#f59e0b'; // amber
     case 'office': return '#8b5cf6'; // purple
+    case 'student': return '#ef4444'; // red
+    default: return '#6b7280'; // gray
+  }
+};
+
+// Helper function to format price
+const formatPrice = (price: number, currency: string = 'EUR') => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    maximumFractionDigits: 0,
+  }).format(price);
+};
+
+// Helper function to format listing type
+const formatListingType = (type: ListingType) => {
+  return type.charAt(0).toUpperCase() + type.slice(1);
+};
+
+// Create custom colored markers
+const createCustomIcon = (color: string) => {
+  return L.divIcon({
+    className: 'custom-marker',
+    html: `
+      <div style="
+        background-color: ${color};
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      "></div>
+    `,
+    iconSize: [25, 25],
+    iconAnchor: [12.5, 12.5],
+  });
+};
+
+// Component to handle map events
+interface MapEventsHandlerProps {
+  onMapBoundsChange?: (bounds: MapBounds) => void;
+  onMapMoved?: (center: { lat: number; lng: number }, zoom: number) => void;
+  onSetShowSearchArea?: (show: boolean) => void;
+}
+
+const MapEventsHandler = ({ onMapBoundsChange, onMapMoved, onSetShowSearchArea }: MapEventsHandlerProps) => {
+  const map = useMap();
+  const boundsChangeTimeoutRef = useRef<NodeJS.Timeout>();
+
+  useMapEvents({
+    moveend: () => {
+      const bounds = map.getBounds();
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+
+      if (onMapMoved) {
+        onMapMoved({ lat: center.lat, lng: center.lng }, zoom);
+      }
+
+      if (onSetShowSearchArea) {
+        onSetShowSearchArea(true);
+      }
+
+      // Debounce bounds change events
+      if (boundsChangeTimeoutRef.current) {
+        clearTimeout(boundsChangeTimeoutRef.current);
+      }
+      
+      boundsChangeTimeoutRef.current = setTimeout(() => {
+        if (onMapBoundsChange) {
+          const mapBounds: MapBounds = {
+            north: bounds.getNorth(),
+            south: bounds.getSouth(),
+            east: bounds.getEast(),
+            west: bounds.getWest(),
+            center: { lat: center.lat, lng: center.lng },
+            zoom: zoom
+          };
+          onMapBoundsChange(mapBounds);
+        }
+      }, 500);
+    },
+  });
+
+  return null;
+};
     case 'flat': return '#06b6d4'; // cyan
     case 'commercial': return '#dc2626'; // red
     default: return '#6b7280'; // gray
@@ -142,13 +282,22 @@ const createPropertyMarker = (L: any, property: Property, map: any, onPropertySe
   return marker;
 };
 
-const PropertyMapGrid = ({ properties, className = '', onPropertySelect }: PropertyMapGridProps) => {
+const PropertyMapGrid = ({ 
+  properties, 
+  className = '', 
+  onPropertySelect,
+  onMapBoundsChange,
+  onMapMoved,
+  showSearchButton = false
+}: PropertyMapGridProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingStage, setLoadingStage] = useState('Initializing map...');
+  const [showSearchArea, setShowSearchArea] = useState(false);
+  const [mapHasMoved, setMapHasMoved] = useState(false);
 
   // Memoize properties with coordinates to avoid recalculation
   const propertiesWithCoords = useMemo(() => 
@@ -297,6 +446,48 @@ const PropertyMapGrid = ({ properties, className = '', onPropertySelect }: Prope
         setLoadingStage('Map ready!');
 
         mapInstanceRef.current = map;
+
+        // Add map bounds change event listeners
+        if (onMapBoundsChange || onMapMoved) {
+          let moveTimeout: NodeJS.Timeout;
+          
+          const handleMapMove = () => {
+            if (!showSearchButton) return;
+            
+            setMapHasMoved(true);
+            setShowSearchArea(true);
+            
+            // Clear existing timeout
+            if (moveTimeout) clearTimeout(moveTimeout);
+            
+            // Set new timeout to notify parent after user stops moving
+            moveTimeout = setTimeout(() => {
+              const bounds = map.getBounds();
+              const center = map.getCenter();
+              const zoom = map.getZoom();
+              
+              const mapBounds: MapBounds = {
+                north: bounds.getNorth(),
+                south: bounds.getSouth(),
+                east: bounds.getEast(),
+                west: bounds.getWest(),
+                center: { lat: center.lat, lng: center.lng },
+                zoom: zoom
+              };
+              
+              if (onMapBoundsChange) {
+                onMapBoundsChange(mapBounds);
+              }
+              
+              if (onMapMoved) {
+                onMapMoved({ lat: center.lat, lng: center.lng }, zoom);
+              }
+            }, 500); // Wait 500ms after user stops moving
+          };
+          
+          map.on('moveend', handleMapMove);
+          map.on('zoomend', handleMapMove);
+        }
         
         // Small delay to show completion
         setTimeout(() => {
@@ -347,6 +538,14 @@ const PropertyMapGrid = ({ properties, className = '', onPropertySelect }: Prope
         crossOrigin=""
       />
       
+      {/* Leaflet JavaScript */}
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"
+        integrity="sha512-BwHfrr+c3rBMiGJwOA4MZsw7JYQMK6/9zl1zBdO7JqDR7AkC3LKzxC6FwPD0ZnD98MgPW5xHvCIUpb25Hn4p5w=="
+        crossOrigin=""
+        async
+      />
+      
       {/* Map container with loading overlay */}
       <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-200">
         {/* Skeleton loader for initial render */}
@@ -365,6 +564,44 @@ const PropertyMapGrid = ({ properties, className = '', onPropertySelect }: Prope
           className={`bg-gradient-to-br from-blue-50 to-indigo-100 ${className} ${!isLoading ? 'map-container-loaded' : ''}`}
           style={{ minHeight: '600px', height: '70vh', display: isLoading && loadingProgress === 0 ? 'none' : 'block' }}
         />
+        
+        {/* Search This Area Button */}
+        {showSearchButton && showSearchArea && !isLoading && (
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+            <button
+              onClick={() => {
+                setShowSearchArea(false);
+                setMapHasMoved(false);
+                // Trigger immediate search
+                if (mapInstanceRef.current && onMapBoundsChange) {
+                  const map = mapInstanceRef.current;
+                  const bounds = map.getBounds();
+                  const center = map.getCenter();
+                  const zoom = map.getZoom();
+                  
+                  const mapBounds: MapBounds = {
+                    north: bounds.getNorth(),
+                    south: bounds.getSouth(),
+                    east: bounds.getEast(),
+                    west: bounds.getWest(),
+                    center: { lat: center.lat, lng: center.lng },
+                    zoom: zoom
+                  };
+                  
+                  onMapBoundsChange(mapBounds);
+                }
+              }}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 animate-slide-down"
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span>Search This Area</span>
+              </div>
+            </button>
+          </div>
+        )}
         
         {/* Loading overlay */}
         {isLoading && (
