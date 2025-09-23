@@ -147,18 +147,46 @@ const PropertyMapGrid = ({
     );
   }, [properties]);
 
-  // Calculate center point for all properties
-  const mapCenter = useMemo(() => {
+  // Calculate center point and zoom for all properties
+  const mapConfig = useMemo(() => {
     if (propertiesWithCoords.length === 0) {
-      return [50.8503, 4.3517]; // Brussels, Belgium as default
+      return {
+        center: [-29.0852, 26.1596], // Center of South Africa
+        zoom: 6 // Country-wide view for South Africa
+      };
     }
 
-    const avgLat = propertiesWithCoords.reduce((sum, prop) => 
-      sum + (prop.coordinates?.lat || 0), 0) / propertiesWithCoords.length;
-    const avgLng = propertiesWithCoords.reduce((sum, prop) => 
-      sum + (prop.coordinates?.lng || 0), 0) / propertiesWithCoords.length;
-
-    return [avgLat, avgLng];
+    // Calculate bounds of all properties
+    const latitudes = propertiesWithCoords.map(prop => prop.coordinates?.lat || 0);
+    const longitudes = propertiesWithCoords.map(prop => prop.coordinates?.lng || 0);
+    
+    const minLat = Math.min(...latitudes);
+    const maxLat = Math.max(...latitudes);
+    const minLng = Math.min(...longitudes);
+    const maxLng = Math.max(...longitudes);
+    
+    const centerLat = (minLat + maxLat) / 2;
+    const centerLng = (minLng + maxLng) / 2;
+    
+    // Calculate zoom based on the span of properties
+    const latSpan = maxLat - minLat;
+    const lngSpan = maxLng - minLng;
+    const maxSpan = Math.max(latSpan, lngSpan);
+    
+    // Zoom levels: 
+    // 0-1 degrees: zoom 10 (city level)
+    // 1-3 degrees: zoom 8 (regional level) 
+    // 3-8 degrees: zoom 6 (province level)
+    // 8+ degrees: zoom 5 (country level)
+    let zoom = 10;
+    if (maxSpan > 1) zoom = 8;
+    if (maxSpan > 3) zoom = 6;
+    if (maxSpan > 8) zoom = 5;
+    
+    return {
+      center: [centerLat, centerLng],
+      zoom: zoom
+    };
   }, [propertiesWithCoords]);
 
   // Handle property selection
@@ -193,8 +221,8 @@ const PropertyMapGrid = ({
   return (
     <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-200">
       <MapContainer
-        center={mapCenter as [number, number]}
-        zoom={13}
+        center={mapConfig.center as [number, number]}
+        zoom={mapConfig.zoom}
         style={{ height: '70vh', minHeight: '600px', width: '100%' }}
         className={`${className} rounded-xl`}
         ref={mapRef}
