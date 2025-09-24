@@ -2,7 +2,7 @@
 
 import { Suspense, lazy } from 'react';
 import { Property } from '@/types';
-import { MapBounds } from './PropertyMapGrid';
+import type { MapBounds } from './PropertyMapGrid_fixed';
 
 // Lazy load the map component
 const PropertyMapGrid = lazy(() => import('./PropertyMapGrid_fixed'));

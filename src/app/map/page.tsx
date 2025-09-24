@@ -11,7 +11,7 @@ import { SearchFilters, Property, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, formatListingType } from '@/lib/utils';
 import { filterPropertiesByBounds } from '@/lib/mapUtils';
-import type { MapBounds } from '@/components/map/PropertyMapGrid';
+import type { MapBounds } from '@/components/map/PropertyMapGrid_fixed';
 import { useTranslation } from '@/i18n/translation';
 
 export default function MapViewPage() {
@@ -58,6 +58,11 @@ export default function MapViewPage() {
     setSelectedProperty(property);
   };
 
+  const handleClearMapSearch = () => {
+    setMapSearchActive(false);
+    setSearchResults(currentFilters ? filterProperties(sampleProperties, currentFilters) : sampleProperties);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* DNS Prefetch for external resources */}
@@ -74,9 +79,27 @@ export default function MapViewPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Property Map View</h1>
-              <p className="text-gray-600 mt-2">
-                Explore {searchResults.length} properties on the interactive map
-              </p>
+              <div className="flex items-center gap-3 mt-2">
+                <p className="text-gray-600">
+                  Explore {searchResults.length} properties on the interactive map
+                </p>
+                {mapSearchActive && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 713 16.382V5.618a1 1 0 811.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m-6 3l6-3" />
+                      </svg>
+                      Map Area Search Active
+                    </div>
+                    <button
+                      onClick={handleClearMapSearch}
+                      className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full transition-colors"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -99,154 +122,57 @@ export default function MapViewPage() {
                 {isSidebarOpen ? 'Hide Filters' : 'Show Filters'}
               </button>
             </div>
-            
-            <div className={`space-y-4 lg:space-y-6 lg:sticky lg:top-4 max-h-screen lg:overflow-y-auto ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
-              {/* Search Form */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
-                  <h2 className="text-lg font-bold text-white flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                    </svg>
-                    Search Properties
-                  </h2>
-                </div>
-                <div className="p-4">
-                  <SearchErrorBoundary>
-                    <PropertySearch onSearch={handleSearch} variant="compact" />
-                  </SearchErrorBoundary>
-                </div>
-              </div>
-              
-              {/* Results Summary */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-800 flex items-center">
-                    <svg className="w-4 h-4 mr-2 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    Search Results
-                  </h3>
-                </div>
-                <div className="p-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                      <span className="text-sm font-medium text-gray-700">Total Properties</span>
-                      <span className="text-lg font-bold text-gray-900">{searchResults.length}</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
-                        <div className="text-lg font-bold text-green-700">
-                          {searchResults.filter(p => p.listingType === ListingType.FOR_SALE).length}
-                        </div>
-                        <div className="text-xs text-green-600 font-medium">{t('property.for_sale')}</div>
-                      </div>
-                      <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <div className="text-lg font-bold text-blue-700">
-                          {searchResults.filter(p => p.listingType === ListingType.TO_RENT).length}
-                        </div>
-                        <div className="text-xs text-blue-600 font-medium">{t('property.to_rent')}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              {/* Selected Property Info */}
-              {selectedProperty && (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                  <div className="bg-green-500 px-4 py-3">
-                    <h3 className="text-sm font-bold text-white flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                      </svg>
-                      Selected Property
-                    </h3>
-                  </div>
-                  <div className="p-4">
-                    <div className="space-y-4">
-                      {/* Property Image */}
-                      <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
-                        <Image 
-                          src={selectedProperty.images[0]?.url || '/placeholder-property.jpg'} 
-                          alt={selectedProperty.title}
-                          fill
-                          className="object-cover"
-                          sizes="320px"
-                        />
-                      </div>
-                      
-                      {/* Property Details */}
-                      <div>
-                        <h4 className="font-bold text-gray-900 text-sm mb-2 line-clamp-2">
-                          {selectedProperty.title}
-                        </h4>
-                        <p className="text-xs text-gray-600 mb-3 flex items-center">
-                          <svg className="w-3 h-3 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                          </svg>
-                          {selectedProperty.address.suburb}, {selectedProperty.address.city}
-                        </p>
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-lg font-bold text-green-600">
-                            {selectedProperty.currency === 'ZAR' ? 'R' : selectedProperty.currency}
-                            {selectedProperty.price.toLocaleString()}
-                          </span>
-                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {formatListingType(selectedProperty.listingType, t)}
-                          </span>
-                        </div>
-                        
-                        {/* Property Stats */}
-                        <div className="grid grid-cols-3 gap-2 mb-4">
-                          <div className="text-center p-2 bg-gray-50 rounded">
-                            <div className="text-sm font-bold text-gray-900">{selectedProperty.bedrooms}</div>
-                            <div className="text-xs text-gray-600">{t('property.beds')}</div>
-                          </div>
-                          <div className="text-center p-2 bg-gray-50 rounded">
-                            <div className="text-sm font-bold text-gray-900">{selectedProperty.bathrooms}</div>
-                            <div className="text-xs text-gray-600">{t('property.baths')}</div>
-                          </div>
-                          <div className="text-center p-2 bg-gray-50 rounded">
-                            <div className="text-sm font-bold text-gray-900">{selectedProperty.squareMeters}</div>
-                            <div className="text-xs text-gray-600">m²</div>
-                          </div>
-                        </div>
-                        
-                        <a 
-                          href={`/properties/${selectedProperty.id}`}
-                          className="block w-full text-center bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition-colors duration-200 text-sm"
-                        >
-                          View Full Details
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+            {/* Search Panel */}
+            <div className={`bg-white rounded-xl shadow-lg border border-gray-200 ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
+              <SearchErrorBoundary>
+                <PropertySearch onSearch={handleSearch} />
+              </SearchErrorBoundary>
             </div>
           </div>
 
           {/* Map Area */}
           <div className="lg:col-span-4 order-1 lg:order-2">
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-              <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-                    <svg className="w-6 h-6 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                    </svg>
-                    Interactive Properties Map
-                  </h2>
-                  <div className="text-sm text-gray-600 bg-white px-3 py-2 rounded-lg shadow-sm">
-                    💡 Click markers for details
+            {/* Stats Bar */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600">
+                    {searchResults.length}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">
+                    Total Properties
                   </div>
                 </div>
-                <p className="text-gray-600 mt-2">
-                  Explore properties visually on the map below
-                </p>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600">
+                    {searchResults.filter(p => p.listingType === ListingType.FOR_SALE).length}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">
+                    For Sale
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-orange-600">
+                    {searchResults.filter(p => p.listingType === ListingType.TO_RENT).length}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">
+                    To Rent
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600">
+                    {loading ? '...' : searchResults.length > 0 ? '🇿🇦' : '0'}
+                  </div>
+                  <div className="text-sm text-gray-600 font-medium">
+                    South Africa
+                  </div>
+                </div>
               </div>
-              
+            </div>
+
+            {/* Map */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
               <MapErrorBoundary>
                 <LazyPropertyMapGrid 
                   properties={searchResults}
@@ -258,37 +184,75 @@ export default function MapViewPage() {
               </MapErrorBoundary>
             </div>
 
-            {/* Map Instructions */}
-            <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-bold text-blue-900 mb-3 text-lg">How to use the interactive map</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-800">
-                    <div className="flex items-center space-x-2">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                      <span>Click and drag to navigate</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                      <span>Scroll to zoom in/out</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                      <span>Click colored markers for details</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                      <span>Use filters to refine search</span>
-                    </div>
+            {/* Selected Property Sidebar */}
+            {selectedProperty && (
+              <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl border-l border-gray-200 z-50 transform transition-transform duration-300">
+                <div className="p-6 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900">Property Details</h3>
+                    <button
+                      onClick={() => setSelectedProperty(null)}
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
+                
+                <div className="p-6 overflow-y-auto">
+                  <PropertyErrorBoundary>
+                    <div className="space-y-4">
+                      <Image 
+                        src={selectedProperty.images[0]?.url || '/placeholder-property.jpg'} 
+                        alt={selectedProperty.images[0]?.alt || selectedProperty.title}
+                        width={400}
+                        height={250}
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                      
+                      <div>
+                        <h4 className="text-xl font-bold text-gray-900 mb-2">
+                          {selectedProperty.title}
+                        </h4>
+                        <p className="text-gray-600 text-sm mb-3">
+                          {selectedProperty.address.street}, {selectedProperty.address.suburb}
+                        </p>
+                        
+                        <div className="flex items-center gap-4 mb-4">
+                          <span className="text-2xl font-bold text-green-600">
+                            {selectedProperty.currency === 'ZAR' ? 'R' : selectedProperty.currency} {selectedProperty.price.toLocaleString()}
+                          </span>
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                            {formatListingType(selectedProperty.listingType, t)}
+                          </span>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-4 mb-4">
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <div className="font-semibold text-gray-900">{selectedProperty.bedrooms}</div>
+                            <div className="text-sm text-gray-600">Bedrooms</div>
+                          </div>
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <div className="font-semibold text-gray-900">{selectedProperty.bathrooms}</div>
+                            <div className="text-sm text-gray-600">Bathrooms</div>
+                          </div>
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <div className="font-semibold text-gray-900">{selectedProperty.squareMeters}</div>
+                            <div className="text-sm text-gray-600">m²</div>
+                          </div>
+                        </div>
+                        
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          {selectedProperty.description}
+                        </p>
+                      </div>
+                    </div>
+                  </PropertyErrorBoundary>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

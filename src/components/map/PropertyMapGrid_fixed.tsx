@@ -291,17 +291,19 @@ const PropertyMapGrid = ({
       {/* Search This Area Button */}
       {showSearchButton && showSearchArea && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000]">
-          <button
-            onClick={handleSearchThisArea}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 animate-slide-down"
-          >
-            <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <span>Search This Area</span>
-            </div>
-          </button>
+          <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-1 border border-gray-200">
+            <button
+              onClick={handleSearchThisArea}
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-md shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 animate-slide-down"
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span>Search This Area</span>
+              </div>
+            </button>
+          </div>
         </div>
       )}
       
