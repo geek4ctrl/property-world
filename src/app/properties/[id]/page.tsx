@@ -13,6 +13,7 @@ import { formatPrice, formatPropertyType } from "@/lib/utils";
 import { ListingType } from "@/types";
 import { useTranslation } from "@/i18n/translation";
 import { generateSmartAvatar } from "@/lib/avatarUtils";
+import ImageGallery from "@/components/property/ImageGallery";
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -22,7 +23,6 @@ export default function PropertyDetailsPage() {
   // Find the property by ID
   const property = sampleProperties.find((p) => p.id === propertyId);
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
 
@@ -80,104 +80,14 @@ export default function PropertyDetailsPage() {
           {/* Left Column - Images and Details */}
           <div className="lg:col-span-2">
             <PropertyErrorBoundary>
-              {/* Image Gallery */}
-              <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-              {/* Main Image */}
-              <div className="aspect-[16/10] relative">
-                <Image
-                  src={
-                    allImages[selectedImageIndex]?.url ||
-                    "/placeholder-property.jpg"
-                  }
-                  alt={allImages[selectedImageIndex]?.alt || property.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 66vw"
+              {/* Enhanced Image Gallery */}
+              <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 p-6">
+                <ImageGallery 
+                  images={property.images}
+                  propertyTitle={property.title}
+                  className="w-full"
                 />
-
-                {/* Image Counter */}
-                <div className="absolute top-4 right-4 bg-black bg-opacity-75 text-white px-3 py-1 rounded-lg text-sm">
-                  {selectedImageIndex + 1} / {allImages.length}
-                </div>
-
-                {/* Navigation Arrows */}
-                {allImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={() =>
-                        setSelectedImageIndex((prev) =>
-                          prev === 0 ? allImages.length - 1 : prev - 1
-                        )
-                      }
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full transition-all"
-                    >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() =>
-                        setSelectedImageIndex((prev) =>
-                          prev === allImages.length - 1 ? 0 : prev + 1
-                        )
-                      }
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full transition-all"
-                    >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                  </>
-                )}
               </div>
-
-              {/* Thumbnail Strip */}
-              {allImages.length > 1 && (
-                <div className="p-4 bg-gray-50">
-                  <div className="flex space-x-2 overflow-x-auto">
-                    {allImages.map((image, index) => (
-                      <button
-                        key={image.id}
-                        onClick={() => setSelectedImageIndex(index)}
-                        className={`flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                          selectedImageIndex === index
-                            ? "border-primary-600"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        <Image
-                          src={image.url}
-                          alt={image.alt}
-                          width={80}
-                          height={64}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Property Details */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8">

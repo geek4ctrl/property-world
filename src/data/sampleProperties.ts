@@ -36,6 +36,34 @@ export const sampleProperties: Property[] = [
         alt: 'Kitchen and living area',
         isPrimary: false,
         order: 2
+      },
+      {
+        id: 'img3',
+        url: '/apartment1.svg',
+        alt: 'Master bedroom',
+        isPrimary: false,
+        order: 3
+      },
+      {
+        id: 'img4',
+        url: '/office1.svg',
+        alt: 'Bathroom',
+        isPrimary: false,
+        order: 4
+      },
+      {
+        id: 'img5',
+        url: '/townhouse1.svg',
+        alt: 'Swimming pool area',
+        isPrimary: false,
+        order: 5
+      },
+      {
+        id: 'img6',
+        url: '/student1.svg',
+        alt: 'Garden view',
+        isPrimary: false,
+        order: 6
       }
     ],
     features: ['Swimming Pool', 'Garden', 'Security System', 'Fiber Internet', 'Air Conditioning'],
