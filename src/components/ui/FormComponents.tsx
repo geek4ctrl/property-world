@@ -128,8 +128,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={`relative ${containerClassName}`}>
         {label && (
-          <label className={`form-label block text-sm font-medium mb-1 transition-colors ${
-            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-700'
+          <label className={`form-label block text-sm font-medium mb-2 transition-colors ${
+            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-800'
           }`}>
             {label}
           </label>
@@ -204,6 +204,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       form-input w-full px-3 py-2 border-2 rounded-lg
       focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
       hover:border-gray-400 appearance-none bg-white text-gray-900
+      overflow-hidden text-ellipsis whitespace-nowrap
       ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-400'}
       ${className}
     `.trim().replace(/\s+/g, ' ');

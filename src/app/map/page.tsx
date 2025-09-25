@@ -132,7 +132,7 @@ export default function MapViewPage() {
             {/* Search Panel */}
             <div className={`bg-white rounded-xl shadow-lg border border-gray-200 ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
               <SearchErrorBoundary>
-                <PropertySearch onSearch={handleSearch} />
+                <PropertySearch onSearch={handleSearch} variant="vertical" />
               </SearchErrorBoundary>
             </div>
           </div>

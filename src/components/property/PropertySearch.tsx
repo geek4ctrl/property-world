@@ -8,7 +8,7 @@ import { Button, Input, Select } from '@/components/ui/FormComponents';
 interface PropertySearchProps {
   readonly onSearch: (filters: SearchFilters) => void;
   readonly className?: string;
-  readonly variant?: 'hero' | 'compact';
+  readonly variant?: 'hero' | 'compact' | 'vertical';
   readonly loading?: boolean;
 }
 
@@ -86,12 +86,33 @@ export default function PropertySearch({
   ];
 
   const isCompact = variant === 'compact';
+  const isVertical = variant === 'vertical';
+  const isHero = variant === 'hero';
+
+  // Dynamic container classes based on variant
+  const getContainerClasses = () => {
+    if (isVertical) return 'w-full max-w-3xl mx-auto';
+    if (isHero) return 'w-full max-w-5xl mx-auto';
+    return 'w-full max-w-4xl mx-auto';
+  };
+
+  const getFormClasses = () => {
+    if (isCompact) return 'w-full space-y-4';
+    if (isVertical) return 'w-full p-6';
+    return 'bg-white rounded-lg shadow-lg p-8 border w-full';
+  };
+
+  const getFieldsLayout = () => {
+    if (isVertical) return 'space-y-5';
+    if (isCompact) return 'space-y-4';
+    return 'grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+  };
 
   return (
-    <div className={`${className}`}>
-      <form onSubmit={handleSubmit} className={`${isCompact ? '' : 'bg-white rounded-lg shadow-lg p-6 border'}`}>
+    <div className={`${getContainerClasses()} ${className}`}>
+      <form onSubmit={handleSubmit} className={getFormClasses()}>
         {/* Listing Type Tabs */}
-        <div className={`flex mb-4 ${isCompact ? 'bg-gray-50' : 'bg-gray-100'} rounded-lg p-1`}>
+        <div className={`flex justify-center ${isVertical ? 'mb-6' : 'mb-4'} ${isCompact ? 'bg-gray-50' : 'bg-gray-100'} rounded-lg p-1 max-w-md mx-auto`}>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.FOR_SALE }))}
@@ -109,7 +130,7 @@ export default function PropertySearch({
         </div>
 
         {/* Search Fields */}
-        <div className={`grid gap-3 ${isCompact ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
+        <div className={getFieldsLayout()}>
           {/* Location */}
           <Input
             label={t('common.location')}
@@ -128,6 +149,7 @@ export default function PropertySearch({
           <Select
             label={t('common.property_type')}
             value={filters.propertyType?.[0] || ''}
+            placeholder={t('search.any_type')}
             onChange={(e) => setFilters(prev => ({ 
               ...prev, 
               propertyType: e.target.value ? [e.target.value as PropertyType] : []
@@ -145,6 +167,7 @@ export default function PropertySearch({
           {/* Price Range */}
           <Select
             label={t('common.price')}
+            placeholder={t('search.any_price')}
             onChange={(e) => {
               const selectedRange = priceRanges[parseInt(e.target.value)];
               setFilters(prev => ({
@@ -163,6 +186,7 @@ export default function PropertySearch({
           <Select
             label={t('common.bedrooms')}
             value={filters.bedrooms?.toString() || ''}
+            placeholder={t('search.any')}
             onChange={(e) => setFilters(prev => ({ 
               ...prev, 
               bedrooms: e.target.value ? parseInt(e.target.value) : undefined
@@ -175,10 +199,10 @@ export default function PropertySearch({
         </div>
 
         {/* Search Button */}
-        <div className={isCompact ? 'mt-4' : 'mt-6'}>
+        <div className={`${isCompact ? 'mt-4' : isVertical ? 'mt-8' : 'mt-6'} flex justify-center`}>
           <Button
             type="submit"
-            className="w-full"
+            className={`${isCompact ? 'w-full' : isVertical ? 'w-full max-w-md' : 'w-full sm:w-auto px-8'}`}
             size={isCompact ? 'md' : 'lg'}
             leftIcon={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

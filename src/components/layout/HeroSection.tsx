@@ -50,8 +50,8 @@ export default function HeroSection({ onSearch, loading = false }: HeroSectionPr
         </div>
 
         {/* Search Form */}
-        <div className="max-w-4xl mx-auto">
-          <PropertySearch onSearch={onSearch} loading={loading} />
+        <div className="max-w-5xl mx-auto px-4">
+          <PropertySearch onSearch={onSearch} loading={loading} variant="hero" />
         </div>
       </div>
     </section>

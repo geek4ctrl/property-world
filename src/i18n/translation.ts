@@ -57,7 +57,7 @@ export function useTranslation() {
     return unsubscribe;
   }, []);
 
-  const t = (key: string, params?: Record<string, string | number>): string => {
+    const t = (key: string, params?: Record<string, string | number>): string => {
     const keys = key.split('.');
     
     // Try to get value in current locale
@@ -68,16 +68,15 @@ export function useTranslation() {
       value = getNestedValue(messages['en'], keys);
     }
     
-    // Return key if still not found
-    if (typeof value !== 'string') {
+    // Return key if still not found or if value is corrupted/too short
+    if (typeof value !== 'string' || value.length < 2) {
+      console.warn(`Translation missing or corrupted for key: ${key}, locale: ${locale}`);
       return key;
     }
 
     // Replace parameters if provided
     return params ? replaceParameters(value, params) : value;
-  };
-
-  const changeLanguage = (newLocale: string) => {
+  };  const changeLanguage = (newLocale: string) => {
     globalLocale = newLocale;
     if (typeof window !== 'undefined') {
       localStorage.setItem('locale', newLocale);
