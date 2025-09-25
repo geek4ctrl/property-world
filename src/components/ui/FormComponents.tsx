@@ -116,10 +116,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputClasses = `
       w-full px-3 py-2 border-2 rounded-lg transition-all duration-200 ease-in-out
-      bg-white text-gray-900 placeholder-gray-600
+      bg-white text-gray-900 placeholder-gray-500
       focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
-      hover:border-gray-400
-      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-400'}
+      hover:border-gray-500
+      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-500'}
       ${leftIcon ? 'pl-10' : ''}
       ${rightIcon ? 'pr-10' : ''}
       ${className}
@@ -129,7 +129,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={`relative ${containerClassName}`}>
         {label && (
           <label className={`form-label block text-sm font-medium mb-2 transition-colors ${
-            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-800'
+            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-900'
           }`}>
             {label}
           </label>
@@ -203,9 +203,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectClasses = `
       form-input w-full px-3 py-2 border-2 rounded-lg
       focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
-      hover:border-gray-400 appearance-none bg-white text-gray-900
+      hover:border-gray-500 appearance-none bg-white text-gray-900
       overflow-hidden text-ellipsis whitespace-nowrap
-      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-400'}
+      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-500'}
       ${className}
     `.trim().replace(/\s+/g, ' ');
 
@@ -213,7 +213,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className={`relative ${containerClassName}`}>
         {label && (
           <label className={`form-label block text-sm font-medium mb-1 transition-colors ${
-            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-700'
+            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-900'
           }`}>
             {label}
           </label>
@@ -283,8 +283,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const textareaClasses = `
       form-input w-full px-3 py-2 border-2 rounded-lg
       focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
-      hover:border-gray-400 resize-vertical min-h-[80px] bg-white text-gray-900 placeholder-gray-600
-      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-400'}
+      hover:border-gray-500 resize-vertical min-h-[80px] bg-white text-gray-900 placeholder-gray-500
+      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-500'}
       ${className}
     `.trim().replace(/\s+/g, ' ');
 
@@ -292,7 +292,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <div className={`relative ${containerClassName}`}>
         {label && (
           <label className={`form-label block text-sm font-medium mb-1 transition-colors ${
-            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-700'
+            error ? 'text-red-700' : isFocused ? 'text-blue-700' : 'text-gray-900'
           }`}>
             {label}
           </label>
@@ -339,9 +339,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               ref={ref}
               type="checkbox"
               className={`
-                h-5 w-5 text-blue-700 border-2 border-gray-500 rounded
+                h-5 w-5 text-blue-700 border-2 border-gray-600 rounded
                 focus:ring-blue-600 focus:ring-2 focus:ring-offset-2 focus:outline-none
-                hover:border-gray-600 transition-all-normal hover-scale bg-white
+                hover:border-gray-700 transition-all-normal hover-scale bg-white
                 ${error ? 'border-red-600 text-red-700' : ''}
                 ${className}
               `.trim().replace(/\s+/g, ' ')}
@@ -352,7 +352,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             <div className="ml-3 text-sm">
               {label && (
                 <label className={`font-medium transition-colors ${
-                  error ? 'text-red-700' : 'text-gray-700'
+                  error ? 'text-red-700' : 'text-gray-900'
                 }`}>
                   {label}
                 </label>

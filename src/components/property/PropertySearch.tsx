@@ -23,13 +23,13 @@ const getTabButtonClasses = (isActive: boolean, isCompact: boolean) => {
 };
 
 const getInputClasses = (isCompact: boolean) => {
-  const baseClasses = 'w-full px-3 border-2 border-gray-400 rounded-md bg-white text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-500';
+  const baseClasses = 'w-full px-3 border-2 border-gray-500 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-600';
   const sizeClasses = isCompact ? 'py-2 text-sm' : 'py-2';
   return `${baseClasses} ${sizeClasses}`;
 };
 
 const getLabelClasses = (isCompact: boolean) => {
-  const baseClasses = 'block font-medium text-gray-700 mb-1';
+  const baseClasses = 'block font-medium text-gray-900 mb-1';
   const sizeClasses = isCompact ? 'text-xs' : 'text-sm';
   return `${baseClasses} ${sizeClasses}`;
 };
