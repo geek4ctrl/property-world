@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 interface MortgageCalculatorModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  readonly isOpen: boolean;
+  readonly onClose: () => void;
 }
 
-export default function MortgageCalculatorModal({ isOpen, onClose }: MortgageCalculatorModalProps) {
+export default function MortgageCalculatorModal({ isOpen, onClose }: Readonly<MortgageCalculatorModalProps>) {
   const [propertyPrice, setPropertyPrice] = useState(2000000);
   const [deposit, setDeposit] = useState(10);
   const [interestRate, setInterestRate] = useState(11.5);

@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { Button, Input, Textarea, Select, Checkbox } from '@/components/ui/FormComponents';
 
 interface ContactFormProps {
-  propertyId?: string;
-  propertyTitle?: string;
-  onSubmit?: (data: ContactFormData) => void;
-  className?: string;
+  readonly propertyId?: string;
+  readonly propertyTitle?: string;
+  readonly onSubmit?: (data: ContactFormData) => void;
+  readonly className?: string;
 }
 
 interface ContactFormData {
@@ -229,7 +229,7 @@ export default function ContactForm({
           <Checkbox
             checked={formData.agreeToTerms}
             onChange={(e) => handleInputChange('agreeToTerms', e.target.checked)}
-            error={errors.agreeToTerms as string}
+            error={errors.agreeToTerms ? String(errors.agreeToTerms) : undefined}
             label="I agree to the Terms and Conditions and Privacy Policy *"
             description="Required to process your inquiry"
           />

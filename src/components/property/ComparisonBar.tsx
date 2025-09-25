@@ -5,11 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useComparison } from '@/contexts/ComparisonContext';
 import { formatPrice } from '@/lib/utils';
-import { useTranslation } from '@/i18n/translation';
 
 export default function ComparisonBar() {
   const { comparedProperties, removeFromComparison, clearComparison, comparisonCount } = useComparison();
-  const { t } = useTranslation();
 
   if (comparisonCount === 0) {
     return null;

@@ -63,6 +63,12 @@ export default function MapViewPage() {
     setSearchResults(currentFilters ? filterProperties(sampleProperties, currentFilters) : sampleProperties);
   };
 
+  // Extract nested ternary for better readability
+  const getSouthAfricaDisplay = () => {
+    if (loading) return '...';
+    return searchResults.length > 0 ? '🇿🇦' : '0';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* DNS Prefetch for external resources */}
@@ -162,7 +168,7 @@ export default function MapViewPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-purple-600">
-                    {loading ? '...' : searchResults.length > 0 ? '🇿🇦' : '0'}
+                    {getSouthAfricaDisplay()}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
                     South Africa

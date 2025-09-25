@@ -7,12 +7,10 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useComparison } from '@/contexts/ComparisonContext';
 import { formatPrice } from '@/lib/utils';
-import { useTranslation } from '@/i18n/translation';
 import { PropertyErrorBoundary } from '@/components/ui/SpecializedErrorBoundaries';
 
 export default function ComparePage() {
   const { comparedProperties, removeFromComparison, clearComparison, comparisonCount } = useComparison();
-  const { t } = useTranslation();
   const [selectedImageIndexes, setSelectedImageIndexes] = useState<Record<string, number>>({});
 
   const handleImageChange = (propertyId: string, index: number) => {
@@ -271,8 +269,8 @@ export default function ComparePage() {
                     {comparedProperties.map((property) => (
                       <td key={property.id} className="px-6 py-4">
                         <div className="space-y-1">
-                          {property.features.map((feature, index) => (
-                            <div key={index} className="flex items-center">
+                          {property.features.map((feature) => (
+                            <div key={feature} className="flex items-center">
                               <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>

@@ -115,7 +115,7 @@ export default function ErrorOverlay() {
                 <h4 className="font-medium text-gray-800 mb-2 text-sm">Recent Errors:</h4>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {errorStats.recent.slice(-3).map((error: any, index: number) => (
-                    <div key={index} className="text-xs bg-red-50 p-2 rounded border-l-2 border-red-400">
+                    <div key={`error-${error.timestamp}-${index}`} className="text-xs bg-red-50 p-2 rounded border-l-2 border-red-400">
                       <div className="font-bold text-red-700">{error.code || 'Unknown'}</div>
                       <div className="text-red-600 truncate">{error.message}</div>
                       <div className="text-gray-500 mt-1">

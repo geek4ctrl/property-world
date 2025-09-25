@@ -64,19 +64,27 @@ export default function PropertyCard({ property, className = '', variant = 'defa
 
   const isInCompare = isInComparison(property.id);
 
+  const getCompareButtonClass = () => {
+    if (isInCompare) {
+      return 'text-blue-600 bg-blue-50/90';
+    }
+    if (maxReached) {
+      return 'text-gray-400 bg-gray-50/90 cursor-not-allowed';
+    }
+    return 'text-gray-600 hover:bg-white hover:text-blue-600';
+  };
+
+  const getImageNavigation = (direction: 'prev' | 'next') => {
+    if (direction === 'next') {
+      return currentImageIndex === property.images.length - 1 ? 0 : currentImageIndex + 1;
+    }
+    return currentImageIndex === 0 ? property.images.length - 1 : currentImageIndex - 1;
+  };
+
   const handleImageNavigation = (e: React.MouseEvent, direction: 'prev' | 'next') => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (direction === 'next') {
-      setCurrentImageIndex((prev) => 
-        prev === property.images.length - 1 ? 0 : prev + 1
-      );
-    } else {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? property.images.length - 1 : prev - 1
-      );
-    }
+    setCurrentImageIndex(getImageNavigation(direction));
   };
 
   const currentImage = property.images[currentImageIndex] || property.images[0];
@@ -84,7 +92,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
   const isFeatured = variant === 'featured';
 
   return (
-    <div 
+    <article 
       className={`group bg-white rounded-xl overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
         isFeatured 
           ? 'shadow-xl border-2 border-yellow-200' 
@@ -150,13 +158,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             <button 
               onClick={handleCompareClick}
               disabled={maxReached && !isInCompare}
-              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${
-                isInCompare 
-                  ? 'text-blue-600 bg-blue-50/90' 
-                  : maxReached 
-                    ? 'text-gray-400 bg-gray-50/90 cursor-not-allowed' 
-                    : 'text-gray-600 hover:bg-white hover:text-blue-600'
-              }`}
+              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${getCompareButtonClass()}`}
               title={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
             >
               <svg 
@@ -366,6 +368,6 @@ export default function PropertyCard({ property, className = '', variant = 'defa
           </div>
         </div>
       </Link>
-    </div>
+    </article>
   );
 }

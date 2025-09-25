@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface LoginFormProps {
-  onSuccess?: () => void;
-  redirectTo?: string;
+  readonly onSuccess?: () => void;
+  readonly redirectTo?: string;
 }
 
-export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: LoginFormProps) {
+export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Readonly<LoginFormProps>) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,15 +28,13 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Logi
       
       if (signInError) {
         setError(signInError.message);
+      } else if (onSuccess) {
+        onSuccess();
       } else {
-        if (onSuccess) {
-          onSuccess();
-        } else {
-          router.push(redirectTo);
-        }
+        router.push(redirectTo);
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

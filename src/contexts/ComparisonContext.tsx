@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
 import { Property } from '@/types';
 
 interface ComparisonContextType {
@@ -18,7 +18,7 @@ const ComparisonContext = createContext<ComparisonContextType | undefined>(undef
 const MAX_COMPARISON_PROPERTIES = 3;
 
 interface ComparisonProviderProps {
-  children: ReactNode;
+  readonly children: ReactNode;
 }
 
 export function ComparisonProvider({ children }: ComparisonProviderProps) {
@@ -52,7 +52,7 @@ export function ComparisonProvider({ children }: ComparisonProviderProps) {
   const maxReached = comparedProperties.length >= MAX_COMPARISON_PROPERTIES;
   const comparisonCount = comparedProperties.length;
 
-  const value: ComparisonContextType = {
+  const value: ComparisonContextType = useMemo(() => ({
     comparedProperties,
     addToComparison,
     removeFromComparison,
@@ -60,7 +60,7 @@ export function ComparisonProvider({ children }: ComparisonProviderProps) {
     isInComparison,
     maxReached,
     comparisonCount,
-  };
+  }), [comparedProperties, addToComparison, removeFromComparison, clearComparison, isInComparison, maxReached, comparisonCount]);
 
   return (
     <ComparisonContext.Provider value={value}>

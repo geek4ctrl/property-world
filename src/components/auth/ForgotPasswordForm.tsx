@@ -24,8 +24,8 @@ export default function ForgotPasswordForm() {
       } else {
         setSuccess(true);
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

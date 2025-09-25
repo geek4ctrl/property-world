@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface RegisterFormProps {
-  onSuccess?: () => void;
-  redirectTo?: string;
+  readonly onSuccess?: () => void;
+  readonly redirectTo?: string;
 }
 
-export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: RegisterFormProps) {
+export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: Readonly<RegisterFormProps>) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -58,8 +58,8 @@ export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: R
           }
         }, 2000);
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

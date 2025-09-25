@@ -1,8 +1,8 @@
 'use client';
 
+import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface ProtectedRouteProps {  
   readonly children: React.ReactNode;
@@ -15,16 +15,6 @@ export default function ProtectedRoute({
   redirectTo = '/auth/login',
   requireAuth = true 
 }: Readonly<ProtectedRouteProps>) {
-  children: React.ReactNode;
-  redirectTo?: string;
-  requireAuth?: boolean;
-}
-
-export default function ProtectedRoute({ 
-  children, 
-  redirectTo = '/auth/login',
-  requireAuth = true 
-}: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
 

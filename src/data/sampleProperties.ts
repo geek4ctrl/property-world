@@ -286,7 +286,7 @@ export const sampleProperties: Property[] = [
 ];
 
 export const featuredProperties = sampleProperties.filter(p => p.isFeatured);
-export const recentProperties = sampleProperties
+export const recentProperties = [...sampleProperties]
   .sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime())
   .slice(0, 3);
 
