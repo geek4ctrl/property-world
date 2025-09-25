@@ -14,6 +14,21 @@ export interface User {
   isActive: boolean;
 }
 
+// Supabase-compatible user profile interface
+export interface UserProfile {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone?: string | null;
+  avatar_url?: string | null;
+  role: string;
+  preferences: UserPreferences;
+  created_at: string;
+  updated_at: string;
+  is_active: boolean;
+}
+
 export interface UserPreferences {
   emailNotifications: boolean;
   smsNotifications: boolean;
