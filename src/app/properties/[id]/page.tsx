@@ -12,6 +12,7 @@ import { sampleProperties } from "@/data/sampleProperties";
 import { formatPrice, formatPropertyType } from "@/lib/utils";
 import { ListingType } from "@/types";
 import { useTranslation } from "@/i18n/translation";
+import { generateSmartAvatar } from "@/lib/avatarUtils";
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -23,6 +24,7 @@ export default function PropertyDetailsPage() {
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
 
   if (!property) {
     return (
@@ -314,13 +316,34 @@ export default function PropertyDetailsPage() {
               </h2>
 
               <div className="flex items-center space-x-4 mb-4">
-                <Image
-                  src={property.agent.profileImage || '/placeholder-property.jpg'}
-                  alt={property.agent.name}
-                  width={64}
-                  height={64}
-                  className="rounded-full object-cover"
-                />
+                {property.agent.profileImage && !avatarError ? (
+                  <Image
+                    src={property.agent.profileImage}
+                    alt={property.agent.name}
+                    width={64}
+                    height={64}
+                    className="rounded-full object-cover"
+                    onError={() => setAvatarError(true)}
+                  />
+                ) : (
+                  <Image
+                    src={generateSmartAvatar(property.agent.name)}
+                    alt={property.agent.name}
+                    width={64}
+                    height={64}
+                    className="rounded-full object-cover"
+                    onError={(e) => {
+                      // Final fallback to initials with styled background
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.parentElement!.innerHTML = `
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-lg font-bold">
+                          ${property.agent.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                      `;
+                    }}
+                  />
+                )}
                 <div>
                   <h3 className="font-semibold text-gray-900">
                     {property.agent.name}

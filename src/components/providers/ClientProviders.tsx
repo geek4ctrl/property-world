@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { ComparisonProvider } from '@/contexts/ComparisonContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 interface ClientProvidersProps {
   readonly children: ReactNode;
@@ -9,8 +10,10 @@ interface ClientProvidersProps {
 
 export default function ClientProviders({ children }: ClientProvidersProps) {
   return (
-    <ComparisonProvider>
-      {children}
-    </ComparisonProvider>
+    <AuthProvider>
+      <ComparisonProvider>
+        {children}
+      </ComparisonProvider>
+    </AuthProvider>
   );
 }

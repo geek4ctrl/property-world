@@ -45,7 +45,7 @@ export const sampleProperties: Property[] = [
       email: 'sarah@prestigerealty.co.za',
       phone: '+27 11 234 5678',
       agency: 'Prestige Realty',
-      profileImage: 'https://images.unsplash.com/photo-1494790108755-2616b612b988?w=200',
+      profileImage: 'https://images.unsplash.com/photo-1494790108755-2616b612b988?w=200&h=200&fit=crop&crop=face&auto=format',
       bio: 'Experienced real estate agent specializing in luxury properties in Sandton and surrounding areas.'
     },
     dateAdded: new Date('2024-01-15'),
@@ -101,7 +101,7 @@ export const sampleProperties: Property[] = [
       email: 'michael@waterfront.properties',
       phone: '+27 21 456 7890',
       agency: 'Waterfront Properties',
-      profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+      profileImage: undefined,
       bio: 'Specialist in luxury waterfront properties with over 10 years of experience in the Cape Town market.'
     },
     dateAdded: new Date('2024-01-10'),
@@ -158,7 +158,7 @@ export const sampleProperties: Property[] = [
       email: 'amanda@familyhomes.co.za',
       phone: '+27 12 345 6789',
       agency: 'Family Homes Realty',
-      profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
+      profileImage: undefined,
       bio: 'Dedicated to helping families find their perfect home in Pretoria\'s best neighborhoods.'
     },
     dateAdded: new Date('2024-01-12'),
@@ -214,7 +214,7 @@ export const sampleProperties: Property[] = [
       email: 'david@studentliving.co.za',
       phone: '+27 21 887 9012',
       agency: 'Student Living Solutions',
-      profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
+      profileImage: undefined,
       bio: 'Specializing in student accommodation in the Stellenbosch area for over 8 years.'
     },
     dateAdded: new Date('2024-01-08'),
@@ -270,7 +270,7 @@ export const sampleProperties: Property[] = [
       email: 'jennifer@commercialspaces.co.za',
       phone: '+27 11 678 9012',
       agency: 'Commercial Spaces Inc',
-      profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200',
+      profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face&auto=format',
       bio: 'Commercial real estate specialist with extensive experience in Johannesburg\'s business districts.'
     },
     dateAdded: new Date('2024-01-05'),
@@ -289,3 +289,52 @@ export const featuredProperties = sampleProperties.filter(p => p.isFeatured);
 export const recentProperties = sampleProperties
   .sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime())
   .slice(0, 3);
+
+// Additional sample agents for variety
+export const additionalAgents = [
+  {
+    id: 'agent6',
+    name: 'Marcus Thompson',
+    email: 'marcus@luxuryestates.co.za',
+    phone: '+27 11 555 0123',
+    agency: 'Luxury Estates',
+    profileImage: undefined,
+    bio: 'Luxury property specialist with a focus on high-end residential and commercial properties.'
+  },
+  {
+    id: 'agent7',
+    name: 'Priya Sharma',
+    email: 'priya@modernhomes.co.za',
+    phone: '+27 21 555 0456',
+    agency: 'Modern Homes Realty',
+    profileImage: undefined,
+    bio: 'Expert in contemporary design homes and first-time buyer assistance.'
+  },
+  {
+    id: 'agent8',
+    name: 'Johan Pretorius',
+    email: 'johan@countryside.properties',
+    phone: '+27 12 555 0789',
+    agency: 'Countryside Properties',
+    profileImage: undefined,
+    bio: 'Specializing in farms, rural properties, and lifestyle estates across Gauteng.'
+  },
+  {
+    id: 'agent9',
+    name: 'Lisa Wang',
+    email: 'lisa@coastalproperties.co.za',
+    phone: '+27 21 555 0321',
+    agency: 'Coastal Properties',
+    profileImage: undefined,
+    bio: 'Cape Town coastal property expert with over 15 years of market experience.'
+  },
+  {
+    id: 'agent10',
+    name: 'Thabo Mthembu',
+    email: 'thabo@emergingareas.co.za',
+    phone: '+27 11 555 0654',
+    agency: 'Emerging Areas Realty',
+    profileImage: undefined,
+    bio: 'Investment property specialist focusing on emerging neighborhoods and development areas.'
+  }
+];

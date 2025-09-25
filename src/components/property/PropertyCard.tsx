@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
 import { useTranslation, formatPrice as formatPriceI18n, formatPropertyType } from '@/i18n/translation';
 import { useComparison } from '@/contexts/ComparisonContext';
+import { generateSmartAvatar } from '@/lib/avatarUtils';
 
 interface PropertyCardProps {
   readonly property: Property;
@@ -20,6 +21,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
   const [imageLoading, setImageLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
 
   const formatPrice = (price: number, currency: string) => {
     return formatPriceI18n(price, currency, locale);
@@ -323,18 +325,33 @@ export default function PropertyCard({ property, className = '', variant = 'defa
           {/* Agent Info */}
           <div className="flex items-center pt-4 border-t border-gray-100">
             <div className="w-10 h-10 rounded-full bg-gray-300 mr-3 overflow-hidden flex-shrink-0">
-              {property.agent.profileImage ? (
+              {property.agent.profileImage && !avatarError ? (
                 <Image
                   src={property.agent.profileImage}
                   alt={property.agent.name}
                   width={40}
                   height={40}
                   className="object-cover"
+                  onError={() => setAvatarError(true)}
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
-                  {property.agent.name.split(' ').map(n => n[0]).join('')}
-                </div>
+                <Image
+                  src={generateSmartAvatar(property.agent.name)}
+                  alt={property.agent.name}
+                  width={40}
+                  height={40}
+                  className="object-cover"
+                  onError={(e) => {
+                    // Final fallback to initials
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    target.parentElement!.innerHTML = `
+                      <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
+                        ${property.agent.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    `;
+                  }}
+                />
               )}
             </div>
             <div className="flex-1 min-w-0">

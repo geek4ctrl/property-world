@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useCallback, memo } from 'react';
 import { useTranslation } from '@/i18n/translation';
+import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { Button } from '@/components/ui/FormComponents';
 
 const Header = memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const { user, signOut, loading } = useAuth();
   const pathname = usePathname();
 
   // Helper function to determine if a link is active
@@ -36,6 +39,11 @@ const Header = memo(function Header() {
   const closeMenu = useCallback(() => {
     setIsMenuOpen(false);
   }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    setIsUserMenuOpen(false);
+  };
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -133,11 +141,81 @@ const Header = memo(function Header() {
                 </svg>
                 {t('common.favorite')}
               </Link>
-              <Link href="/login">
-                <Button size="sm" className="whitespace-nowrap">
-                  {t('navigation.sign_in')}
-                </Button>
-              </Link>
+              
+              {loading ? (
+                <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
+              ) : user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-all-normal hover-scale"
+                  >
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-semibold text-sm">
+                        {user.user_metadata?.full_name?.[0] || user.email?.[0] || 'U'}
+                      </span>
+                    </div>
+                    <span className="whitespace-nowrap">
+                      {user.user_metadata?.full_name || user.email}
+                    </span>
+                    <svg className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg z-50 animate-fade-in">
+                      <div className="py-1">
+                        <Link 
+                          href="/dashboard" 
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 15v-4m4 4v-4m4 4v-4" />
+                          </svg>
+                          Dashboard
+                        </Link>
+                        <Link 
+                          href="/profile" 
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          Profile
+                        </Link>
+                        <div className="border-t border-gray-100 my-1"></div>
+                        <button 
+                          onClick={handleSignOut}
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Link 
+                    href="/auth/login"
+                    className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                  >
+                    Sign In
+                  </Link>
+                  <Link href="/auth/register">
+                    <Button size="sm" className="whitespace-nowrap">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
@@ -208,7 +286,62 @@ const Header = memo(function Header() {
               <div className="px-3 py-2">
                 <LanguageSwitcher />
               </div>
-              <Link href="/login" className="block px-3 py-2 bg-blue-600 text-white rounded-lg" onClick={closeMenu}>{t('navigation.sign_in')}</Link>
+              
+              {loading ? (
+                <div className="animate-pulse bg-gray-200 h-8 mx-3 rounded"></div>
+              ) : user ? (
+                <>
+                  <div className="px-3 py-2 border-t border-gray-200">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span className="text-blue-600 font-semibold text-sm">
+                          {user.user_metadata?.full_name?.[0] || user.email?.[0] || 'U'}
+                        </span>
+                      </div>
+                      <span className="text-gray-900 font-medium">
+                        {user.user_metadata?.full_name || user.email}
+                      </span>
+                    </div>
+                  </div>
+                  <Link 
+                    href="/dashboard" 
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
+                    onClick={closeMenu}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    href="/profile" 
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
+                    onClick={closeMenu}
+                  >
+                    Profile
+                  </Link>
+                  <button 
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/auth/login" 
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
+                    onClick={closeMenu}
+                  >
+                    Sign In
+                  </Link>
+                  <Link 
+                    href="/auth/register" 
+                    className="block px-3 py-2 bg-blue-600 text-white rounded-lg mx-3 mt-2 text-center" 
+                    onClick={closeMenu}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

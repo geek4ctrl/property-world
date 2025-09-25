@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
     domains: [
       'images.unsplash.com', 
       'via.placeholder.com',
-      'cdnjs.cloudflare.com' // For Leaflet map icons
+      'cdnjs.cloudflare.com', // For Leaflet map icons
+      'api.dicebear.com', // For DiceBear avatars
+      'ui-avatars.com' // For UI Avatars
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
