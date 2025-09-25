@@ -93,7 +93,7 @@ export default function MortgageCalculatorPage() {
                       type="number"
                       value={propertyPrice}
                       onChange={(e) => setPropertyPrice(Number(e.target.value))}
-                      className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full pl-8 pr-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                       placeholder="2,000,000"
                     />
                   </div>
@@ -109,7 +109,7 @@ export default function MortgageCalculatorPage() {
                       type="number"
                       value={deposit}
                       onChange={(e) => setDeposit(Number(e.target.value))}
-                      className="w-full pr-8 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full pr-8 pl-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                       min="0"
                       max="100"
                     />
@@ -131,7 +131,7 @@ export default function MortgageCalculatorPage() {
                       step="0.1"
                       value={interestRate}
                       onChange={(e) => setInterestRate(Number(e.target.value))}
-                      className="w-full pr-8 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full pr-8 pl-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                     />
                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">%</span>
                   </div>
@@ -145,7 +145,7 @@ export default function MortgageCalculatorPage() {
                     id="loan-term"
                     value={loanTerm}
                     onChange={(e) => setLoanTerm(Number(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                   >
                     <option value={10}>10 years</option>
                     <option value={15}>15 years</option>
@@ -173,7 +173,7 @@ export default function MortgageCalculatorPage() {
                       type="number"
                       value={monthlyIncome}
                       onChange={(e) => setMonthlyIncome(Number(e.target.value))}
-                      className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full pl-8 pr-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                       placeholder="50,000"
                     />
                   </div>
@@ -190,7 +190,7 @@ export default function MortgageCalculatorPage() {
                       type="number"
                       value={monthlyExpenses}
                       onChange={(e) => setMonthlyExpenses(Number(e.target.value))}
-                      className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full pl-8 pr-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-green-600 focus:border-green-600 focus:outline-none hover:border-gray-500"
                       placeholder="15,000"
                     />
                   </div>

@@ -136,7 +136,7 @@ export default function PropertiesPage() {
                       value=""
                       checked={!filters.listingType}
                       onChange={() => handleSearch({ ...filters, listingType: undefined })}
-                      className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
                     />
                     <span className="ml-2 text-sm text-gray-700">All</span>
                   </label>
@@ -147,7 +147,7 @@ export default function PropertiesPage() {
                       value="sale"
                       checked={filters.listingType === ListingType.FOR_SALE}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.FOR_SALE })}
-                      className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
                     />
                     <span className="ml-2 text-sm text-gray-700">For Sale</span>
                   </label>
@@ -158,7 +158,7 @@ export default function PropertiesPage() {
                       value="rent"
                       checked={filters.listingType === ListingType.TO_RENT}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.TO_RENT })}
-                      className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
                     />
                     <span className="ml-2 text-sm text-gray-700">To Rent</span>
                   </label>
@@ -181,7 +181,7 @@ export default function PropertiesPage() {
                             : currentTypes.filter(t => t !== type);
                           handleSearch({ ...filters, propertyType: newTypes.length > 0 ? newTypes : undefined });
                         }}
-                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        className="h-5 w-5 text-blue-700 border-2 border-gray-500 rounded focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
                       />
                       <span className="ml-2 text-sm text-gray-700 capitalize">
                         {type.toLowerCase().replace('_', ' ')}
@@ -206,7 +206,7 @@ export default function PropertiesPage() {
                         ...filters, 
                         minPrice: e.target.value ? parseInt(e.target.value) : undefined 
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
                     />
                   </div>
                   <div>
@@ -220,7 +220,7 @@ export default function PropertiesPage() {
                         ...filters, 
                         maxPrice: e.target.value ? parseInt(e.target.value) : undefined 
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
                     />
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export default function PropertiesPage() {
                       ...filters, 
                       bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
                   >
                     <option value="">Any</option>
                     <option value="1">1+</option>
@@ -256,7 +256,7 @@ export default function PropertiesPage() {
                       ...filters, 
                       bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
                   >
                     <option value="">Any</option>
                     <option value="1">1+</option>
@@ -310,7 +310,7 @@ export default function PropertiesPage() {
                       id="sort-select"
                       value={sortBy}
                       onChange={(e) => handleSort(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                      className="px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
                     >
                       <option value="date-desc">Newest First</option>
                       <option value="date-asc">Oldest First</option>

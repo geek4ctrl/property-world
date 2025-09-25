@@ -23,7 +23,7 @@ const getTabButtonClasses = (isActive: boolean, isCompact: boolean) => {
 };
 
 const getInputClasses = (isCompact: boolean) => {
-  const baseClasses = 'w-full px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+  const baseClasses = 'w-full px-3 border-2 border-gray-400 rounded-md bg-white text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-500';
   const sizeClasses = isCompact ? 'py-2 text-sm' : 'py-2';
   return `${baseClasses} ${sizeClasses}`;
 };

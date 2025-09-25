@@ -142,7 +142,7 @@ export default function AdvancedFilters({
               }}
               onFocus={() => setShowLocationSuggestions(true)}
               placeholder="City, suburb, or area..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500 transition-colors"
             />
             <svg className="absolute right-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -254,7 +254,7 @@ export default function AdvancedFilters({
                   const value = e.target.value ? parseInt(e.target.value) : undefined;
                   updateFilters({ minPrice: value });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border-2 border-gray-400 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
               />
             </div>
             <div>
@@ -268,7 +268,7 @@ export default function AdvancedFilters({
                   const value = e.target.value ? parseInt(e.target.value) : undefined;
                   updateFilters({ maxPrice: value });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border-2 border-gray-400 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
               />
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5, 6].map(num => (
@@ -300,7 +300,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5].map(num => (
@@ -322,7 +322,7 @@ export default function AdvancedFilters({
                 onChange={(e) => updateFilters({ 
                   minSquareMeters: e.target.value ? parseInt(e.target.value) : undefined 
                 })}
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
               />
             </div>
             <div>
@@ -333,7 +333,7 @@ export default function AdvancedFilters({
                 onChange={(e) => updateFilters({ 
                   maxSquareMeters: e.target.value ? parseInt(e.target.value) : undefined 
                 })}
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
               />
             </div>
           </div>
