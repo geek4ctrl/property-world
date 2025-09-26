@@ -1,7 +1,15 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Get environment variables with fallbacks for development
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
+
+// Check if Supabase is properly configured
+const isSupabaseConfigured = 
+  process.env.NEXT_PUBLIC_SUPABASE_URL && 
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+  !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder') &&
+  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.includes('placeholder')
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -11,8 +19,15 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 })
 
+// Helper to check if Supabase is available
+export const isSupabaseAvailable = () => isSupabaseConfigured
+
 // Auth helper functions
-export const signUp = async (email: string, password: string, metadata?: any) => {
+export const signUp = async (email: string, password: string, metadata?: Record<string, unknown>) => {
+  if (!isSupabaseConfigured) {
+    return { data: null, error: { message: 'Supabase is not configured' } }
+  }
+  
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -24,6 +39,10 @@ export const signUp = async (email: string, password: string, metadata?: any) =>
 }
 
 export const signIn = async (email: string, password: string) => {
+  if (!isSupabaseConfigured) {
+    return { data: null, error: { message: 'Supabase is not configured' } }
+  }
+  
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -32,16 +51,28 @@ export const signIn = async (email: string, password: string) => {
 }
 
 export const signOut = async () => {
+  if (!isSupabaseConfigured) {
+    return { error: { message: 'Supabase is not configured' } }
+  }
+  
   const { error } = await supabase.auth.signOut()
   return { error }
 }
 
 export const getCurrentUser = async () => {
+  if (!isSupabaseConfigured) {
+    return { user: null, error: { message: 'Supabase is not configured' } }
+  }
+  
   const { data: { user }, error } = await supabase.auth.getUser()
   return { user, error }
 }
 
 export const resetPassword = async (email: string) => {
+  if (!isSupabaseConfigured) {
+    return { data: null, error: { message: 'Supabase is not configured' } }
+  }
+  
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${window.location.origin}/auth/reset-password`,
   })
@@ -49,6 +80,10 @@ export const resetPassword = async (email: string) => {
 }
 
 export const updatePassword = async (password: string) => {
+  if (!isSupabaseConfigured) {
+    return { data: null, error: { message: 'Supabase is not configured' } }
+  }
+  
   const { data, error } = await supabase.auth.updateUser({
     password,
   })
