@@ -36,6 +36,14 @@ export function useUserProfile(user: User | null) {
         if (error.code === 'PGRST116') {
           // Profile doesn't exist, create one
           await createProfile();
+        } else if (error.code === '42P01' || error.message?.includes('relation "user_profiles" does not exist')) {
+          // Table doesn't exist - graceful handling during development
+          console.info('📋 Development Mode: Database tables not yet created. This is expected during initial setup.\n' +
+          '   → To enable full functionality, apply the migration: supabase/migrations/001_user_authentication.sql\n' +
+          '   → See DATABASE_SETUP.md for detailed instructions');
+          setProfile(null);
+          setError(null); // Clear error to prevent UI error display
+          return; // Exit early to prevent further processing
         } else {
           throw error;
         }
@@ -43,8 +51,15 @@ export function useUserProfile(user: User | null) {
         setProfile(data);
       }
     } catch (err: any) {
-      setError(err.message);
-      console.error('Error fetching profile:', err);
+      // Handle various database table errors
+      if (err.code === '42P01' || err.message?.includes('relation "user_profiles" does not exist')) {
+        console.warn('user_profiles table not found. Please apply database migration.');
+        setProfile(null);
+        setError(null); // Clear error since this is expected
+      } else {
+        setError(err.message);
+        console.error('Error fetching profile:', err);
+      }
     } finally {
       setLoading(false);
     }
@@ -84,8 +99,14 @@ export function useUserProfile(user: User | null) {
       if (error) throw error;
       setProfile(data);
     } catch (err: any) {
-      setError(err.message);
-      console.error('Error creating profile:', err);
+      if (err.code === '42P01' || err.message?.includes('relation "user_profiles" does not exist')) {
+        console.warn('user_profiles table not found. Please apply database migration.');
+        setProfile(null);
+        setError(null); // Clear error since this is expected
+      } else {
+        setError(err.message);
+        console.error('Error creating profile:', err);
+      }
     }
   };
 
@@ -110,9 +131,15 @@ export function useUserProfile(user: User | null) {
       setProfile(data);
       return { success: true, data };
     } catch (err: any) {
-      setError(err.message);
-      console.error('Error updating profile:', err);
-      return { success: false, error: err.message };
+      if (err.code === '42P01' || err.message?.includes('relation "user_profiles" does not exist')) {
+        console.warn('user_profiles table not found. Please apply database migration.');
+        setError(null); // Clear error since this is expected
+        return { success: false, error: 'Database tables not found. Please apply migration.' };
+      } else {
+        setError(err.message);
+        console.error('Error updating profile:', err);
+        return { success: false, error: err.message };
+      }
     } finally {
       setLoading(false);
     }
@@ -199,10 +226,19 @@ export function useFavorites(user: User | null) {
         .select('property_id')
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        // Handle table not found gracefully
+        if (error.code === 'PGRST116' || error.message.includes('does not exist')) {
+          console.warn('⚠️ Database tables not yet created. Please run the migration script.');
+          setFavorites([]);
+          return;
+        }
+        throw error;
+      }
       setFavorites(data.map(item => item.property_id));
     } catch (err) {
       console.error('Error fetching favorites:', err);
+      setFavorites([]); // Set empty array as fallback
     } finally {
       setLoading(false);
     }
@@ -280,10 +316,19 @@ export function useSavedSearches(user: User | null) {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        // Handle table not found gracefully
+        if (error.code === 'PGRST116' || error.message.includes('does not exist')) {
+          console.warn('⚠️ Database tables not yet created. Please run the migration script.');
+          setSavedSearches([]);
+          return;
+        }
+        throw error;
+      }
       setSavedSearches(data || []);
     } catch (err) {
       console.error('Error fetching saved searches:', err);
+      setSavedSearches([]); // Set empty array as fallback
     } finally {
       setLoading(false);
     }

@@ -9,7 +9,11 @@ const isSupabaseConfigured =
   process.env.NEXT_PUBLIC_SUPABASE_URL && 
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
   !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder') &&
-  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.includes('placeholder')
+  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.includes('placeholder') &&
+  !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('your-project-id') &&
+  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.includes('your-anon-key') &&
+  process.env.NEXT_PUBLIC_SUPABASE_URL.startsWith('https://') &&
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.length > 100 // Supabase anon keys are JWT tokens, typically > 100 chars
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -25,7 +29,18 @@ export const isSupabaseAvailable = () => isSupabaseConfigured
 // Auth helper functions
 export const signUp = async (email: string, password: string, metadata?: Record<string, unknown>) => {
   if (!isSupabaseConfigured) {
-    return { data: null, error: { message: 'Supabase is not configured' } }
+    // Development mode - simulate successful signup
+    console.warn('⚠️ Supabase not configured - using mock authentication')
+    return { 
+      data: { 
+        user: { 
+          email, 
+          id: 'mock-user-id',
+          user_metadata: metadata 
+        } 
+      }, 
+      error: null 
+    }
   }
   
   const { data, error } = await supabase.auth.signUp({
@@ -40,7 +55,22 @@ export const signUp = async (email: string, password: string, metadata?: Record<
 
 export const signIn = async (email: string, password: string) => {
   if (!isSupabaseConfigured) {
-    return { data: null, error: { message: 'Supabase is not configured' } }
+    // Development mode - simulate successful signin
+    console.warn('⚠️ Supabase not configured - using mock authentication')
+    return { 
+      data: { 
+        user: { 
+          email, 
+          id: 'mock-user-id',
+          user_metadata: { email }
+        },
+        session: {
+          access_token: 'mock-token',
+          refresh_token: 'mock-refresh-token'
+        }
+      }, 
+      error: null 
+    }
   }
   
   const { data, error } = await supabase.auth.signInWithPassword({

@@ -290,16 +290,16 @@ export default function UserDashboard() {
   const { favorites, removeFavorite } = useFavorites(user);
   const { savedSearches, deleteSearch } = useSavedSearches(user);
   const [activeTab, setActiveTab] = useState('profile');
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
 
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-6">Please sign in to access your dashboard.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('auth.access_denied')}</h1>
+          <p className="text-gray-600 mb-6">{t('auth.please_signin')}</p>
           <Link href="/auth/login">
-            <Button>Sign In</Button>
+            <Button>{t('auth.sign_in')}</Button>
           </Link>
         </div>
       </div>

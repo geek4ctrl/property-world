@@ -5,7 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button, Input } from '@/components/ui/FormComponents';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseAvailable } from '@/lib/supabase';
+import { useTranslation } from '@/i18n/translation';
 
 interface LoginFormProps {
   readonly onSuccess?: () => void;
@@ -17,13 +18,39 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const { signIn } = useAuth();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setEmailError(null);
+    setPasswordError(null);
+
+    // Custom validation
+    let hasErrors = false;
+    
+    if (!email.trim()) {
+      setEmailError(t('auth.email_required'));
+      hasErrors = true;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError(t('auth.invalid_email'));
+      hasErrors = true;
+    }
+    
+    if (!password.trim()) {
+      setPasswordError(t('auth.password_required'));
+      hasErrors = true;
+    }
+    
+    if (hasErrors) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const { error: signInError } = await signIn(email, password);
@@ -66,8 +93,19 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
 
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+      {!isSupabaseAvailable() && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm">
+          <div className="flex items-center">
+            <svg className="w-4 h-4 mr-2 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <strong className="text-amber-800">Development Mode</strong>
+          </div>
+          <p className="text-amber-700 mt-1">Using mock authentication. Set up Supabase for production.</p>
+        </div>
+      )}
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-        Sign In
+        {t('auth.sign_in')}
       </h2>
       
       {/* Social Login */}
@@ -86,7 +124,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
             </svg>
           }
         >
-          Continue with Google
+          {t('auth.continue_with')} {t('auth.google')}
         </Button>
 
         <Button
@@ -100,7 +138,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
             </svg>
           }
         >
-          Continue with GitHub
+          {t('auth.continue_with')} {t('auth.github')}
         </Button>
       </div>
 
@@ -109,19 +147,19 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
           <div className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+          <span className="px-2 bg-white text-gray-500">{t('auth.or_continue_with_email')}</span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Email Address"
+          label={t('auth.email_address')}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="Enter your email"
+          placeholder={t('auth.enter_email')}
           disabled={loading}
+          error={emailError || undefined}
           leftIcon={
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
@@ -130,13 +168,13 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
         />
 
         <Input
-          label="Password"
+          label={t('auth.password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="Enter your password"
+          placeholder={t('auth.enter_password')}
           disabled={loading}
+          error={passwordError || undefined}
           leftIcon={
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -147,16 +185,23 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
         <div className="flex items-center justify-between">
           <label className="flex items-center">
             <input type="checkbox" className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" />
-            <span className="ml-2 text-sm text-gray-600">Remember me</span>
+            <span className="ml-2 text-sm text-gray-600">{t('auth.remember_me')}</span>
           </label>
           <Link href="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
-            Forgot password?
+            {t('auth.forgot_password')}
           </Link>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm">
-            {error}
+          <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm flex items-start">
+            <svg className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <div>
+              <strong>{t('auth.login_failed')}</strong>
+              <br />
+              {error}
+            </div>
           </div>
         )}
 
@@ -166,7 +211,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
           loading={loading}
           className="w-full"
         >
-          Sign In
+          {t('auth.sign_in')}
         </Button>
       </form>
 
@@ -175,7 +220,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
           href="/auth/register" 
           className="text-blue-600 hover:text-blue-800 text-sm transition-colors"
         >
-          Don't have an account? Sign up
+          {t('auth.no_account_sign_up')}
         </Link>
       </div>
 
@@ -184,7 +229,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
           href="/auth/forgot-password" 
           className="text-gray-600 hover:text-gray-800 text-sm transition-colors"
         >
-          Forgot your password?
+          {t('auth.forgot_password')}
         </Link>
       </div>
     </div>

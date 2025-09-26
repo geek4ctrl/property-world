@@ -207,11 +207,11 @@ const Header = memo(function Header() {
                     href="/auth/login"
                     className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap"
                   >
-                    Sign In
+                    {t('auth.sign_in')}
                   </Link>
                   <Link href="/auth/register">
                     <Button size="sm" className="whitespace-nowrap">
-                      Sign Up
+                      {t('auth.sign_up')}
                     </Button>
                   </Link>
                 </div>
@@ -331,14 +331,14 @@ const Header = memo(function Header() {
                     className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
                     onClick={closeMenu}
                   >
-                    Sign In
+                    {t('auth.sign_in')}
                   </Link>
                   <Link 
                     href="/auth/register" 
                     className="block px-3 py-2 bg-blue-600 text-white rounded-lg mx-3 mt-2 text-center" 
                     onClick={closeMenu}
                   >
-                    Sign Up
+                    {t('auth.sign_up')}
                   </Link>
                 </>
               )}
