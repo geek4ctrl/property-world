@@ -137,7 +137,7 @@ function PropertiesContent() {
                       value=""
                       checked={!filters.listingType}
                       onChange={() => handleSearch({ ...filters, listingType: undefined })}
-                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
+                      className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
                     />
                     <span className="ml-2 text-sm text-gray-700">All</span>
                   </label>
@@ -148,7 +148,7 @@ function PropertiesContent() {
                       value="sale"
                       checked={filters.listingType === ListingType.FOR_SALE}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.FOR_SALE })}
-                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
+                      className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
                     />
                     <span className="ml-2 text-sm text-gray-700">For Sale</span>
                   </label>
@@ -159,7 +159,7 @@ function PropertiesContent() {
                       value="rent"
                       checked={filters.listingType === ListingType.TO_RENT}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.TO_RENT })}
-                      className="h-5 w-5 text-blue-700 border-2 border-gray-500 focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
+                      className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
                     />
                     <span className="ml-2 text-sm text-gray-700">To Rent</span>
                   </label>
@@ -182,7 +182,7 @@ function PropertiesContent() {
                             : currentTypes.filter(t => t !== type);
                           handleSearch({ ...filters, propertyType: newTypes.length > 0 ? newTypes : undefined });
                         }}
-                        className="h-5 w-5 text-blue-700 border-2 border-gray-500 rounded focus:ring-blue-600 focus:ring-2 focus:outline-none hover:border-gray-600 bg-white"
+                        className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
                       />
                       <span className="ml-2 text-sm text-gray-700 capitalize">
                         {type.toLowerCase().replace('_', ' ')}
