@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -11,7 +11,8 @@ import { SearchFilters, Property, PropertyType, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, sortProperties } from '@/lib/utils';
 
-export default function PropertiesPage() {
+// Component that uses useSearchParams
+function PropertiesContent() {
   const searchParams = useSearchParams();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(sampleProperties);
   const [loading, setLoading] = useState(false);
@@ -399,5 +400,47 @@ export default function PropertiesPage() {
 
       <Footer />
     </div>
+  );
+}
+
+// Loading fallback for Suspense
+function PropertiesLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            <div className="mb-6 lg:mb-0">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Properties for Sale & Rent
+              </h1>
+              <p className="text-gray-600">
+                Loading properties...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="animate-pulse">
+          <div className="h-96 bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={<PropertiesLoading />}>
+      <PropertiesContent />
+    </Suspense>
   );
 }

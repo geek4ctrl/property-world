@@ -62,12 +62,12 @@ export function useUserProfile(user: User | null) {
       avatar_url: user.user_metadata?.avatar_url || null,
       role: 'buyer',
       preferences: {
-        email_notifications: true,
-        sms_notifications: false,
-        price_alerts: true,
-        new_listing_alerts: true,
-        preferred_currency: 'ZAR',
-        preferred_language: 'en'
+        emailNotifications: true,
+        smsNotifications: false,
+        priceAlerts: true,
+        newListingAlerts: true,
+        preferredCurrency: 'ZAR',
+        preferredLanguage: 'en'
       },
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

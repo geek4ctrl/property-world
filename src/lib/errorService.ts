@@ -90,7 +90,7 @@ class ErrorService {
     return error;
   }
 
-  createSearchError(message: string, filters?: any): AppError {
+  createSearchError(message: string, filters?: Record<string, unknown>): AppError {
     const error = new Error(message) as AppError;
     error.code = 'SEARCH_ERROR';
     error.context = {
@@ -127,7 +127,7 @@ class ErrorService {
   }
 
   // Utility to wrap async functions with error handling
-  wrapAsync<T extends any[], R>(
+  wrapAsync<T extends unknown[], R>(
     fn: (...args: T) => Promise<R>,
     context?: ErrorContext
   ) {

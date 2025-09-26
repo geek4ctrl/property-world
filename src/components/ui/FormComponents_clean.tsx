@@ -215,7 +215,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     const selectClasses = `
-      form-input w-full px-3 py-2 border rounded-lg
+      w-full px-3 py-2 border rounded-lg transition-all duration-200 ease-in-out pr-10
       focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
       hover:border-gray-500 appearance-none bg-white text-gray-900
       overflow-hidden text-ellipsis whitespace-nowrap
@@ -345,6 +345,11 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className = '', label, description, error, ...props }, ref) => {
+    const getLabelColor = () => {
+      if (error) return 'text-red-700';
+      return 'text-gray-900';
+    };
+
     return (
       <div className="relative">
         <div className="flex items-start">
@@ -355,7 +360,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               className={`
                 h-5 w-5 text-blue-700 border border-gray-600 rounded
                 focus:ring-blue-600 focus:ring-2 focus:ring-offset-2 focus:outline-none
-                hover:border-gray-700 transition-all-normal hover-scale bg-white
+                hover:border-gray-700 transition-all bg-white
                 ${error ? 'border-red-600 text-red-700' : ''}
                 ${className}
               `.trim().replace(/\s+/g, ' ')}
@@ -365,9 +370,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           {(label || description) && (
             <div className="ml-3 text-sm">
               {label && (
-                <label className={`font-medium transition-colors ${
-                  error ? 'text-red-700' : 'text-gray-900'
-                }`}>
+                <label className={`font-medium transition-colors ${getLabelColor()}`}>
                   {label}
                 </label>
               )}
@@ -389,11 +392,17 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
 Checkbox.displayName = 'Checkbox';
 
-// Loading Button Component
-export function LoadingButton({ loading, children, ...props }: Readonly<ButtonProps>) {
+// Loading Button with built-in loading state
+interface LoadingButtonProps extends ButtonProps {
+  readonly loading?: boolean;
+}
+
+export function LoadingButton({ loading, children, ...props }: Readonly<LoadingButtonProps>) {
   return (
-    <Button loading={loading} {...props}>
+    <Button {...props} loading={loading}>
       {children}
     </Button>
   );
 }
+
+LoadingButton.displayName = 'LoadingButton';

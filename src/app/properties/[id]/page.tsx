@@ -49,8 +49,8 @@ export default function PropertyDetailsPage() {
     );
   }
 
-  const primaryImage =
-    property.images.find((img) => img.isPrimary) || property.images[0];
+  // Get primary and other images for gallery
+  const primaryImage = property.images.find((img) => img.isPrimary) || property.images[0];
   const otherImages = property.images.filter((img) => !img.isPrimary);
   const allImages = [primaryImage, ...otherImages];
 

@@ -1,18 +1,34 @@
 'use client';
 
-import { useRef, useState, useMemo, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { Property, ListingType, PropertyType } from '@/types';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import dynamic from 'next/dynamic';
 
-// Fix for default markers in React Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
+// Dynamically import React Leaflet components with no SSR
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Popup),
+  { ssr: false }
+);
+const useMap = dynamic(
+  () => import('react-leaflet').then((mod) => mod.useMap),
+  { ssr: false }
+);
+const useMapEvents = dynamic(
+  () => import('react-leaflet').then((mod) => mod.useMapEvents),
+  { ssr: false }
+);
 
 interface PropertyMapGridProps {
   properties: Property[];
@@ -59,8 +75,13 @@ const formatListingType = (type: ListingType) => {
   return type.charAt(0).toUpperCase() + type.slice(1);
 };
 
-// Create custom colored markers
+// Create custom colored markers - only on client side
 const createCustomIcon = (color: string) => {
+  if (typeof window === 'undefined') return null;
+  
+  // Dynamically import leaflet only on client side
+  const L = require('leaflet');
+  
   return L.divIcon({
     className: 'custom-marker',
     html: `

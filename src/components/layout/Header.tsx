@@ -6,7 +6,7 @@ import { useState, useCallback, memo } from 'react';
 import { useTranslation } from '@/i18n/translation';
 import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
-import { Button } from '@/components/ui/FormComponents';
+import { Button } from '@/components/ui/FormComponents_clean';
 
 const Header = memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,7 +57,7 @@ const Header = memo(function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:block flex-1">
+          <nav className="hidden md:block flex-1">
             <div className="flex items-center justify-center space-x-6">
               <Link 
                 href="/" 
@@ -129,7 +129,7 @@ const Header = memo(function Header() {
           </nav>
 
           {/* Right side buttons */}
-          <div className="hidden lg:block flex-shrink-0">
+          <div className="hidden md:block flex-shrink-0">
             <div className="flex items-center space-x-3">
               <LanguageSwitcher />
               <Link 
@@ -220,7 +220,7 @@ const Header = memo(function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden">
+          <div className="md:hidden">
             <button
               onClick={toggleMenu}
               className="text-gray-700 hover:text-blue-600 focus:outline-none transition-all-normal hover-scale p-2 rounded-md"
@@ -236,7 +236,7 @@ const Header = memo(function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden animate-slide-down">
+          <div className="md:hidden animate-slide-down">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t shadow-lg">
               <Link 
                 href="/" 
