@@ -183,6 +183,24 @@ input[type="checkbox"]:focus, input[type="radio"]:focus {
   outline-offset: 2px !important;
 }
 
+/* Enhanced label hover effects */
+label:hover input[type="checkbox"], 
+label:hover input[type="radio"] {
+  border-color: #374151 !important; /* gray-700 */
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+label:hover span {
+  color: #1f2937 !important; /* gray-800 */
+  transition: color 0.2s ease;
+}
+
+/* Smooth transitions for all form elements */
+input, select, button {
+  transition: all 0.2s ease !important;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

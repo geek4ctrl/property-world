@@ -1,5 +1,67 @@
-// File corrupted - using redirect to working implementation
-export { default } from './PropertyMapGrid_fixed';
+'use client';
+
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { Property, PropertyType, ListingType } from '@/types';
+
+// Map bounds interface
+interface MapBounds {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+}
+
+interface PropertyMapGridProps {
+  properties: Property[];
+  onPropertySelect?: (property: Property) => void;
+  onBoundsChange?: (bounds: MapBounds) => void;
+  zoom?: number;
+  center?: [number, number];
+  className?: string;
+}
+
+// Helper function to get property type icon
+const getPropertyTypeIcon = (type: PropertyType): string => {
+  const icons = {
+    [PropertyType.HOUSE]: '🏠',
+    [PropertyType.APARTMENT]: '🏢',
+    [PropertyType.TOWNHOUSE]: '🏘️',
+    [PropertyType.FLAT]: '🏢',
+    [PropertyType.VACANT_LAND]: '🏞️',
+    [PropertyType.COMMERCIAL]: '🏪',
+    [PropertyType.INDUSTRIAL]: '🏭',
+    [PropertyType.FARM]: '🚜',
+    [PropertyType.OFFICE]: '🏢',
+    [PropertyType.RETAIL]: '🛒',
+  };
+  return icons[type] || '🏠';
+};
+
+// Helper function to get property color
+const getPropertyColor = (property: Property): string => {
+  if (property.listingType === ListingType.FOR_SALE) {
+    return '#10b981'; // green
+  } else if (property.listingType === ListingType.TO_RENT) {
+    return '#3b82f6'; // blue
+  }
+  return '#6b7280'; // gray
+};
+
+// Handle marker click event
+const handleMarkerClick = (property: Property, onPropertySelect?: (property: Property) => void) => {
+  if (onPropertySelect) {
+    onPropertySelect(property);
+  }
+};
+
+// Create property marker function
+const createPropertyMarker = (
+  L: any, 
+  property: Property, 
+  map: any, 
+  onPropertySelect?: (property: Property) => void
+) => {
+  const color = getPropertyColor(property);
   
   const customIcon = L.icon({
     iconUrl: 'data:image/svg+xml;base64,' + btoa(`
@@ -26,7 +88,9 @@ export { default } from './PropertyMapGrid_fixed';
     popupAnchor: [0, -54],
   });
 
-  // Add marker
+  // Add marker with null check
+  if (!property.coordinates) return null;
+  
   const marker = L.marker([property.coordinates.lat, property.coordinates.lng], {
     icon: customIcon
   }).addTo(map);
@@ -102,9 +166,9 @@ const PropertyMapGrid = ({
   properties, 
   className = '', 
   onPropertySelect,
-  onMapBoundsChange,
-  onMapMoved,
-  showSearchButton = false
+  onBoundsChange,
+  zoom = 12,
+  center = [-26.2041, 28.0473]
 }: PropertyMapGridProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -112,8 +176,7 @@ const PropertyMapGrid = ({
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingStage, setLoadingStage] = useState('Initializing map...');
-  const [showSearchArea, setShowSearchArea] = useState(false);
-  const [mapHasMoved, setMapHasMoved] = useState(false);
+
 
   // Memoize properties with coordinates to avoid recalculation
   const propertiesWithCoords = useMemo(() => 
@@ -264,41 +327,23 @@ const PropertyMapGrid = ({
         mapInstanceRef.current = map;
 
         // Add map bounds change event listeners
-        if (onMapBoundsChange || onMapMoved) {
+        if (onBoundsChange) {
           let moveTimeout: NodeJS.Timeout;
           
+          const notifyBoundsChange = () => {
+            const bounds = map.getBounds();
+            const mapBounds: MapBounds = {
+              north: bounds.getNorth(),
+              south: bounds.getSouth(),
+              east: bounds.getEast(),
+              west: bounds.getWest()
+            };
+            onBoundsChange(mapBounds);
+          };
+          
           const handleMapMove = () => {
-            if (!showSearchButton) return;
-            
-            setMapHasMoved(true);
-            setShowSearchArea(true);
-            
-            // Clear existing timeout
             if (moveTimeout) clearTimeout(moveTimeout);
-            
-            // Set new timeout to notify parent after user stops moving
-            moveTimeout = setTimeout(() => {
-              const bounds = map.getBounds();
-              const center = map.getCenter();
-              const zoom = map.getZoom();
-              
-              const mapBounds: MapBounds = {
-                north: bounds.getNorth(),
-                south: bounds.getSouth(),
-                east: bounds.getEast(),
-                west: bounds.getWest(),
-                center: { lat: center.lat, lng: center.lng },
-                zoom: zoom
-              };
-              
-              if (onMapBoundsChange) {
-                onMapBoundsChange(mapBounds);
-              }
-              
-              if (onMapMoved) {
-                onMapMoved({ lat: center.lat, lng: center.lng }, zoom);
-              }
-            }, 500); // Wait 500ms after user stops moving
+            moveTimeout = setTimeout(notifyBoundsChange, 500);
           };
           
           map.on('moveend', handleMapMove);
@@ -381,43 +426,7 @@ const PropertyMapGrid = ({
           style={{ minHeight: '600px', height: '70vh', display: isLoading && loadingProgress === 0 ? 'none' : 'block' }}
         />
         
-        {/* Search This Area Button */}
-        {showSearchButton && showSearchArea && !isLoading && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-            <button
-              onClick={() => {
-                setShowSearchArea(false);
-                setMapHasMoved(false);
-                // Trigger immediate search
-                if (mapInstanceRef.current && onMapBoundsChange) {
-                  const map = mapInstanceRef.current;
-                  const bounds = map.getBounds();
-                  const center = map.getCenter();
-                  const zoom = map.getZoom();
-                  
-                  const mapBounds: MapBounds = {
-                    north: bounds.getNorth(),
-                    south: bounds.getSouth(),
-                    east: bounds.getEast(),
-                    west: bounds.getWest(),
-                    center: { lat: center.lat, lng: center.lng },
-                    zoom: zoom
-                  };
-                  
-                  onMapBoundsChange(mapBounds);
-                }
-              }}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 animate-slide-down"
-            >
-              <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <span>Search This Area</span>
-              </div>
-            </button>
-          </div>
-        )}
+
         
         {/* Loading overlay */}
         {isLoading && (
@@ -491,4 +500,4 @@ const PropertyMapGrid = ({
   );
 };
 
-// End of corrupted file
+export default PropertyMapGrid;

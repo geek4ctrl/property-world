@@ -11,6 +11,39 @@ import { SearchFilters, Property, PropertyType, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, sortProperties } from '@/lib/utils';
 
+// Constants to reduce duplication and improve maintainability
+const CSS_CLASSES = {
+  container: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8',
+  flexLayout: 'flex flex-col lg:flex-row gap-8',
+  pageHeader: 'bg-white border-b border-gray-200',
+  filterContainer: 'bg-white rounded-xl shadow-lg border border-gray-100 p-6 sticky top-8 backdrop-blur-sm',
+  sectionHeader: 'text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wider',
+  inputField: 'w-full px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400 transition-all',
+  selectField: 'w-full px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400 transition-all cursor-pointer',
+  checkboxRadio: 'h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black'
+} as const;
+
+const PROPERTIES_PER_PAGE = 12;
+const SEARCH_DELAY = 300;
+
+// Select options for better maintainability
+const BEDROOM_OPTIONS = [
+  { value: '', label: 'Any' },
+  { value: '1', label: '1+' },
+  { value: '2', label: '2+' },
+  { value: '3', label: '3+' },
+  { value: '4', label: '4+' },
+  { value: '5', label: '5+' },
+] as const;
+
+const BATHROOM_OPTIONS = [
+  { value: '', label: 'Any' },
+  { value: '1', label: '1+' },
+  { value: '2', label: '2+' },
+  { value: '3', label: '3+' },
+  { value: '4', label: '4+' },
+] as const;
+
 // Component that uses useSearchParams
 function PropertiesContent() {
   const searchParams = useSearchParams();
@@ -22,7 +55,7 @@ function PropertiesContent() {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<SearchFilters>({});
 
-  const propertiesPerPage = 12;
+  // Using constant for consistency
 
   const handleSearch = useCallback((searchFilters: SearchFilters) => {
     setLoading(true);
@@ -35,26 +68,37 @@ function PropertiesContent() {
       setFilteredProperties(sorted);
       setCurrentPage(1);
       setLoading(false);
-    }, 300);
+    }, SEARCH_DELAY);
   }, [sortBy]);
+
+  // Helper function to parse URL parameters
+  const parseUrlFilters = useCallback((params: URLSearchParams): SearchFilters => {
+    const urlFilters: SearchFilters = {};
+    
+    const typeParam = params.get('type');
+    if (typeParam) {
+      urlFilters.propertyType = [typeParam as PropertyType];
+    }
+    
+    const listingParam = params.get('listing');
+    if (listingParam) {
+      urlFilters.listingType = listingParam === 'sale' ? ListingType.FOR_SALE : ListingType.TO_RENT;
+    }
+    
+    const locationParam = params.get('location');
+    if (locationParam) {
+      urlFilters.location = locationParam;
+    }
+    
+    return urlFilters;
+  }, []);
 
   // Initialize filters from URL parameters
   useEffect(() => {
-    const urlFilters: SearchFilters = {};
-    
-    if (searchParams.get('type')) {
-      urlFilters.propertyType = [searchParams.get('type') as PropertyType];
-    }
-    if (searchParams.get('listing')) {
-      urlFilters.listingType = searchParams.get('listing') === 'sale' ? ListingType.FOR_SALE : ListingType.TO_RENT;
-    }
-    if (searchParams.get('location')) {
-      urlFilters.location = searchParams.get('location')!;
-    }
-    
+    const urlFilters = parseUrlFilters(searchParams);
     setFilters(urlFilters);
     handleSearch(urlFilters);
-  }, [searchParams, handleSearch]);
+  }, [searchParams, handleSearch, parseUrlFilters]);
 
   const handleSort = useCallback((newSortBy: string) => {
     setSortBy(newSortBy);
@@ -64,13 +108,13 @@ function PropertiesContent() {
 
   // Memoize pagination calculations
   const paginationData = useMemo(() => {
-    const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
-    const startIndex = (currentPage - 1) * propertiesPerPage;
-    const endIndex = startIndex + propertiesPerPage;
+    const totalPages = Math.ceil(filteredProperties.length / PROPERTIES_PER_PAGE);
+    const startIndex = (currentPage - 1) * PROPERTIES_PER_PAGE;
+    const endIndex = startIndex + PROPERTIES_PER_PAGE;
     const currentProperties = filteredProperties.slice(startIndex, endIndex);
     
     return { totalPages, startIndex, endIndex, currentProperties };
-  }, [filteredProperties, currentPage, propertiesPerPage]);
+  }, [filteredProperties, currentPage]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -109,16 +153,19 @@ function PropertiesContent() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className={CSS_CLASSES.flexLayout}>
           
           {/* Filters Sidebar */}
           <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+            <div className={CSS_CLASSES.filterContainer}>
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center space-x-2">
+                  <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+                  <h3 className="text-xl font-bold text-gray-900">Filters</h3>
+                </div>
                 <button
                   onClick={() => setShowFilters(false)}
-                  className="lg:hidden text-gray-400 hover:text-gray-600"
+                  className="lg:hidden p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -126,10 +173,10 @@ function PropertiesContent() {
                 </button>
               </div>
 
-              {/* Quick Filters */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Listing Type</h4>
-                <div className="space-y-2">
+              {/* Listing Type */}
+              <div className="mb-8">
+                <h4 className={CSS_CLASSES.sectionHeader}>Listing Type</h4>
+                <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                   <label className="flex items-center">
                     <input
                       type="radio"
@@ -139,7 +186,7 @@ function PropertiesContent() {
                       onChange={() => handleSearch({ ...filters, listingType: undefined })}
                       className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
                     />
-                    <span className="ml-2 text-sm text-gray-700">All</span>
+                    <span className="ml-3 text-sm font-medium text-gray-700 select-none">All</span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -148,9 +195,9 @@ function PropertiesContent() {
                       value="sale"
                       checked={filters.listingType === ListingType.FOR_SALE}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.FOR_SALE })}
-                      className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
+                      className={CSS_CLASSES.checkboxRadio}
                     />
-                    <span className="ml-2 text-sm text-gray-700">For Sale</span>
+                    <span className="ml-3 text-sm font-medium text-gray-700 select-none">For Sale</span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -159,17 +206,17 @@ function PropertiesContent() {
                       value="rent"
                       checked={filters.listingType === ListingType.TO_RENT}
                       onChange={() => handleSearch({ ...filters, listingType: ListingType.TO_RENT })}
-                      className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
+                      className={CSS_CLASSES.checkboxRadio}
                     />
-                    <span className="ml-2 text-sm text-gray-700">To Rent</span>
+                    <span className="ml-3 text-sm font-medium text-gray-700 select-none">To Rent</span>
                   </label>
                 </div>
               </div>
 
               {/* Property Type */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Property Type</h4>
-                <div className="space-y-2">
+              <div className="mb-8">
+                <h4 className={CSS_CLASSES.sectionHeader}>Property Type</h4>
+                <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto pr-2">
                   {Object.values(PropertyType).map((type) => (
                     <label key={type} className="flex items-center">
                       <input
@@ -182,9 +229,9 @@ function PropertiesContent() {
                             : currentTypes.filter(t => t !== type);
                           handleSearch({ ...filters, propertyType: newTypes.length > 0 ? newTypes : undefined });
                         }}
-                        className="h-5 w-5 bg-white border-2 border-black text-black focus:ring-gray-500 focus:ring-2 focus:outline-none hover:bg-gray-50 checked:bg-white checked:border-black"
+                        className={CSS_CLASSES.checkboxRadio}
                       />
-                      <span className="ml-2 text-sm text-gray-700 capitalize">
+                      <span className="ml-3 text-sm font-medium text-gray-700 capitalize select-none">
                         {type.toLowerCase().replace('_', ' ')}
                       </span>
                     </label>
@@ -193,8 +240,8 @@ function PropertiesContent() {
               </div>
 
               {/* Price Range */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Price Range</h4>
+              <div className="mb-8">
+                <h4 className={CSS_CLASSES.sectionHeader}>Price Range</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label htmlFor="min-price-input" className="block text-xs text-gray-600 mb-1">Min Price</label>
@@ -207,7 +254,7 @@ function PropertiesContent() {
                         ...filters, 
                         minPrice: e.target.value ? parseInt(e.target.value) : undefined 
                       })}
-                      className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                      className={CSS_CLASSES.inputField}
                     />
                   </div>
                   <div>
@@ -221,14 +268,16 @@ function PropertiesContent() {
                         ...filters, 
                         maxPrice: e.target.value ? parseInt(e.target.value) : undefined 
                       })}
-                      className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                      className={CSS_CLASSES.inputField}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Bedrooms & Bathrooms */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="mb-8">
+                <h4 className={CSS_CLASSES.sectionHeader}>Rooms</h4>
+                <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="bedrooms-select" className="block text-sm font-medium text-gray-900 mb-2">Bedrooms</label>
                   <select
@@ -238,14 +287,13 @@ function PropertiesContent() {
                       ...filters, 
                       bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
                     })}
-                    className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400 transition-all cursor-pointer"
                   >
-                    <option value="">Any</option>
-                    <option value="1">1+</option>
-                    <option value="2">2+</option>
-                    <option value="3">3+</option>
-                    <option value="4">4+</option>
-                    <option value="5">5+</option>
+                    {BEDROOM_OPTIONS.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -257,27 +305,33 @@ function PropertiesContent() {
                       ...filters, 
                       bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
                     })}
-                    className="w-full px-3 py-2 border-2 border-gray-400 rounded-md text-sm bg-white text-gray-900 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400 transition-all cursor-pointer"
                   >
-                    <option value="">Any</option>
-                    <option value="1">1+</option>
-                    <option value="2">2+</option>
-                    <option value="3">3+</option>
-                    <option value="4">4+</option>
+                    {BATHROOM_OPTIONS.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
+              </div>
 
               {/* Clear Filters */}
-              <button
-                onClick={() => {
-                  setFilters({});
-                  handleSearch({});
-                }}
-                className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Clear All Filters
-              </button>
+              <div className="pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setFilters({});
+                    handleSearch({});
+                  }}
+                  className="w-full px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center space-x-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <span>Clear All Filters</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -367,19 +421,25 @@ function PropertiesContent() {
                     </svg>
                   </button>
 
-                  {Array.from({ length: paginationData.totalPages }, (_, i) => i + 1).map((page) => (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                        page === currentPage
-                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
+                  {Array.from({ length: paginationData.totalPages }, (_, i) => i + 1).map((page) => {
+                    const isCurrentPage = page === currentPage;
+                    const buttonClasses = `relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                      isCurrentPage
+                        ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                        : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                    }`;
+                    
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={buttonClasses}
+                        aria-current={isCurrentPage ? 'page' : undefined}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
 
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
