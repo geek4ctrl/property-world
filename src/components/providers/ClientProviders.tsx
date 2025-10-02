@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import { ComparisonProvider } from '@/contexts/ComparisonContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ToastProvider } from '@/contexts/ToastContext';
 
 interface ClientProvidersProps {
   readonly children: ReactNode;
@@ -11,9 +12,11 @@ interface ClientProvidersProps {
 export default function ClientProviders({ children }: ClientProvidersProps) {
   return (
     <AuthProvider>
-      <ComparisonProvider>
-        {children}
-      </ComparisonProvider>
+      <ToastProvider>
+        <ComparisonProvider>
+          {children}
+        </ComparisonProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

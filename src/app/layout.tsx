@@ -6,8 +6,8 @@ import ErrorOverlay from "@/components/debug/ErrorOverlay";
 import ComparisonBar from "@/components/property/ComparisonBar";
 
 export const metadata: Metadata = {
-  title: "PropertyWorld - Find Your Perfect Home",
-  description: "South Africa's leading property portal. Find houses, apartments, and commercial properties for sale and rent.",
+  title: "Tano - Find Your Perfect Home",
+  description: "Discover your dream property with Tano. Find houses, apartments, and commercial properties for sale and rent with our modern property search platform.",
 };
 
 export default function RootLayout({

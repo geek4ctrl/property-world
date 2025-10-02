@@ -6,6 +6,9 @@ import { useState } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
 import { useTranslation, formatPrice as formatPriceI18n, formatPropertyType } from '@/i18n/translation';
 import { useComparison } from '@/contexts/ComparisonContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useFavorites } from '@/hooks/useUserProfile';
+import { useToastContext } from '@/contexts/ToastContext';
 import { generateSmartAvatar } from '@/lib/avatarUtils';
 
 interface PropertyCardProps {
@@ -18,11 +21,16 @@ interface PropertyCardProps {
 export default function PropertyCard({ property, className = '', variant = 'default' }: PropertyCardProps) {
   const { t, locale } = useTranslation();
   const { addToComparison, removeFromComparison, isInComparison, maxReached } = useComparison();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { user } = useAuth();
+  const { isFavorite, addFavorite, removeFavorite, loading: favoritesLoading } = useFavorites(user);
+  const { success, error } = useToastContext();
   const [imageLoading, setImageLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
+  const [favoriteActionLoading, setFavoriteActionLoading] = useState(false);
+
+  const isFavorited = isFavorite(property.id);
 
   const formatPrice = (price: number, currency: string) => {
     return formatPriceI18n(price, currency, locale);
@@ -42,10 +50,55 @@ export default function PropertyCard({ property, className = '', variant = 'defa
     return labels[type] || type;
   };
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorited(!isFavorited);
+    
+    console.log('🔍 Favorite button clicked for property:', property.id);
+    console.log('🔍 User logged in:', !!user);
+    console.log('🔍 Current favorite status:', isFavorited);
+    
+    if (!user) {
+      console.log('🔍 No user - redirecting to login');
+      // Redirect to login if user is not authenticated
+      window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
+      return;
+    }
+
+    setFavoriteActionLoading(true);
+    console.log('🔍 Starting favorite toggle...');
+    
+    try {
+      if (isFavorited) {
+        console.log('🔍 Removing from favorites...');
+        const result = await removeFavorite(property.id);
+        console.log('🔍 Remove result:', result);
+        if (result && !result.success) {
+          console.error('🔍 Remove failed:', result.error);
+          error('Failed to remove from favorites. Please try again.');
+        } else {
+          console.log('🔍 Remove successful');
+          success('Property removed from favorites');
+        }
+      } else {
+        console.log('🔍 Adding to favorites...');
+        const result = await addFavorite(property.id);
+        console.log('🔍 Add result:', result);
+        if (result && !result.success) {
+          console.error('🔍 Add failed:', result.error);
+          error('Failed to add to favorites. Please try again.');
+        } else {
+          console.log('🔍 Add successful');
+          success('Property added to favorites');
+        }
+      }
+    } catch (err) {
+      console.error('🔍 Error toggling favorite:', err);
+      error('Something went wrong. Please try again.');
+    } finally {
+      setFavoriteActionLoading(false);
+      console.log('🔍 Favorite toggle completed');
+    }
   };
 
   const handleCompareClick = (e: React.MouseEvent) => {
@@ -181,26 +234,57 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             {/* Save Button */}
             <button 
               onClick={handleFavoriteClick}
-              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${
-                isFavorited ? 'text-red-500 bg-red-50/90' : 'text-gray-600 hover:bg-white'
+              disabled={favoriteActionLoading || favoritesLoading}
+              className={`p-2.5 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 ${
+                isFavorited 
+                  ? 'text-red-500 bg-red-50/90 hover:bg-red-100/90' 
+                  : 'text-gray-600 bg-white/90 hover:bg-white hover:text-red-500'
               }`}
               aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+              title={
+                (() => {
+                  if (!user) return 'Sign in to save favorites';
+                  return isFavorited ? 'Remove from favorites' : 'Add to favorites';
+                })()
+              }
             >
-              <svg 
-                className={`w-5 h-5 transition-colors duration-200 ${
-                  isFavorited ? 'text-red-500 fill-current' : 'text-gray-600'
-                }`} 
-                fill={isFavorited ? 'currentColor' : 'none'} 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
-                />
-              </svg>
+              {favoriteActionLoading ? (
+                <svg 
+                  className="w-5 h-5 animate-spin text-gray-600" 
+                  fill="none" 
+                  viewBox="0 0 24 24"
+                >
+                  <circle 
+                    className="opacity-25" 
+                    cx="12" 
+                    cy="12" 
+                    r="10" 
+                    stroke="currentColor" 
+                    strokeWidth="4"
+                  />
+                  <path 
+                    className="opacity-75" 
+                    fill="currentColor" 
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+              ) : (
+                <svg 
+                  className={`w-5 h-5 transition-colors duration-200 ${
+                    isFavorited ? 'text-red-500 fill-current' : 'text-gray-600'
+                  }`} 
+                  fill={isFavorited ? 'currentColor' : 'none'} 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
+                  />
+                </svg>
+              )}
             </button>
           </div>
 
