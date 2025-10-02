@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites } from '@/hooks/useUserProfile';
+import { useTranslation } from '@/i18n';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PropertyCard from '@/components/property/PropertyCard';
@@ -13,6 +14,7 @@ import Link from 'next/link';
 export default function FavoritesPage() {
   const { user } = useAuth();
   const { favorites, loading } = useFavorites(user);
+  const { t } = useTranslation();
   const [favoriteProperties, setFavoriteProperties] = useState<Property[]>([]);
 
   // Filter sample properties to show only favorites
@@ -34,20 +36,20 @@ export default function FavoritesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Sign In Required</h1>
-            <p className="text-gray-600 mb-8">You need to sign in to view your favorite properties.</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('favorites.sign_in_required')}</h1>
+            <p className="text-gray-600 mb-8">{t('favorites.sign_in_message')}</p>
             <div className="space-y-3">
               <Link 
                 href="/auth/login"
                 className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
               >
-                Sign In
+                {t('favorites.sign_in')}
               </Link>
               <Link 
                 href="/auth/register"
                 className="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors"
               >
-                Create Account
+                {t('favorites.create_account')}
               </Link>
             </div>
           </div>
@@ -65,7 +67,7 @@ export default function FavoritesPage() {
           <div className="container mx-auto px-4 py-8">
             <div className="text-center py-12">
               <div className="w-12 h-12 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-600">Loading your favorites...</p>
+              <p className="text-gray-600">{t('favorites.loading')}</p>
             </div>
           </div>
         </main>
@@ -83,24 +85,25 @@ export default function FavoritesPage() {
           <nav className="mb-6">
             <div className="flex items-center space-x-2 text-sm text-gray-500">
               <Link href="/" className="hover:text-blue-600 transition-colors">
-                Home
+                {t('navigation.home')}
               </Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-              <span className="text-gray-900 font-medium">My Favorites</span>
+              <span className="text-gray-900 font-medium">{t('favorites.title')}</span>
             </div>
           </nav>
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Favorites</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('favorites.title')}</h1>
             <p className="text-gray-600">
-              {(() => {
-                if (favoriteProperties.length === 0) return 'You haven\'t saved any properties yet';
-                const propertyText = favoriteProperties.length === 1 ? 'property' : 'properties';
-                return `You have ${favoriteProperties.length} favorite ${propertyText}`;
-              })()}
+              {favoriteProperties.length === 0 
+                ? t('favorites.subtitle')
+                : favoriteProperties.length === 1 
+                  ? t('favorites.subtitle_with_count', { count: favoriteProperties.length })
+                  : t('favorites.subtitle_with_count_plural', { count: favoriteProperties.length })
+              }
             </p>
           </div>
 
@@ -122,9 +125,9 @@ export default function FavoritesPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">No Favorites Yet</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('favorites.no_favorites')}</h2>
               <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                Start exploring properties and save your favorites by clicking the heart icon on any property card.
+                {t('favorites.no_favorites_message')}
               </p>
               <Link 
                 href="/properties"
@@ -133,7 +136,7 @@ export default function FavoritesPage() {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                Browse Properties
+                {t('favorites.start_browsing')}
               </Link>
             </div>
           )}

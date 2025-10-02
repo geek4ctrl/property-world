@@ -279,5 +279,31 @@
     "try_again": "Veuillez réessayer ou contacter le support si le problème persiste",
     "go_to_login": "Aller à la connexion",
     "auto_redirect_login": "Vous serez automatiquement redirigé vers la connexion dans quelques secondes..."
+  },
+  "favorites": {
+    "title": "Mes Favoris",
+    "page_title": "Propriétés Favorites",
+    "subtitle": "Vos propriétés sauvegardées",
+    "subtitle_with_count": "Vous avez {{count}} propriété favorite",
+    "subtitle_with_count_plural": "Vous avez {{count}} propriétés favorites",
+    "sign_in_required": "Connexion Requise",
+    "sign_in_message": "Veuillez vous connecter pour voir vos propriétés favorites",
+    "no_favorites": "Aucun Favori",
+    "no_favorites_message": "Vous n'avez pas encore ajouté de propriétés à vos favoris. Commencez à explorer nos annonces et cliquez sur l'icône cœur pour sauvegarder vos propriétés préférées.",
+    "start_browsing": "Commencer à Parcourir les Propriétés",
+    "property_count": "{{count}} propriété",
+    "property_count_plural": "{{count}} propriétés",
+    "loading": "Chargement de vos favoris...",
+    "add_success": "Propriété ajoutée aux favoris",
+    "remove_success": "Propriété supprimée des favoris",
+    "add_error": "Échec de l'ajout de la propriété aux favoris",
+    "remove_error": "Échec de la suppression de la propriété des favoris",
+    "sign_in_to_favorite": "Veuillez vous connecter pour ajouter des favoris",
+    "heart_tooltip_add": "Ajouter aux favoris",
+    "heart_tooltip_remove": "Retirer des favoris",
+    "view_all": "Voir Tous les Favoris",
+    "sign_in": "Se connecter",
+    "create_account": "Créer un compte",
+    "generic_error": "Une erreur s'est produite. Veuillez réessayer."
   }
 }

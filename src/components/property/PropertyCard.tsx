@@ -66,21 +66,21 @@ export default function PropertyCard({ property, className = '', variant = 'defa
       if (isFavorited) {
         const result = await removeFavorite(property.id);
         if (result && !result.success) {
-          error('Failed to remove from favorites. Please try again.');
+          error(t('favorites.remove_error'));
         } else {
-          success('Property removed from favorites');
+          success(t('favorites.remove_success'));
         }
       } else {
         const result = await addFavorite(property.id);
         if (result && !result.success) {
-          error('Failed to add to favorites. Please try again.');
+          error(t('favorites.add_error'));
         } else {
-          success('Property added to favorites');
+          success(t('favorites.add_success'));
         }
       }
     } catch (err) {
       console.error('Error toggling favorite:', err);
-      error('Something went wrong. Please try again.');
+      error(t('favorites.generic_error'));
     } finally {
       setFavoriteActionLoading(false);
     }
@@ -225,11 +225,11 @@ export default function PropertyCard({ property, className = '', variant = 'defa
                   ? 'text-red-500 bg-red-50/90 hover:bg-red-100/90' 
                   : 'text-gray-600 bg-white/90 hover:bg-white hover:text-red-500'
               }`}
-              aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+              aria-label={isFavorited ? t('favorites.heart_tooltip_remove') : t('favorites.heart_tooltip_add')}
               title={
                 (() => {
-                  if (!user) return 'Sign in to save favorites';
-                  return isFavorited ? 'Remove from favorites' : 'Add to favorites';
+                  if (!user) return t('favorites.sign_in_to_favorite');
+                  return isFavorited ? t('favorites.heart_tooltip_remove') : t('favorites.heart_tooltip_add');
                 })()
               }
             >

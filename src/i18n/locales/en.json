@@ -279,5 +279,31 @@
     "try_again": "Please try again or contact support if the problem persists",
     "go_to_login": "Go to Login",
     "auto_redirect_login": "You'll be automatically redirected to login in a few seconds..."
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "page_title": "Favorite Properties",
+    "subtitle": "Your saved properties",
+    "subtitle_with_count": "You have {{count}} favorite property",
+    "subtitle_with_count_plural": "You have {{count}} favorite properties",
+    "sign_in_required": "Sign In Required",
+    "sign_in_message": "Please sign in to view your favorite properties",
+    "no_favorites": "No Favorites Yet",
+    "no_favorites_message": "You haven't added any properties to your favorites yet. Start exploring our listings and click the heart icon to save your favorite properties.",
+    "start_browsing": "Start Browsing Properties",
+    "property_count": "{{count}} property",
+    "property_count_plural": "{{count}} properties",
+    "loading": "Loading your favorites...",
+    "add_success": "Property added to favorites",
+    "remove_success": "Property removed from favorites",
+    "add_error": "Failed to add property to favorites",
+    "remove_error": "Failed to remove property from favorites",
+    "sign_in_to_favorite": "Please sign in to add favorites",
+    "heart_tooltip_add": "Add to favorites",
+    "heart_tooltip_remove": "Remove from favorites",
+    "view_all": "View All Favorites",
+    "sign_in": "Sign In",
+    "create_account": "Create Account",
+    "generic_error": "Something went wrong. Please try again."
   }
 }

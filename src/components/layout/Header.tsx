@@ -148,7 +148,7 @@ const Header = memo(function Header() {
                   <svg className="w-4 h-4 inline mr-1 transition-transform hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  Favorites
+                  {t('favorites.title')}
                 </Link>
               )}
               
@@ -195,7 +195,7 @@ const Header = memo(function Header() {
                           <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
-                          My Favorites
+                          {t('favorites.title')}
                         </Link>
                         <Link 
                           href="/profile" 
@@ -306,7 +306,7 @@ const Header = memo(function Header() {
                   <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  My Favorites
+                  {t('favorites.title')}
                 </Link>
               )}
               <div className="px-3 py-2">
@@ -341,7 +341,7 @@ const Header = memo(function Header() {
                     className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
                     onClick={closeMenu}
                   >
-                    My Favorites
+                    {t('favorites.title')}
                   </Link>
                   <Link 
                     href="/profile" 
