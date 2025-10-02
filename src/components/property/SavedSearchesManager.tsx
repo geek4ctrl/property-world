@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { SearchFilters, ListingType, PropertyType } from '@/types';
-import { useTranslation } from '@/i18n/translation';
+// import { useTranslation } from '@/i18n/translation';
 import { formatPrice } from '@/lib/utils';
 
 interface SavedSearch {
@@ -20,30 +20,34 @@ interface SavedSearchesProps {
 }
 
 export default function SavedSearchesManager({ onLoadSearch, className = '' }: SavedSearchesProps) {
-  const { t } = useTranslation();
+
   const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
   // Load saved searches from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem('savedSearches');
-    if (stored) {
-      try {
-        const searches = JSON.parse(stored);
-        setSavedSearches(searches.map((search: any, index: number) => ({
-          ...search,
-          id: search.id || `search-${index}`,
-          alertsEnabled: search.alertsEnabled ?? false
-        })));
-      } catch (error) {
-        console.error('Error loading saved searches:', error);
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('savedSearches');
+      if (stored) {
+        try {
+          const searches = JSON.parse(stored);
+          setSavedSearches(searches.map((search: any, index: number) => ({
+            ...search,
+            id: search.id || `search-${index}`,
+            alertsEnabled: search.alertsEnabled ?? false
+          })));
+        } catch (error) {
+          console.error('Error loading saved searches:', error);
+        }
       }
     }
   }, []);
 
   // Save searches to localStorage
   const saveToStorage = useCallback((searches: SavedSearch[]) => {
-    localStorage.setItem('savedSearches', JSON.stringify(searches));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('savedSearches', JSON.stringify(searches));
+    }
     setSavedSearches(searches);
   }, []);
 

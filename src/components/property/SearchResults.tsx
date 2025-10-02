@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Property, SearchFilters } from '@/types';
-import { useTranslation } from '@/i18n/translation';
+// import { useTranslation } from '@/i18n/translation';
 import PropertyGrid from './PropertyGrid';
 
 interface SearchResultsProps {
@@ -27,7 +27,7 @@ export default function SearchResults({
   hasMore = false,
   className = ''
 }: SearchResultsProps) {
-  const { t } = useTranslation();
+
   const [sortBy, setSortBy] = useState<SortOption>('relevance');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [showSortDropdown, setShowSortDropdown] = useState(false);

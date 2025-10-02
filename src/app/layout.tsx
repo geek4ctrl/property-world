@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ClientProviders from "@/components/providers/ClientProviders";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
@@ -8,6 +8,11 @@ import ComparisonBar from "@/components/property/ComparisonBar";
 export const metadata: Metadata = {
   title: "Tano - Find Your Perfect Home",
   description: "Discover your dream property with Tano. Find houses, apartments, and commercial properties for sale and rent with our modern property search platform.",
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

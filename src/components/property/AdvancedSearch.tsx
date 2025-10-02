@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { PropertyType, ListingType, SearchFilters } from '@/types';
 import { useTranslation } from '@/i18n/translation';
 import { sampleProperties } from '@/data/sampleProperties';
@@ -35,7 +35,6 @@ export default function AdvancedSearch({
 }: AdvancedSearchProps) {
   const { t } = useTranslation();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
@@ -211,9 +210,11 @@ export default function AdvancedSearch({
     };
     
     // For demo, save to localStorage
-    const existingSaved = JSON.parse(localStorage.getItem('savedSearches') || '[]');
-    existingSaved.push(savedSearch);
-    localStorage.setItem('savedSearches', JSON.stringify(existingSaved));
+    if (typeof window !== 'undefined') {
+      const existingSaved = JSON.parse(localStorage.getItem('savedSearches') || '[]');
+      existingSaved.push(savedSearch);
+      localStorage.setItem('savedSearches', JSON.stringify(existingSaved));
+    }
     
     setShowSaveModal(false);
     setSavedSearchName('');
