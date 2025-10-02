@@ -137,15 +137,20 @@ const Header = memo(function Header() {
           <div className="hidden md:block flex-shrink-0">
             <div className="flex items-center space-x-3">
               <LanguageSwitcher />
-              <Link 
-                href="/saved" 
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-all-normal hover-scale whitespace-nowrap"
-              >
-                <svg className="w-4 h-4 inline mr-1 transition-transform hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                {t('common.favorite')}
-              </Link>
+              {user && (
+                <Link 
+                  href="/favorites" 
+                  className={`px-3 py-2 text-sm font-medium transition-all-normal hover-scale whitespace-nowrap ${
+                    isActive('/favorites') ? 'text-blue-600 after:w-full' : 'text-gray-700 hover:text-blue-600 after:w-0'
+                  }`}
+                  prefetch={true}
+                >
+                  <svg className="w-4 h-4 inline mr-1 transition-transform hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                  Favorites
+                </Link>
+              )}
               
               {loading ? (
                 <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
@@ -291,13 +296,19 @@ const Header = memo(function Header() {
               >
                 {t('navigation.find_agent')}
               </Link>
-              <Link 
-                href="/saved" 
-                className={`block px-3 py-2 ${isActive('/saved') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
-                onClick={closeMenu}
-              >
-                {t('common.favorite')}
-              </Link>
+              {user && (
+                <Link 
+                  href="/favorites" 
+                  className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${isActive('/favorites') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                  onClick={closeMenu}
+                  prefetch={true}
+                >
+                  <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                  My Favorites
+                </Link>
+              )}
               <div className="px-3 py-2">
                 <LanguageSwitcher />
               </div>

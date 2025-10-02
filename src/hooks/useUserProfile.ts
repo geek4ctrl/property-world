@@ -245,44 +245,18 @@ export function useFavorites(user: User | null) {
   };
 
   const addFavorite = async (propertyId: string) => {
-    console.log('🔍 useFavorites addFavorite called with:', propertyId);
-    console.log('🔍 User exists:', !!user);
-    
-    if (!user) {
-      console.log('🔍 No user found, returning early');
-      return;
-    }
+    if (!user) return;
 
     try {
-      console.log('🔍 Attempting to insert favorite into database...');
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('user_favorites')
-        .insert([{ user_id: user.id, property_id: propertyId }])
-        .select();
+        .insert([{ user_id: user.id, property_id: propertyId }]);
 
-      console.log('🔍 Database insert response:', { data, error });
-
-      if (error) {
-        console.error('🔍 Database error:', error);
-        throw error;
-      }
-      
-      console.log('🔍 Updating local favorites state...');
-      setFavorites(prev => {
-        const newFavorites = [...prev, propertyId];
-        console.log('🔍 New favorites array:', newFavorites);
-        return newFavorites;
-      });
-      
-      console.log('🔍 Add favorite successful');
+      if (error) throw error;
+      setFavorites(prev => [...prev, propertyId]);
       return { success: true };
     } catch (err: any) {
-      console.error('🔍 Error adding favorite:', err);
-      console.error('🔍 Error details:', {
-        message: err.message,
-        code: err.code,
-        details: err.details
-      });
+      console.error('Error adding favorite:', err);
       return { success: false, error: err.message };
     }
   };

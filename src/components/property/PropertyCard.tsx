@@ -54,50 +54,35 @@ export default function PropertyCard({ property, className = '', variant = 'defa
     e.preventDefault();
     e.stopPropagation();
     
-    console.log('🔍 Favorite button clicked for property:', property.id);
-    console.log('🔍 User logged in:', !!user);
-    console.log('🔍 Current favorite status:', isFavorited);
-    
     if (!user) {
-      console.log('🔍 No user - redirecting to login');
       // Redirect to login if user is not authenticated
       window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
       return;
     }
 
     setFavoriteActionLoading(true);
-    console.log('🔍 Starting favorite toggle...');
     
     try {
       if (isFavorited) {
-        console.log('🔍 Removing from favorites...');
         const result = await removeFavorite(property.id);
-        console.log('🔍 Remove result:', result);
         if (result && !result.success) {
-          console.error('🔍 Remove failed:', result.error);
           error('Failed to remove from favorites. Please try again.');
         } else {
-          console.log('🔍 Remove successful');
           success('Property removed from favorites');
         }
       } else {
-        console.log('🔍 Adding to favorites...');
         const result = await addFavorite(property.id);
-        console.log('🔍 Add result:', result);
         if (result && !result.success) {
-          console.error('🔍 Add failed:', result.error);
           error('Failed to add to favorites. Please try again.');
         } else {
-          console.log('🔍 Add successful');
           success('Property added to favorites');
         }
       }
     } catch (err) {
-      console.error('🔍 Error toggling favorite:', err);
+      console.error('Error toggling favorite:', err);
       error('Something went wrong. Please try again.');
     } finally {
       setFavoriteActionLoading(false);
-      console.log('🔍 Favorite toggle completed');
     }
   };
 
