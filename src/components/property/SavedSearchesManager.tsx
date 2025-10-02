@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { SearchFilters, ListingType, PropertyType } from '@/types';
-// import { useTranslation } from '@/i18n/translation';
 import { formatPrice } from '@/lib/utils';
 
 interface SavedSearch {

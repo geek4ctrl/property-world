@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { Property, SearchFilters } from '@/types';
-// import { useTranslation } from '@/i18n/translation';
 import PropertyGrid from './PropertyGrid';
 
 interface SearchResultsProps {
@@ -124,8 +123,8 @@ export default function SearchResults({
     return (
       <div className={`${className}`}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-pulse">
+          {Array.from({ length: 6 }, (_, index) => `skeleton-${index}-${Date.now()}`).map((key) => (
+            <div key={key} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-pulse">
               <div className="w-full h-48 bg-gray-200"></div>
               <div className="p-4">
                 <div className="h-4 bg-gray-200 rounded mb-2"></div>
@@ -308,9 +307,15 @@ export default function SearchResults({
 
       {/* Click outside to close sort dropdown */}
       {showSortDropdown && (
-        <div
-          className="fixed inset-0 z-40"
+        <button
+          className="fixed inset-0 z-40 bg-transparent border-none cursor-default"
           onClick={() => setShowSortDropdown(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setShowSortDropdown(false);
+            }
+          }}
+          aria-label="Close sort dropdown"
         />
       )}
     </div>

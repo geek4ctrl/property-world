@@ -105,11 +105,11 @@ export default function AdvancedFilters({
   }, []);
 
   return (
-    <div className={`bg-white rounded-xl shadow-lg border border-gray-200 p-6 ${className}`}>
+    <div className={`bg-white/90 backdrop-blur-sm/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 hover:shadow-3xl transition-all duration-500 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-gray-900 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <svg className="w-6 h-6 mr-3 text-blue-600 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
           </svg>
           Advanced Filters
@@ -117,7 +117,7 @@ export default function AdvancedFilters({
         {onClose && (
           <button
             onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1 text-gray-400 hover:text-gray-800 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -126,7 +126,7 @@ export default function AdvancedFilters({
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Location with Autocomplete */}
         <div>
           <label htmlFor="location-autocomplete" className="block text-sm font-semibold text-gray-900 mb-2">Location</label>
@@ -142,25 +142,25 @@ export default function AdvancedFilters({
               }}
               onFocus={() => setShowLocationSuggestions(true)}
               placeholder="City, suburb, or area..."
-              className="w-full px-4 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500 transition-colors"
+              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white/90 backdrop-blur-sm hover:shadow-md transition-all duration-300"
             />
             <svg className="absolute right-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             </svg>
             
             {showLocationSuggestions && filteredLocations.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-2 bg-white/90 backdrop-blur-sm/95 backdrop-blur-lg border border-gray-200 rounded-xl shadow-2xl max-h-48 overflow-y-auto">
                 {filteredLocations.map((location, index) => (
                   <button
                     key={`location-${location}-${index}`}
                     onClick={() => handleLocationSelect(location)}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                    className="w-full text-left px-4 py-4 hover:bg-blue-50 transition-all duration-200 first:rounded-t-xl last:rounded-b-xl hover:scale-[1.02] transform"
                   >
                     <div className="flex items-center">
                       <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
-                      <span className="text-sm text-gray-700">{location}</span>
+                      <span className="text-sm text-gray-800">{location}</span>
                     </div>
                   </button>
                 ))}
@@ -181,10 +181,10 @@ export default function AdvancedFilters({
               <button
                 key={label}
                 onClick={() => updateFilters({ listingType: value })}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                   localFilters.listingType === value
                     ? `bg-${color}-100 text-${color}-800 ring-2 ring-${color}-500`
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                 }`}
               >
                 {label}
@@ -209,10 +209,10 @@ export default function AdvancedFilters({
                       : [...currentTypes, type];
                     updateFilters({ propertyType: newTypes.length > 0 ? newTypes : undefined });
                   }}
-                  className={`px-3 py-2 text-sm font-medium rounded-lg border-2 transition-all ${
+                  className={`px-4 py-3 text-sm font-medium rounded-xl border-2 transition-all ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+                      : 'border-gray-200 text-gray-800 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <span className="capitalize">{type.replace('_', ' ')}</span>
@@ -230,10 +230,10 @@ export default function AdvancedFilters({
               <button
                 key={`price-range-${range.min}-${range.max}-${index}`}
                 onClick={() => updateFilters({ minPrice: range.min, maxPrice: range.max })}
-                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
+                className={`w-full text-left px-4 py-3 rounded-xl border transition-all ${
                   selectedPriceRange === range
                     ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+                    : 'border-gray-200 text-gray-800 hover:border-gray-300 hover:bg-gray-50'
                 }`}
               >
                 {range.label}
@@ -244,7 +244,7 @@ export default function AdvancedFilters({
           {/* Custom Price Range */}
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="min-price-advanced" className="block text-xs text-gray-600 mb-1">Min Price (R)</label>
+              <label htmlFor="min-price-advanced" className="block text-xs text-gray-800 mb-1">Min Price (R)</label>
               <input
                 id="min-price-advanced"
                 type="number"
@@ -254,11 +254,11 @@ export default function AdvancedFilters({
                   const value = e.target.value ? parseInt(e.target.value) : undefined;
                   updateFilters({ minPrice: value });
                 }}
-                className="w-full px-3 py-2 border-2 border-gray-400 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                className="w-full px-4 py-3 border-2 border-black rounded-xl text-sm bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
               />
             </div>
             <div>
-              <label htmlFor="max-price-advanced" className="block text-xs text-gray-600 mb-1">Max Price (R)</label>
+              <label htmlFor="max-price-advanced" className="block text-xs text-gray-800 mb-1">Max Price (R)</label>
               <input
                 id="max-price-advanced"
                 type="number"
@@ -268,7 +268,7 @@ export default function AdvancedFilters({
                   const value = e.target.value ? parseInt(e.target.value) : undefined;
                   updateFilters({ maxPrice: value });
                 }}
-                className="w-full px-3 py-2 border-2 border-gray-400 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                className="w-full px-4 py-3 border-2 border-black rounded-xl text-sm bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
               />
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5, 6].map(num => (
@@ -300,7 +300,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5].map(num => (
@@ -322,7 +322,7 @@ export default function AdvancedFilters({
                 onChange={(e) => updateFilters({ 
                   minSquareMeters: e.target.value ? parseInt(e.target.value) : undefined 
                 })}
-                className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
               />
             </div>
             <div>
@@ -333,7 +333,7 @@ export default function AdvancedFilters({
                 onChange={(e) => updateFilters({ 
                   maxSquareMeters: e.target.value ? parseInt(e.target.value) : undefined 
                 })}
-                className="w-full px-3 py-3 border-2 border-gray-400 rounded-lg bg-white text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none hover:border-gray-500"
+                className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
               />
             </div>
           </div>
@@ -355,10 +355,10 @@ export default function AdvancedFilters({
                       : [...currentFeatures, feature];
                     updateFilters({ features: newFeatures.length > 0 ? newFeatures : undefined });
                   }}
-                  className={`px-3 py-2 text-xs font-medium rounded-lg border transition-all ${
+                  className={`px-4 py-3 text-xs font-medium rounded-xl border transition-all ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+                      : 'border-gray-200 text-gray-800 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   {feature}
@@ -372,14 +372,14 @@ export default function AdvancedFilters({
         <div className="flex gap-3 pt-4 border-t border-gray-200">
           <button
             onClick={handleReset}
-            className="flex-1 px-4 py-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            className="flex-1 px-4 py-3 text-gray-800 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium"
           >
             Clear All
           </button>
           {onClose && (
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
             >
               Apply Filters
             </button>

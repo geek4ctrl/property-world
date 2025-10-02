@@ -28,31 +28,31 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const getVariantClasses = () => {
       const variants = {
-        primary: 'bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 focus:ring-blue-500',
-        secondary: 'bg-gray-600 hover:bg-gray-700 text-white border-gray-600 hover:border-gray-700 focus:ring-gray-500',
-        outline: 'bg-transparent hover:bg-blue-50 text-blue-600 border-blue-600 hover:border-blue-700 focus:ring-blue-500',
+        primary: 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-transparent focus:ring-blue-500 shadow-lg hover:shadow-xl',
+        secondary: 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white border-transparent focus:ring-gray-500 shadow-lg hover:shadow-xl',
+        outline: 'bg-transparent hover:bg-blue-50 text-blue-600 border-blue-600 hover:border-blue-700 focus:ring-blue-500 shadow-sm hover:shadow-md',
         ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 border-transparent hover:border-gray-300 focus:ring-gray-500',
-        danger: 'bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700 focus:ring-red-500'
+        danger: 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border-transparent focus:ring-red-500 shadow-lg hover:shadow-xl'
       };
       return variants[variant];
     };
 
     const getSizeClasses = () => {
       const sizes = {
-        sm: 'px-3 py-1.5 text-sm',
-        md: 'px-4 py-2 text-sm',
-        lg: 'px-6 py-3 text-base'
+        sm: 'px-4 py-2.5 text-sm',
+        md: 'px-6 py-3 text-sm',
+        lg: 'px-8 py-4 text-base'
       };
       return sizes[size];
     };
 
     const baseClasses = `
-      inline-flex items-center justify-center
-      font-medium rounded-lg border
-      focus:outline-none focus:ring-2 focus:ring-offset-2
+      inline-flex items-center justify-center relative overflow-hidden
+      font-semibold rounded-xl border transition-all duration-300 ease-out
+      focus:outline-none focus:ring-4 focus:ring-offset-2
       disabled:opacity-50 disabled:cursor-not-allowed
-      transition-all duration-200 ease-in-out
-      hover:transform hover:-translate-y-0.5
+      transform hover:scale-105 active:scale-95
+      ${animate ? 'hover:-translate-y-0.5' : ''}
       ${getSizeClasses()}
       ${getVariantClasses()}
       ${className}
@@ -123,20 +123,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const inputClasses = `
-      w-full px-3 py-2 border rounded-lg transition-all duration-200 ease-in-out
-      bg-white text-gray-900 placeholder-gray-500
-      focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
-      hover:border-gray-500
-      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-500'}
-      ${leftIcon ? 'pl-10' : ''}
-      ${rightIcon ? 'pr-10' : ''}
+      w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ease-out
+      bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500
+      focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none focus:bg-white
+      hover:border-gray-800 hover:bg-white hover:shadow-md
+      ${error ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-black'}
+      ${leftIcon ? 'pl-12' : ''}
+      ${rightIcon ? 'pr-12' : ''}
       ${className}
     `.trim().replace(/\s+/g, ' ');
 
     return (
       <div className={`relative ${containerClassName}`}>
         {label && (
-          <label className={`form-label block text-sm font-medium mb-2 transition-colors ${getLabelColor()}`}>
+          <label className={`form-label block text-sm font-semibold mb-3 transition-colors duration-200 ${getLabelColor()}`}>
             {label}
           </label>
         )}
@@ -215,18 +215,18 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     const selectClasses = `
-      form-input w-full px-3 py-2 border rounded-lg
-      focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none
-      hover:border-gray-500 appearance-none bg-white text-gray-900
+      form-input w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ease-out
+      focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none focus:bg-white
+      hover:border-gray-800 hover:bg-white hover:shadow-md appearance-none bg-white/90 backdrop-blur-sm text-gray-900
       overflow-hidden text-ellipsis whitespace-nowrap
-      ${error ? 'border-red-600 focus:ring-red-600 focus:border-red-600' : 'border-gray-500'}
+      ${error ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-black'}
       ${className}
     `.trim().replace(/\s+/g, ' ');
 
     return (
       <div className={`relative ${containerClassName}`}>
         {label && (
-          <label className={`form-label block text-sm font-medium mb-1 transition-colors ${getLabelColor()}`}>
+          <label className={`form-label block text-sm font-semibold mb-3 transition-colors ${getLabelColor()}`}>
             {label}
           </label>
         )}
@@ -307,7 +307,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className={`relative ${containerClassName}`}>
         {label && (
-          <label className={`form-label block text-sm font-medium mb-1 transition-colors ${getLabelColor()}`}>
+          <label className={`form-label block text-sm font-semibold mb-3 transition-colors ${getLabelColor()}`}>
             {label}
           </label>
         )}

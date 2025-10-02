@@ -10,7 +10,7 @@ interface MortgageCalculatorProps {
 }
 
 export default function MortgageCalculator({ propertyPrice, className = '' }: MortgageCalculatorProps) {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
   const [downPayment, setDownPayment] = useState(propertyPrice * 0.1); // 10% default
   const [interestRate, setInterestRate] = useState(11.5); // South African prime rate
   const [termYears, setTermYears] = useState(20);

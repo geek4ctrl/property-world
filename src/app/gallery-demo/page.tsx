@@ -6,7 +6,6 @@ import Footer from '@/components/layout/Footer';
 import ImageGallery from '@/components/property/ImageGallery';
 import PropertyImageCarousel from '@/components/property/PropertyImageCarousel';
 import { sampleProperties } from '@/data/sampleProperties';
-// import { Button } from '@/components/ui/FormComponents';
 
 export default function GalleryDemo() {
   const [selectedProperty, setSelectedProperty] = useState(sampleProperties[0]);

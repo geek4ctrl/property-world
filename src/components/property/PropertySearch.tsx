@@ -14,16 +14,16 @@ interface PropertySearchProps {
 
 // Helper functions to reduce complexity
 const getTabButtonClasses = (isActive: boolean, isCompact: boolean) => {
-  const baseClasses = 'flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors';
+  const baseClasses = 'flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ease-out';
   if (isActive) {
-    const activeClasses = isCompact ? 'bg-blue-600 text-white' : 'bg-white text-blue-600';
-    return `${baseClasses} ${activeClasses} shadow-sm`;
+    const activeClasses = isCompact ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-blue-600 shadow-lg ring-2 ring-blue-500/20';
+    return `${baseClasses} ${activeClasses}`;
   }
-  return `${baseClasses} text-gray-600 hover:text-gray-900`;
+  return `${baseClasses} text-gray-600 hover:text-gray-900 hover:bg-white/50`;
 };
 
 const getInputClasses = (isCompact: boolean) => {
-  const baseClasses = 'w-full px-3 border border-gray-500 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-600';
+  const baseClasses = 'w-full px-3 border border-gray-600 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-700';
   const sizeClasses = isCompact ? 'py-2 text-sm' : 'py-2';
   return `${baseClasses} ${sizeClasses}`;
 };
@@ -97,33 +97,33 @@ export default function PropertySearch({
   };
 
   const getFormClasses = () => {
-    if (isCompact) return 'w-full space-y-4';
-    if (isVertical) return 'w-full p-6';
-    return 'bg-white rounded-lg shadow-lg p-8 border w-full';
+    if (isCompact) return 'w-full space-y-6';
+    if (isVertical) return 'w-full p-8';
+    return 'bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 w-full hover:shadow-3xl transition-all duration-500';
   };
 
   const getFieldsLayout = () => {
-    if (isVertical) return 'space-y-5';
-    if (isCompact) return 'space-y-4';
-    return 'grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+    if (isVertical) return 'space-y-6';
+    if (isCompact) return 'space-y-5';
+    return 'grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
   };
 
   return (
     <div className={`${getContainerClasses()} ${className}`}>
       <form onSubmit={handleSubmit} className={getFormClasses()}>
         {/* Listing Type Tabs */}
-        <div className={`flex justify-center ${isVertical ? 'mb-6' : 'mb-4'} ${isCompact ? 'bg-gray-50' : 'bg-gray-100'} rounded-lg p-1 max-w-md mx-auto`}>
+        <div className={`flex justify-center ${isVertical ? 'mb-8' : 'mb-6'} bg-gray-50/50 backdrop-blur-sm rounded-2xl p-1.5 max-w-md mx-auto shadow-inner`}>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.FOR_SALE }))}
-            className={`${getTabButtonClasses(filters.listingType === ListingType.FOR_SALE, isCompact)} btn-animated hover-scale`}
+            className={`${getTabButtonClasses(filters.listingType === ListingType.FOR_SALE, isCompact)} transform transition-all duration-300 hover:scale-105 active:scale-95 font-semibold`}
           >
             {t('navigation.buy')}
           </button>
           <button
             type="button"
             onClick={() => setFilters(prev => ({ ...prev, listingType: ListingType.TO_RENT }))}
-            className={`${getTabButtonClasses(filters.listingType === ListingType.TO_RENT, isCompact)} btn-animated hover-scale`}
+            className={`${getTabButtonClasses(filters.listingType === ListingType.TO_RENT, isCompact)} transform transition-all duration-300 hover:scale-105 active:scale-95 font-semibold`}
           >
             {t('navigation.rent')}
           </button>
@@ -199,10 +199,10 @@ export default function PropertySearch({
         </div>
 
         {/* Search Button */}
-        <div className={`${isCompact ? 'mt-4' : isVertical ? 'mt-8' : 'mt-6'} flex justify-center`}>
+        <div className={`${isCompact ? 'mt-6' : isVertical ? 'mt-10' : 'mt-8'} flex justify-center`}>
           <Button
             type="submit"
-            className={`${isCompact ? 'w-full' : isVertical ? 'w-full max-w-md' : 'w-full sm:w-auto px-8'}`}
+            className={`${isCompact ? 'w-full' : isVertical ? 'w-full max-w-md' : 'w-full sm:w-auto px-10'} transform transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl`}
             size={isCompact ? 'md' : 'lg'}
             leftIcon={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

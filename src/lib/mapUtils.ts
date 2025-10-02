@@ -1,5 +1,5 @@
 import { Property } from '@/types';
-import { MapBounds } from '@/components/map/PropertyMapGrid_fixed';
+import { MapBounds } from '@/components/map/PropertyMapGrid';
 
 /**
  * Filters properties based on map bounds

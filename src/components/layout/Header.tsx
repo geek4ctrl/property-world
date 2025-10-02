@@ -6,7 +6,7 @@ import { useState, useCallback, memo } from 'react';
 import { useTranslation } from '@/i18n/translation';
 import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
-import { Button } from '@/components/ui/FormComponents_clean';
+import { Button } from '@/components/ui/FormComponents';
 
 const Header = memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

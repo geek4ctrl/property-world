@@ -251,7 +251,7 @@ export default function AdvancedSearch({
                 placeholder={t('search.search_properties')}
                 value={filters.query || ''}
                 onChange={(e) => handleFilterChange('query', e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -267,7 +267,7 @@ export default function AdvancedSearch({
               value={filters.location || ''}
               onChange={(e) => handleFilterChange('location', e.target.value)}
               onFocus={() => setShowLocationDropdown(locationSuggestions.length > 0)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -377,10 +377,10 @@ export default function AdvancedSearch({
         {isExpanded && (
           <div className="space-y-6 pt-4 border-t border-gray-200">
             {/* Property Types */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 mb-3">
+            <fieldset>
+              <legend className="block text-sm font-medium text-gray-900 mb-3">
                 Property Type
-              </label>
+              </legend>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
                 {propertyTypes.map((type) => (
                   <button
@@ -390,7 +390,7 @@ export default function AdvancedSearch({
                     className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
                       filters.propertyType?.includes(type.value)
                         ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                        : 'border-gray-200 hover:border-black text-gray-700'
                     }`}
                   >
                     <div className="text-lg mb-1">{type.icon}</div>
@@ -398,41 +398,44 @@ export default function AdvancedSearch({
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             {/* Price Range */}
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-3">
-                Price Range
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-                {priceRanges.map((range, index) => (
-                  <button
-                    key={index}
+              <fieldset>
+                <legend className="block text-sm font-medium text-gray-900 mb-3">
+                  Price Range
+                </legend>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+                  {priceRanges.map((range) => (
+                    <button
+                      key={`price-${range.min || 0}-${range.max || 'max'}`}
                     type="button"
                     onClick={() => handlePriceRangeChange(range)}
                     className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
                       getSelectedPriceRange() === range
                         ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                        : 'border-gray-200 hover:border-black text-gray-700'
                     }`}
                   >
                     {range.label}
                   </button>
                 ))}
-              </div>
+                </div>
+              </fieldset>
             </div>
 
             {/* Bedrooms and Bathrooms */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="bedrooms-select" className="block text-sm font-medium text-gray-900 mb-2">
                   Bedrooms
                 </label>
                 <select
+                  id="bedrooms-select"
                   value={filters.bedrooms || ''}
                   onChange={(e) => handleFilterChange('bedrooms', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">{t('search.any')}</option>
                   <option value="1">1+</option>
@@ -444,13 +447,14 @@ export default function AdvancedSearch({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
+                <label htmlFor="bathrooms-select" className="block text-sm font-medium text-gray-900 mb-2">
                   Bathrooms
                 </label>
                 <select
+                  id="bathrooms-select"
                   value={filters.bathrooms || ''}
                   onChange={(e) => handleFilterChange('bathrooms', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">{t('search.any')}</option>
                   <option value="1">1+</option>
@@ -462,41 +466,42 @@ export default function AdvancedSearch({
             </div>
 
             {/* Square Meters Range */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Property Size (sqm)
-              </label>
+            <fieldset className="animate-fadeInUp" style={{ animationDelay: '400ms' }}>
+              <legend className="flex items-center space-x-2 text-lg font-bold text-gray-900 mb-4">
+                <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-blue-500 rounded-full"></div>
+                <span>Property Size (sqm)</span>
+              </legend>
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="group">
                   <input
                     type="number"
                     placeholder="Min size"
                     value={filters.minSquareMeters || ''}
                     onChange={(e) => handleFilterChange('minSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:bg-white hover:border-indigo-400 hover:bg-white hover:shadow-lg group-hover:shadow-md"
                   />
                 </div>
-                <div>
+                <div className="group">
                   <input
                     type="number"
                     placeholder="Max size"
                     value={filters.maxSquareMeters || ''}
                     onChange={(e) => handleFilterChange('maxSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:bg-white hover:border-indigo-400 hover:bg-white hover:shadow-lg group-hover:shadow-md"
                   />
                 </div>
               </div>
-            </div>
+            </fieldset>
 
             {/* Save Search */}
             {showSaveSearch && (
-              <div className="pt-4 border-t border-gray-200">
+              <div className="pt-6 border-t border-gradient-to-r from-blue-200/30 to-purple-200/30 animate-fadeInUp" style={{ animationDelay: '500ms' }}>
                 <button
                   type="button"
                   onClick={() => setShowSaveModal(true)}
-                  className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium"
+                  className="group flex items-center space-x-3 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 text-amber-700 hover:text-amber-800 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 hover:from-amber-100 hover:to-orange-100"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                   </svg>
                   <span>Save this search</span>
@@ -509,37 +514,44 @@ export default function AdvancedSearch({
 
       {/* Save Search Modal */}
       {showSaveModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Save Search</h3>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Search Name
-              </label>
-              <input
-                type="text"
-                value={savedSearchName}
-                onChange={(e) => setSavedSearchName(e.target.value)}
-                placeholder="e.g., 3BR Houses in Cape Town"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div className="flex space-x-3">
-              <button
-                type="button"
-                onClick={() => setShowSaveModal(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleSaveSearch}
-                disabled={!savedSearchName.trim()}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Save Search
-              </button>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+          <div className="glass-card bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-8 animate-slideDown border border-white/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/30 rounded-2xl"></div>
+            <div className="relative">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center space-x-3">
+                <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+                <span>Save Search</span>
+              </h3>
+              <div className="mb-6">
+                <label htmlFor="search-name-input" className="block text-lg font-semibold text-gray-700 mb-3">
+                  Search Name
+                </label>
+                <input
+                  id="search-name-input"
+                  type="text"
+                  value={savedSearchName}
+                  onChange={(e) => setSavedSearchName(e.target.value)}
+                  placeholder="e.g., 3BR Houses in Cape Town"
+                  className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none focus:bg-white hover:border-blue-400 hover:shadow-lg"
+                />
+              </div>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setShowSaveModal(false)}
+                  className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 hover:shadow-md"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveSearch}
+                  disabled={!savedSearchName.trim()}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  Save Search
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -547,9 +559,15 @@ export default function AdvancedSearch({
 
       {/* Click outside to close location dropdown */}
       {showLocationDropdown && (
-        <div
-          className="fixed inset-0 z-40"
+        <button
+          className="fixed inset-0 z-40 bg-transparent border-none cursor-default"
           onClick={() => setShowLocationDropdown(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setShowLocationDropdown(false);
+            }
+          }}
+          aria-label="Close location dropdown"
         />
       )}
     </div>

@@ -19,7 +19,7 @@ export default function FavoritesDebugPage() {
     
     try {
       // Test basic connection
-      const { data, error } = await supabase.from('user_profiles').select('count').limit(1);
+      const { error } = await supabase.from('user_profiles').select('count').limit(1);
       if (error) {
         addDebugLine(`❌ Supabase connection failed: ${error.message}`);
       } else {
@@ -54,7 +54,7 @@ export default function FavoritesDebugPage() {
     addDebugLine('Testing if user_favorites table exists...');
     
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('user_favorites')
         .select('*')
         .limit(1);

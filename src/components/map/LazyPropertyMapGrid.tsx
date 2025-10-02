@@ -1,12 +1,17 @@
 'use client';
 
-import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { Property } from '@/types';
-import type { MapBounds } from './PropertyMapGrid_ssr_safe';
+// Map bounds interface to match PropertyMapGrid
+interface MapBounds {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+}
 
 // Dynamically import the map component with SSR disabled
-const PropertyMapGrid = dynamic(() => import('./PropertyMapGrid_ssr_safe'), {
+const PropertyMapGrid = dynamic(() => import('./PropertyMapGrid'), {
   ssr: false,
   loading: () => (
     <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-200">
@@ -52,9 +57,7 @@ const LazyPropertyMapGrid = ({
       properties={properties} 
       className={className} 
       onPropertySelect={onPropertySelect}
-      onMapBoundsChange={onMapBoundsChange}
-      onMapMoved={onMapMoved}
-      showSearchButton={showSearchButton}
+      onBoundsChange={onMapBoundsChange}
     />
   );
 };

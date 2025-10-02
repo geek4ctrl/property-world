@@ -11,7 +11,7 @@ import { SearchFilters, Property, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties, formatListingType } from '@/lib/utils';
 import { filterPropertiesByBounds } from '@/lib/mapUtils';
-import type { MapBounds } from '@/components/map/PropertyMapGrid_fixed';
+import type { MapBounds } from '@/components/map/PropertyMapGrid';
 import { useTranslation } from '@/i18n/translation';
 
 export default function MapViewPage() {
