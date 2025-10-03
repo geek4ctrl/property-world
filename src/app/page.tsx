@@ -50,13 +50,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-blue-300/10 to-green-300/10 rounded-full blur-3xl animate-pulse-slow"></div>
-      </div>
+    <div className="min-h-screen bg-white relative overflow-hidden">
       
       <div className="relative z-10">
         <Header />
@@ -69,7 +63,6 @@ export default function HomePage() {
 
         {/* Search Results or Featured/Recent Properties */}
         <section className="py-20 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white/80"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {searchResults ? (
               <>
@@ -128,8 +121,7 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="py-24 bg-gradient-to-b from-white via-blue-50/30 to-purple-50/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+        <section className="py-24 bg-white relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-20 animate-fadeInUp">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
@@ -186,8 +178,7 @@ export default function HomePage() {
         </section>
 
         {/* Contact Section */}
-        <section className="py-24 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-white/80 to-transparent"></div>
+        <section className="py-24 bg-white relative overflow-hidden">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16 animate-fadeInUp">
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">

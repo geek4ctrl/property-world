@@ -251,7 +251,7 @@ export default function AdvancedSearch({
                 placeholder={t('search.search_properties')}
                 value={filters.query || ''}
                 onChange={(e) => handleFilterChange('query', e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -267,7 +267,7 @@ export default function AdvancedSearch({
               value={filters.location || ''}
               onChange={(e) => handleFilterChange('location', e.target.value)}
               onFocus={() => setShowLocationDropdown(locationSuggestions.length > 0)}
-              className="w-full pl-10 pr-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -435,7 +435,7 @@ export default function AdvancedSearch({
                   id="bedrooms-select"
                   value={filters.bedrooms || ''}
                   onChange={(e) => handleFilterChange('bedrooms', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full px-3 py-2 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">{t('search.any')}</option>
                   <option value="1">1+</option>
@@ -454,7 +454,7 @@ export default function AdvancedSearch({
                   id="bathrooms-select"
                   value={filters.bathrooms || ''}
                   onChange={(e) => handleFilterChange('bathrooms', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full px-3 py-2 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">{t('search.any')}</option>
                   <option value="1">1+</option>
@@ -478,7 +478,7 @@ export default function AdvancedSearch({
                     placeholder="Min size"
                     value={filters.minSquareMeters || ''}
                     onChange={(e) => handleFilterChange('minSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
-                    className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:bg-white hover:border-indigo-400 hover:bg-white hover:shadow-lg group-hover:shadow-md"
+                    className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 <div className="group">
@@ -487,7 +487,7 @@ export default function AdvancedSearch({
                     placeholder="Max size"
                     value={filters.maxSquareMeters || ''}
                     onChange={(e) => handleFilterChange('maxSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
-                    className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:bg-white hover:border-indigo-400 hover:bg-white hover:shadow-lg group-hover:shadow-md"
+                    className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -532,7 +532,7 @@ export default function AdvancedSearch({
                   value={savedSearchName}
                   onChange={(e) => setSavedSearchName(e.target.value)}
                   placeholder="e.g., 3BR Houses in Cape Town"
-                  className="w-full px-4 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-300 ease-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none focus:bg-white hover:border-blue-400 hover:shadow-lg"
+                  className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div className="flex space-x-4">
