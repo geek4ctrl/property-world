@@ -312,7 +312,7 @@ export default function AdvancedSearch({
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 filters.listingType === ListingType.FOR_SALE
                   ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
               }`}
             >
               For Sale
@@ -323,7 +323,7 @@ export default function AdvancedSearch({
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 filters.listingType === ListingType.TO_RENT
                   ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
               }`}
             >
               To Rent
