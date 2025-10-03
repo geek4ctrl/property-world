@@ -2,13 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { Property } from '@/types';
-// Map bounds interface to match PropertyMapGrid
-interface MapBounds {
-  north: number;
-  south: number;
-  east: number;
-  west: number;
-}
+import { MapBounds } from './PropertyMapGrid';
 
 // Dynamically import the map component with SSR disabled
 const PropertyMapGrid = dynamic(() => import('./PropertyMapGrid'), {

@@ -2,6 +2,15 @@ import { Property } from '@/types';
 import { MapBounds } from '@/components/map/PropertyMapGrid';
 
 /**
+ * Extended interface for map operations that includes center and zoom
+ */
+export interface MapState {
+  center: { lat: number; lng: number };
+  zoom: number;
+  bounds: MapBounds;
+}
+
+/**
  * Filters properties based on map bounds
  */
 export function filterPropertiesByBounds(properties: Property[], bounds: MapBounds): Property[] {
@@ -65,11 +74,7 @@ function toRad(degrees: number): number {
 /**
  * Gets the center point and appropriate zoom level for an array of properties
  */
-export function getMapBoundsForProperties(properties: Property[]): {
-  center: { lat: number; lng: number };
-  zoom: number;
-  bounds: MapBounds;
-} | null {
+export function getMapBoundsForProperties(properties: Property[]): MapState | null {
   const propertiesWithCoords = properties.filter(p => p.coordinates);
   
   if (propertiesWithCoords.length === 0) return null;
@@ -83,9 +88,7 @@ export function getMapBoundsForProperties(properties: Property[]): {
         north: coord.lat + 0.01,
         south: coord.lat - 0.01,
         east: coord.lng + 0.01,
-        west: coord.lng - 0.01,
-        center: coord,
-        zoom: 15
+        west: coord.lng - 0.01
       }
     };
   }
@@ -121,9 +124,7 @@ export function getMapBoundsForProperties(properties: Property[]): {
       north,
       south,
       east,
-      west,
-      center,
-      zoom
+      west
     }
   };
 }
@@ -157,8 +158,6 @@ export function expandBounds(bounds: MapBounds, percentage: number = 10): MapBou
     north: bounds.north + latExpansion,
     south: bounds.south - latExpansion,
     east: bounds.east + lngExpansion,
-    west: bounds.west - lngExpansion,
-    center: bounds.center,
-    zoom: bounds.zoom
+    west: bounds.west - lngExpansion
   };
 }

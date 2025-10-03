@@ -25,9 +25,9 @@ const Header = memo(function Header() {
 
   // Helper function to get navigation link classes
   const getNavLinkClasses = (path: string, exact = false) => {
-    const baseClasses = "px-3 py-2 text-sm font-medium transition-colors duration-200 ease-in-out";
-    const activeClasses = "text-blue-600";
-    const inactiveClasses = "text-gray-700 hover:text-blue-600";
+    const baseClasses = "px-4 py-3 text-sm font-semibold transition-all duration-300 rounded-xl hover:scale-105 relative group";
+    const activeClasses = "text-blue-600 bg-blue-50/50 shadow-sm";
+    const inactiveClasses = "text-gray-700 hover:text-blue-600 hover:bg-blue-50/30 hover:shadow-md";
     
     return `${baseClasses} ${isActive(path, exact) ? activeClasses : inactiveClasses}`;
   };
@@ -46,16 +46,17 @@ const Header = memo(function Header() {
   };
 
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="glass-card bg-white/95 backdrop-blur-xl shadow-lg sticky top-0 z-50 border-b border-white/20">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-white/50 to-purple-50/30 rounded-none"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center space-x-2 transition-colors duration-200" prefetch={true}>
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-lg">T</span>
+            <Link href="/" className="flex items-center space-x-3 transition-all duration-300 hover:scale-105 group" prefetch={true}>
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:shadow-blue-500/25 transition-all duration-300 group-hover:rotate-3">
+                <span className="text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">T</span>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent hover:from-blue-700 hover:to-blue-800">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-blue-800 transition-all duration-300">
                 Tano
               </span>
             </Link>
@@ -63,7 +64,7 @@ const Header = memo(function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block flex-1">
-            <div className="flex items-center justify-center space-x-6">
+            <div className="flex items-center justify-center space-x-2">
               <Link 
                 href="/" 
                 className={getNavLinkClasses('/', true)}
@@ -86,41 +87,50 @@ const Header = memo(function Header() {
                 {t('navigation.map_view')}
               </Link>
               <div className="relative group">
-                <button className={`nav-item px-3 py-2 text-sm font-medium transition-all-normal hover-scale relative ${
-                  isActive('/buy') ? 'text-blue-600 after:w-full' : 'text-gray-700 hover:text-blue-600 after:w-0'
+                <button className={`px-4 py-3 text-sm font-semibold transition-all duration-300 rounded-xl hover:scale-105 relative group flex items-center space-x-2 ${
+                  isActive('/buy') ? 'text-blue-600 bg-blue-50/50 shadow-sm' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/30 hover:shadow-md'
                 }`}>
-                  {t('navigation.buy')}
-                  <svg className="w-3 h-3 ml-1 inline transform group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>{t('navigation.buy')}</span>
+                  <svg className="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all-normal transform group-hover:translateY-0 translateY-2 z-50 animate-fade-in">
-                  <div className="py-1">
-                    <Link href="/buy" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium hover-lift transition-all-fast" prefetch={true}>🏡 {t('navigation.buy_home_portal')}</Link>
-                    <div className="border-t border-gray-100 my-1"></div>
-                    <Link href="/buy/calculator" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast" prefetch={true}>💰 {t('navigation.mortgage_calculator')}</Link>
-                    <Link href="/buy/guide" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast" prefetch={true}>📖 {t('navigation.buying_guide')}</Link>
-                    <div className="border-t border-gray-100 my-1"></div>
-                    <Link href="/properties?listing=sale&type=house" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast" prefetch={false}>{t('navigation.houses_for_sale')}</Link>
-                    <Link href="/properties?listing=sale&type=apartment" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast" prefetch={false}>{t('navigation.apartments_for_sale')}</Link>
-                    <Link href="/properties?listing=sale&type=townhouse" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast" prefetch={false}>{t('navigation.townhouses_for_sale')}</Link>
+                <div className="absolute left-0 mt-2 w-64 glass-card bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translateY-0 translateY-2 z-50 border border-white/20 overflow-hidden">
+                  <div className="py-2">
+                    <Link href="/buy" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 font-semibold transition-all duration-200 border-l-4 border-transparent hover:border-blue-500 flex items-center space-x-3" prefetch={true}>
+                      <span className="text-lg">🏡</span>
+                      <span>{t('navigation.buy_home_portal')}</span>
+                    </Link>
+                    <div className="border-t border-gray-100/50 my-1"></div>
+                    <Link href="/buy/calculator" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 transition-all duration-200 border-l-4 border-transparent hover:border-green-500 flex items-center space-x-3" prefetch={true}>
+                      <span className="text-lg">💰</span>
+                      <span>{t('navigation.mortgage_calculator')}</span>
+                    </Link>
+                    <Link href="/buy/guide" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 transition-all duration-200 border-l-4 border-transparent hover:border-purple-500 flex items-center space-x-3" prefetch={true}>
+                      <span className="text-lg">📖</span>
+                      <span>{t('navigation.buying_guide')}</span>
+                    </Link>
+                    <div className="border-t border-gray-100/50 my-1"></div>
+                    <Link href="/properties?listing=sale&type=house" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50/50 hover:text-gray-900 transition-all duration-200" prefetch={false}>{t('navigation.houses_for_sale')}</Link>
+                    <Link href="/properties?listing=sale&type=apartment" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50/50 hover:text-gray-900 transition-all duration-200" prefetch={false}>{t('navigation.apartments_for_sale')}</Link>
+                    <Link href="/properties?listing=sale&type=townhouse" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50/50 hover:text-gray-900 transition-all duration-200" prefetch={false}>{t('navigation.townhouses_for_sale')}</Link>
                   </div>
                 </div>
               </div>
               <div className="relative group">
-                <button className={`nav-item px-3 py-2 text-sm font-medium transition-all-normal hover-scale relative ${
-                  pathname.includes('listing=rent') ? 'text-blue-600 after:w-full' : 'text-gray-700 hover:text-blue-600 after:w-0'
+                <button className={`px-4 py-3 text-sm font-semibold transition-all duration-300 rounded-xl hover:scale-105 relative group flex items-center space-x-2 ${
+                  pathname.includes('listing=rent') ? 'text-blue-600 bg-blue-50/50 shadow-sm' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/30 hover:shadow-md'
                 }`}>
-                  {t('navigation.rent')}
-                  <svg className="w-3 h-3 ml-1 inline transform group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>{t('navigation.rent')}</span>
+                  <svg className="w-4 h-4 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all-normal transform group-hover:translateY-0 translateY-2 z-50 animate-fade-in">
-                  <div className="py-1">
-                    <Link href="/properties?listing=rent&type=house" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast">{t('navigation.houses_to_rent')}</Link>
-                    <Link href="/properties?listing=rent&type=apartment" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast">{t('navigation.apartments_to_rent')}</Link>
-                    <Link href="/properties?listing=rent&type=flat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover-lift transition-all-fast">{t('navigation.flats_to_rent')}</Link>
+                <div className="absolute left-0 mt-2 w-56 glass-card bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translateY-0 translateY-2 z-50 border border-white/20 overflow-hidden">
+                  <div className="py-2">
+                    <Link href="/properties?listing=rent&type=house" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 transition-all duration-200">{t('navigation.houses_to_rent')}</Link>
+                    <Link href="/properties?listing=rent&type=apartment" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 transition-all duration-200">{t('navigation.apartments_to_rent')}</Link>
+                    <Link href="/properties?listing=rent&type=flat" className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50/50 hover:text-blue-600 transition-all duration-200">{t('navigation.flats_to_rent')}</Link>
                   </div>
                 </div>
               </div>
@@ -243,10 +253,10 @@ const Header = memo(function Header() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-blue-600 focus:outline-none transition-all-normal hover-scale p-2 rounded-md"
+              className="text-gray-700 hover:text-blue-600 focus:outline-none transition-all duration-300 hover:scale-110 p-3 rounded-xl hover:bg-blue-50/50 hover:shadow-md"
               aria-label="Toggle menu"
             >
-              <svg className={`w-6 h-6 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-6 h-6 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                   d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
               </svg>
@@ -256,11 +266,15 @@ const Header = memo(function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden animate-slide-down">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t shadow-lg">
+          <div className="md:hidden animate-slideDown">
+            <div className="px-4 pt-4 pb-6 space-y-2 sm:px-6 glass-card bg-white/95 backdrop-blur-xl border-t border-white/20 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/20"></div>
+              <div className="relative space-y-2">
               <Link 
                 href="/" 
-                className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${isActive('/', true) ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  isActive('/', true) ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
                 onClick={closeMenu} 
                 prefetch={true}
               >
@@ -268,7 +282,9 @@ const Header = memo(function Header() {
               </Link>
               <Link 
                 href="/properties" 
-                className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${isActive('/properties') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  isActive('/properties') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
                 onClick={closeMenu} 
                 prefetch={true}
               >
@@ -375,6 +391,7 @@ const Header = memo(function Header() {
                   </Link>
                 </>
               )}
+              </div>
             </div>
           </div>
         )}

@@ -132,10 +132,10 @@ export default function PropertyCard({ property, className = '', variant = 'defa
 
   return (
     <article 
-      className={`group bg-white rounded-xl overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
+      className={`group glass-card bg-white/95 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-2 hover:scale-[1.02] ${
         isFeatured 
-          ? 'shadow-xl border-2 border-yellow-200' 
-          : 'shadow-md'
+          ? 'shadow-2xl border-2 border-gradient-to-r from-yellow-400 to-orange-400 ring-2 ring-yellow-400/20' 
+          : 'shadow-lg hover:shadow-xl'
       } ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -143,12 +143,12 @@ export default function PropertyCard({ property, className = '', variant = 'defa
       <Link href={`/properties/${property.id}`} className="block">
         <div className="relative overflow-hidden">
           {/* Property Image */}
-          <div className={`relative bg-gray-200 overflow-hidden ${
+          <div className={`relative bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden ${
             isCompact ? 'aspect-[3/2]' : 'aspect-[4/3]'
           }`}>
             {imageLoading && (
               <div className="absolute inset-0 loading-skeleton flex items-center justify-center">
-                <svg className="w-10 h-10 text-gray-400 animate-pulse-slow" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-12 h-12 text-gray-400 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -157,52 +157,59 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               src={currentImage?.url || '/placeholder-property.jpg'}
               alt={currentImage?.alt || property.title}
               fill
-              className={`object-cover transition-transform duration-500 ${
-                isHovered ? 'scale-105' : 'scale-100'
+              className={`object-cover transition-all duration-700 ease-out ${
+                isHovered ? 'scale-110 rotate-1' : 'scale-100 rotate-0'
               } ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onLoad={() => setImageLoading(false)}
             />
             
-            {/* Image overlay gradient */}
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/30 to-transparent transition-opacity duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
+            {/* Enhanced image overlay gradient */}
+            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-500 ${
+              isHovered ? 'opacity-100' : 'opacity-40'
             }`} />
           </div>
           
-          {/* Badges */}
-          <div className="absolute top-3 left-3 flex gap-2 z-10">
-            <span className={`px-3 py-1.5 text-xs font-bold rounded-full shadow-lg backdrop-blur-sm ${
+          {/* Enhanced Badges */}
+          <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+            <span className={`px-4 py-2 text-xs font-bold rounded-full shadow-lg backdrop-blur-sm border border-white/20 ${
               property.listingType === ListingType.FOR_SALE 
-                ? 'bg-green-600/90 text-white' 
-                : 'bg-blue-600/90 text-white'
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
+                : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
             }`}>
               {getListingTypeLabel(property.listingType)}
             </span>
             {property.isFeatured && (
-              <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-3 py-1.5 text-xs font-bold rounded-full shadow-lg">
-                ✨ Featured
+              <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 text-xs font-bold rounded-full shadow-lg border border-white/20 backdrop-blur-sm flex items-center space-x-1">
+                <span className="text-sm">✨</span>
+                <span>Featured</span>
               </span>
             )}
             {property.isNew && (
-              <span className="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 text-xs font-bold rounded-full shadow-lg">
+              <span className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-4 py-2 text-xs font-bold rounded-full shadow-lg border border-white/20 backdrop-blur-sm animate-pulse">
                 New
               </span>
             )}
           </div>
 
-          {/* Action Buttons */}
-          <div className="absolute top-3 right-3 flex space-x-2 z-10">
+          {/* Enhanced Action Buttons */}
+          <div className="absolute top-4 right-4 flex flex-col space-y-2 z-10">
             {/* Compare Button */}
             <button 
               onClick={handleCompareClick}
               disabled={maxReached && !isInCompare}
-              className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 ${getCompareButtonClass()}`}
+              className={`group p-3 backdrop-blur-xl rounded-xl shadow-lg transition-all duration-300 hover:scale-110 border border-white/20 ${
+                isInCompare 
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-blue-500/25' 
+                  : maxReached 
+                    ? 'bg-white/60 text-gray-400 cursor-not-allowed' 
+                    : 'bg-white/80 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-xl'
+              }`}
               title={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
               aria-label={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
             >
               <svg 
-                className="w-5 h-5 transition-colors duration-200" 
+                className="w-5 h-5 transition-all duration-300 group-hover:scale-110" 
                 fill={isInCompare ? 'currentColor' : 'none'} 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -216,14 +223,14 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               </svg>
             </button>
 
-            {/* Save Button */}
+            {/* Enhanced Save Button */}
             <button 
               onClick={handleFavoriteClick}
               disabled={favoriteActionLoading || favoritesLoading}
-              className={`p-2.5 backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`group p-3 backdrop-blur-xl rounded-xl shadow-lg transition-all duration-300 hover:scale-110 border border-white/20 disabled:cursor-not-allowed disabled:opacity-50 ${
                 isFavorited 
-                  ? 'text-red-500 bg-red-50/90 hover:bg-red-100/90' 
-                  : 'text-gray-600 bg-white/90 hover:bg-white hover:text-red-500'
+                  ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-red-500/25' 
+                  : 'bg-white/80 text-gray-600 hover:bg-white hover:text-red-500 hover:shadow-xl'
               }`}
               aria-label={isFavorited ? t('favorites.heart_tooltip_remove') : t('favorites.heart_tooltip_add')}
               title={
@@ -235,7 +242,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             >
               {favoriteActionLoading ? (
                 <svg 
-                  className="w-5 h-5 animate-spin text-gray-600" 
+                  className="w-5 h-5 animate-spin" 
                   fill="none" 
                   viewBox="0 0 24 24"
                 >
@@ -255,8 +262,8 @@ export default function PropertyCard({ property, className = '', variant = 'defa
                 </svg>
               ) : (
                 <svg 
-                  className={`w-5 h-5 transition-colors duration-200 ${
-                    isFavorited ? 'text-red-500 fill-current' : 'text-gray-600'
+                  className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${
+                    isFavorited ? 'text-white fill-current' : 'text-gray-600'
                   }`} 
                   fill={isFavorited ? 'currentColor' : 'none'} 
                   stroke="currentColor" 
@@ -329,71 +336,81 @@ export default function PropertyCard({ property, className = '', variant = 'defa
           )}
         </div>
 
-        {/* Property Details */}
-        <div className={`p-5 ${isCompact ? 'p-4' : 'p-5'}`}>
+        {/* Enhanced Property Details */}
+        <div className={`p-6 bg-gradient-to-br from-white to-gray-50/50 ${isCompact ? 'p-5' : 'p-6'}`}>
           {/* Price */}
-          <div className="mb-3">
-            <p className={`font-bold text-gray-900 ${isCompact ? 'text-xl' : 'text-2xl'}`}>
+          <div className="mb-4">
+            <p className={`font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent ${isCompact ? 'text-xl' : 'text-2xl lg:text-3xl'}`}>
               {formatPrice(property.price, property.currency)}
               {property.listingType === ListingType.TO_RENT && (
-                <span className="text-sm font-normal text-gray-600 ml-1">/{t('common.month')}</span>
+                <span className="text-sm font-normal text-gray-500 ml-1">/{t('common.month')}</span>
               )}
             </p>
           </div>
 
           {/* Title */}
-          <h3 className={`font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200 ${
-            isCompact ? 'text-base' : 'text-lg'
-          }`}>
+          <h3 className={`font-bold text-gray-900 mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300 ${isCompact ? 'text-base' : 'text-lg lg:text-xl'}`}>
             {property.title}
           </h3>
 
           {/* Location */}
-          <p className="text-gray-600 mb-4 flex items-center">
-            <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span className="truncate">{property.address.suburb}, {property.address.city}</span>
+          <p className="text-gray-600 mb-5 flex items-center group cursor-pointer">
+            <div className="w-5 h-5 mr-3 p-1 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300">
+              <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <span className="truncate group-hover:text-blue-600 transition-colors duration-300 font-medium">
+              {property.address.suburb}, {property.address.city}
+            </span>
           </p>
 
-          {/* Property Details */}
-          <div className="flex items-center text-sm text-gray-600 mb-4 gap-4">
+          {/* Enhanced Property Details */}
+          <div className="flex items-center text-sm text-gray-600 mb-5 gap-6">
             {property.bedrooms > 0 && (
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0" />
-                </svg>
-                <span className="font-medium">{property.bedrooms}</span>
+              <div className="flex items-center group">
+                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-2 group-hover:bg-blue-100 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-gray-500 group-hover:text-blue-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0" />
+                  </svg>
+                </div>
+                <span className="font-semibold text-gray-700">{property.bedrooms}</span>
               </div>
             )}
             {property.bathrooms > 0 && (
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                </svg>
-                <span className="font-medium">{property.bathrooms}</span>
+              <div className="flex items-center group">
+                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-2 group-hover:bg-purple-100 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-gray-500 group-hover:text-purple-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                  </svg>
+                </div>
+                <span className="font-semibold text-gray-700">{property.bathrooms}</span>
               </div>
             )}
             {property.garages > 0 && (
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 4H6a2 2 0 00-2 2v6a2 2 0 002 2h2m0-8v8m0-8h2m-2 8h2m8-8v8m0-8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2m0-8v8" />
-                </svg>
-                <span className="font-medium">{property.garages}</span>
+              <div className="flex items-center group">
+                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-2 group-hover:bg-green-100 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-gray-500 group-hover:text-green-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 4H6a2 2 0 00-2 2v6a2 2 0 002 2h2m0-8v8m0-8h2m-2 8h2m8-8v8m0-8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2m0-8v8" />
+                  </svg>
+                </div>
+                <span className="font-semibold text-gray-700">{property.garages}</span>
               </div>
             )}
           </div>
 
-          {/* Square Meters & Property Type */}
-          <div className="flex items-center justify-between text-sm mb-4">
-            <span className="flex items-center text-gray-600">
-              <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-              </svg>
-              <span className="font-medium">{property.squareMeters}m²</span>
+          {/* Enhanced Square Meters & Property Type */}
+          <div className="flex items-center justify-between text-sm mb-6">
+            <span className="flex items-center text-gray-600 group">
+              <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-2 group-hover:bg-indigo-200 transition-colors duration-300">
+                <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </div>
+              <span className="font-semibold text-gray-700">{property.squareMeters}m²</span>
             </span>
-            <span className="text-blue-600 font-semibold bg-blue-50 px-2 py-1 rounded-full text-xs">
+            <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold px-4 py-2 rounded-full text-xs shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
               {getPropertyTypeLabel(property.propertyType)}
             </span>
           </div>

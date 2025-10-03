@@ -1,9 +1,8 @@
 'use client';
-
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
 
-// Map bounds interface
+// Map bounds interface - exported for use in other components
 export interface MapBounds {
   north: number;
   south: number;
