@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase, signIn, signUp, signOut, getCurrentUser } from '@/lib/supabase';
+import { supabase, signIn, signUp, signOut, getCurrentUser, updateUser } from '@/lib/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -12,6 +12,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, metadata?: any) => Promise<{ data: any; error: any }>;
   signOut: () => Promise<{ error: any }>;
   resetPassword: (email: string) => Promise<{ data: any; error: any }>;
+  updateUser: (attributes: { data?: Record<string, any>; email?: string; password?: string }) => Promise<{ data: any; error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -88,6 +89,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { data, error };
   };
 
+  const handleUpdateUser = async (attributes: { data?: Record<string, any>; email?: string; password?: string }) => {
+    setLoading(true);
+    const result = await updateUser(attributes);
+    setLoading(false);
+    return result;
+  };
+
   const value = {
     user,
     session,
@@ -96,6 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signUp: handleSignUp,
     signOut: handleSignOut,
     resetPassword: handleResetPassword,
+    updateUser: handleUpdateUser,
   };
 
   return (

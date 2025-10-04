@@ -119,3 +119,12 @@ export const updatePassword = async (password: string) => {
   })
   return { data, error }
 }
+
+export const updateUser = async (attributes: { data?: Record<string, any>; email?: string; password?: string }) => {
+  if (!isSupabaseConfigured) {
+    return { data: null, error: { message: 'Supabase is not configured' } }
+  }
+  
+  const { data, error } = await supabase.auth.updateUser(attributes)
+  return { data, error }
+}
