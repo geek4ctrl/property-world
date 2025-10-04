@@ -69,6 +69,81 @@ export default function FavoritesPage() {
     }
   };
 
+  const getSubtitleText = () => {
+    if (favoriteProperties.length === 0) {
+      return t('favorites.subtitle');
+    } else if (favoriteProperties.length === 1) {
+      return t('favorites.subtitle_with_count', { count: favoriteProperties.length });
+    } else {
+      return t('favorites.subtitle_with_count_plural', { count: favoriteProperties.length });
+    }
+  };
+
+  const renderContent = () => {
+    if (favoriteProperties.length === 0) {
+      return (
+        <div className="text-center py-16">
+          <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
+            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('favorites.no_favorites')}</h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            {t('favorites.no_favorites_message')}
+          </p>
+          <Link 
+            href="/properties"
+            className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {t('favorites.start_browsing')}
+          </Link>
+        </div>
+      );
+    } else if (filteredAndSortedProperties.length > 0) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredAndSortedProperties.map((property) => (
+            <PropertyCard 
+              key={property.id} 
+              property={property}
+              className="h-full"
+            />
+          ))}
+        </div>
+      );
+    } else {
+      return (
+        <div className="text-center py-16">
+          <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
+            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">No Properties Match Your Filter</h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            Try adjusting your filters to see more of your favorite properties.
+          </p>
+          <button 
+            onClick={() => {
+              setFilterType('all');
+              setSortBy('name');
+            }}
+            className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset Filters
+          </button>
+        </div>
+      );
+    }
+  };
+
   if (!user) {
     return (
       <>
@@ -144,15 +219,7 @@ export default function FavoritesPage() {
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('favorites.title')}</h1>
                 <p className="text-gray-600">
-                  {(() => {
-                    if (favoriteProperties.length === 0) {
-                      return t('favorites.subtitle');
-                    } else if (favoriteProperties.length === 1) {
-                      return t('favorites.subtitle_with_count', { count: favoriteProperties.length });
-                    } else {
-                      return t('favorites.subtitle_with_count_plural', { count: favoriteProperties.length });
-                    }
-                  })()}
+                  {getSubtitleText()}
                 </p>
               </div>
               {favoriteProperties.length > 0 && (
@@ -221,91 +288,7 @@ export default function FavoritesPage() {
           </div>
 
           {/* Content */}
-          {(() => {
-            if (favoriteProperties.length === 0) {
-              return (
-                <div className="text-center py-16">
-                  <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
-                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('favorites.no_favorites')}</h2>
-                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                    {t('favorites.no_favorites_message')}
-                  </p>
-                  <Link 
-                    href="/properties"
-                    className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                  >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    {t('favorites.start_browsing')}
-                  </Link>
-                </div>
-              );
-            } else if (filteredAndSortedProperties.length > 0) {
-              return (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredAndSortedProperties.map((property) => (
-                    <PropertyCard 
-                      key={property.id} 
-                      property={property}
-                      className="h-full"
-                    />
-                  ))}
-                </div>
-              );
-            } else {
-              return (
-                <div className="text-center py-16">
-                  <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
-                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">No Properties Match Your Filter</h2>
-                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                    Try adjusting your filters to see more of your favorite properties.
-                  </p>
-                  <button 
-                    onClick={() => {
-                      setFilterType('all');
-                      setSortBy('name');
-                    }}
-                    className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                  >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    Reset Filters
-                  </button>
-                </div>
-              );
-            }
-          })()}
-            <div className="text-center py-16">
-              <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
-                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('favorites.no_favorites')}</h2>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                {t('favorites.no_favorites_message')}
-              </p>
-              <Link 
-                href="/properties"
-                className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                {t('favorites.start_browsing')}
-              </Link>
-            </div>
-          )
+          {renderContent()}
         </div>
       </main>
       <Footer />

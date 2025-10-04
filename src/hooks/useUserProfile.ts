@@ -207,12 +207,74 @@ export function useUserProfile(user: User | null) {
 export function useFavorites(user: User | null) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isDatabaseAvailable, setIsDatabaseAvailable] = useState(true);
+
+  // Local storage keys
+  const LOCAL_STORAGE_KEY = 'property-world-favorites';
+  const GUEST_FAVORITES_KEY = 'property-world-guest-favorites';
+
+  // Load favorites from local storage (for guest users or fallback)
+  const loadLocalFavorites = () => {
+    try {
+      const key = user ? LOCAL_STORAGE_KEY : GUEST_FAVORITES_KEY;
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : [];
+    } catch (err) {
+      console.warn('Error loading favorites from localStorage:', err);
+      return [];
+    }
+  };
+
+  // Save favorites to local storage
+  const saveLocalFavorites = (favoritesList: string[]) => {
+    try {
+      const key = user ? LOCAL_STORAGE_KEY : GUEST_FAVORITES_KEY;
+      localStorage.setItem(key, JSON.stringify(favoritesList));
+    } catch (err) {
+      console.warn('Error saving favorites to localStorage:', err);
+    }
+  };
+
+  // Sync local favorites to database when user logs in
+  const syncLocalToDatabase = async (localFavorites: string[]) => {
+    if (!user || localFavorites.length === 0) return;
+
+    try {
+      // Get existing favorites from database
+      const { data: existingFavorites, error: fetchError } = await supabase
+        .from('user_favorites')
+        .select('property_id')
+        .eq('user_id', user.id);
+
+      if (fetchError) throw fetchError;
+
+      const existingIds = existingFavorites?.map(f => f.property_id) || [];
+      const newFavorites = localFavorites.filter(id => !existingIds.includes(id));
+
+      // Insert new favorites
+      if (newFavorites.length > 0) {
+        const { error: insertError } = await supabase
+          .from('user_favorites')
+          .insert(newFavorites.map(property_id => ({ user_id: user.id, property_id })));
+
+        if (insertError) throw insertError;
+      }
+
+      // Clear guest favorites from localStorage
+      localStorage.removeItem(GUEST_FAVORITES_KEY);
+    } catch (err) {
+      console.error('Error syncing local favorites to database:', err);
+    }
+  };
 
   useEffect(() => {
     if (user) {
       fetchFavorites();
     } else {
-      setFavorites([]);
+      // Load guest favorites from localStorage
+      const localFavorites = loadLocalFavorites();
+      setFavorites(localFavorites);
     }
   }, [user]);
 
@@ -220,49 +282,100 @@ export function useFavorites(user: User | null) {
     if (!user) return;
 
     setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('user_favorites')
-        .select('property_id')
-        .eq('user_id', user.id);
+    setError(null);
 
-      if (error) {
+    try {
+      // First, try to sync any local favorites
+      const localFavorites = loadLocalFavorites();
+      if (localFavorites.length > 0) {
+        await syncLocalToDatabase(localFavorites);
+      }
+
+      const { data, error: fetchError } = await supabase
+        .from('user_favorites')
+        .select('property_id, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (fetchError) {
         // Handle table not found gracefully
-        if (error.code === 'PGRST116' || error.message.includes('does not exist')) {
-          console.warn('⚠️ Database tables not yet created. Please run the migration script.');
-          setFavorites([]);
+        if (fetchError.code === 'PGRST116' || fetchError.message.includes('does not exist')) {
+          console.warn('⚠️ Database tables not yet created. Using local storage fallback.');
+          setIsDatabaseAvailable(false);
+          const localFavorites = loadLocalFavorites();
+          setFavorites(localFavorites);
           return;
         }
-        throw error;
+        throw fetchError;
       }
-      setFavorites(data.map(item => item.property_id));
-    } catch (err) {
+
+      const favoriteIds = data.map(item => item.property_id);
+      setFavorites(favoriteIds);
+      setIsDatabaseAvailable(true);
+      
+      // Save to localStorage as backup
+      saveLocalFavorites(favoriteIds);
+    } catch (err: any) {
       console.error('Error fetching favorites:', err);
-      setFavorites([]); // Set empty array as fallback
+      setError(err.message);
+      // Fallback to localStorage
+      const localFavorites = loadLocalFavorites();
+      setFavorites(localFavorites);
+      setIsDatabaseAvailable(false);
     } finally {
       setLoading(false);
     }
   };
 
   const addFavorite = async (propertyId: string) => {
-    if (!user) return;
+    // Optimistic update
+    setFavorites(prev => {
+      if (prev.includes(propertyId)) return prev;
+      const updated = [propertyId, ...prev]; // Add to beginning
+      saveLocalFavorites(updated);
+      return updated;
+    });
+
+    if (!user || !isDatabaseAvailable) {
+      return { success: true };
+    }
 
     try {
       const { error } = await supabase
         .from('user_favorites')
         .insert([{ user_id: user.id, property_id: propertyId }]);
 
-      if (error) throw error;
-      setFavorites(prev => [...prev, propertyId]);
+      if (error) {
+        // Check for duplicate key error (property already favorited)
+        if (error.code === '23505') {
+          return { success: true }; // Already favorited, treat as success
+        }
+        throw error;
+      }
       return { success: true };
     } catch (err: any) {
       console.error('Error adding favorite:', err);
+      // Revert optimistic update
+      setFavorites(prev => {
+        const reverted = prev.filter(id => id !== propertyId);
+        saveLocalFavorites(reverted);
+        return reverted;
+      });
       return { success: false, error: err.message };
     }
   };
 
   const removeFavorite = async (propertyId: string) => {
-    if (!user) return;
+    // Optimistic update
+    setFavorites(prev => {
+      const updated = prev.filter(id => id !== propertyId);
+      saveLocalFavorites(updated);
+      return updated;
+    });
+
+    if (!user || !isDatabaseAvailable) {
+      return { success: true };
+    }
 
     try {
       const { error } = await supabase
@@ -272,23 +385,75 @@ export function useFavorites(user: User | null) {
         .eq('property_id', propertyId);
 
       if (error) throw error;
-      setFavorites(prev => prev.filter(id => id !== propertyId));
       return { success: true };
     } catch (err: any) {
       console.error('Error removing favorite:', err);
+      // Revert optimistic update
+      setFavorites(prev => {
+        const reverted = [...prev, propertyId];
+        saveLocalFavorites(reverted);
+        return reverted;
+      });
       return { success: false, error: err.message };
+    }
+  };
+
+  const clearAllFavorites = async () => {
+    // Optimistic update
+    const previousFavorites = [...favorites];
+    setFavorites([]);
+    saveLocalFavorites([]);
+
+    if (!user || !isDatabaseAvailable) {
+      return { success: true };
+    }
+
+    try {
+      const { error } = await supabase
+        .from('user_favorites')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (err: any) {
+      console.error('Error clearing favorites:', err);
+      // Revert optimistic update
+      setFavorites(previousFavorites);
+      saveLocalFavorites(previousFavorites);
+      return { success: false, error: err.message };
+    }
+  };
+
+  const toggleFavorite = async (propertyId: string) => {
+    if (isFavorite(propertyId)) {
+      return await removeFavorite(propertyId);
+    } else {
+      return await addFavorite(propertyId);
     }
   };
 
   const isFavorite = (propertyId: string) => favorites.includes(propertyId);
 
+  const getFavoritesByPropertyType = (propertyType?: string) => {
+    if (!propertyType) return favorites;
+    return favorites; // This would need property data to filter properly
+  };
+
   return {
     favorites,
     loading,
+    error,
+    isDatabaseAvailable,
     addFavorite,
     removeFavorite,
+    clearAllFavorites,
+    toggleFavorite,
     isFavorite,
-    refreshFavorites: fetchFavorites
+    getFavoritesByPropertyType,
+    refreshFavorites: fetchFavorites,
+
+    favoriteCount: favorites.length
   };
 }
 
