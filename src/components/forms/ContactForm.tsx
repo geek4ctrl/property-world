@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button, Input, Textarea, Select, Checkbox } from '@/components/ui/FormComponents';
+import { useTranslation } from '@/i18n';
 
 interface ContactFormProps {
   readonly propertyId?: string;
@@ -27,6 +28,7 @@ export default function ContactForm({
   onSubmit, 
   className = '' 
 }: ContactFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -46,23 +48,23 @@ export default function ContactForm({
     const newErrors: Partial<ContactFormData> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('contact.name_required');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('contact.email_required');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('contact.valid_email_required');
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = t('contact.message_required');
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = 'Message must be at least 10 characters long';
+      newErrors.message = t('contact.message_min_length');
     }
 
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must agree to the terms and conditions' as any;
+      newErrors.agreeToTerms = t('contact.agree_terms_required') as any;
     }
 
     setErrors(newErrors);
@@ -111,10 +113,9 @@ export default function ContactForm({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-green-800 mb-2">Message Sent Successfully!</h3>
+          <h3 className="text-lg font-semibold text-green-800 mb-2">{t('contact.message_sent_success')}</h3>
           <p className="text-green-700 mb-4">
-            Thank you for your inquiry{propertyTitle ? ` about ${propertyTitle}` : ''}. 
-            We'll get back to you within 24 hours.
+            {t('contact.thank_you_inquiry', { propertyTitle: propertyTitle ? ` about ${propertyTitle}` : '' })}
           </p>
           <Button
             variant="outline"
@@ -132,7 +133,7 @@ export default function ContactForm({
               });
             }}
           >
-            Send Another Message
+            {t('contact.send_another_message')}
           </Button>
         </div>
       </div>
@@ -144,18 +145,18 @@ export default function ContactForm({
       <form onSubmit={handleSubmit} className="space-y-6">
         {propertyTitle && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 animate-slide-down">
-            <h3 className="font-semibold text-blue-800 mb-1">Inquiry About</h3>
+            <h3 className="font-semibold text-blue-800 mb-1">{t('contact.inquiry_about')}</h3>
             <p className="text-blue-700">{propertyTitle}</p>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            label="Full Name *"
+            label={`${t('contact.full_name')} *`}
             value={formData.name}
             onChange={(e) => handleInputChange('name', e.target.value)}
             error={errors.name}
-            placeholder="Enter your full name"
+            placeholder={t('contact.full_name_placeholder')}
             leftIcon={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -165,11 +166,11 @@ export default function ContactForm({
 
           <Input
             type="email"
-            label="Email Address *"
+            label={`${t('contact.email_address')} *`}
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             error={errors.email}
-            placeholder="Enter your email address"
+            placeholder={t('contact.email_placeholder')}
             leftIcon={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -181,10 +182,10 @@ export default function ContactForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             type="tel"
-            label="Phone Number"
+            label={t('contact.phone_number')}
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            placeholder="Enter your phone number"
+            placeholder={t('contact.phone_placeholder')}
             leftIcon={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -193,35 +194,35 @@ export default function ContactForm({
           />
 
           <Select
-            label="Inquiry Type"
+            label={t('contact.inquiry_type')}
             value={formData.inquiryType}
             onChange={(e) => handleInputChange('inquiryType', e.target.value)}
             options={[
-              { value: 'information', label: 'Request Information' },
-              { value: 'viewing', label: 'Schedule Viewing' },
-              { value: 'offer', label: 'Make an Offer' },
-              { value: 'general', label: 'General Inquiry' }
+              { value: 'information', label: t('contact.request_information') },
+              { value: 'viewing', label: t('contact.schedule_viewing') },
+              { value: 'offer', label: t('contact.make_offer') },
+              { value: 'general', label: t('contact.general_inquiry') }
             ]}
           />
         </div>
 
         <Select
-          label="Preferred Contact Method"
+          label={t('contact.preferred_contact_method')}
           value={formData.preferredContact}
           onChange={(e) => handleInputChange('preferredContact', e.target.value)}
           options={[
-            { value: 'email', label: 'Email' },
-            { value: 'phone', label: 'Phone' },
-            { value: 'either', label: 'Either Email or Phone' }
+            { value: 'email', label: t('contact.email') },
+            { value: 'phone', label: t('contact.phone') },
+            { value: 'either', label: t('contact.either_email_phone') }
           ]}
         />
 
         <Textarea
-          label="Message *"
+          label={`${t('contact.message')} *`}
           value={formData.message}
           onChange={(e) => handleInputChange('message', e.target.value)}
           error={errors.message}
-          placeholder="Please tell us about your requirements, preferred viewing times, or any questions you may have..."
+          placeholder={t('contact.message_placeholder')}
           rows={5}
         />
 
@@ -230,15 +231,15 @@ export default function ContactForm({
             checked={formData.agreeToTerms}
             onChange={(e) => handleInputChange('agreeToTerms', e.target.checked)}
             error={errors.agreeToTerms ? String(errors.agreeToTerms) : undefined}
-            label="I agree to the Terms and Conditions and Privacy Policy *"
-            description="Required to process your inquiry"
+            label={`${t('contact.agree_terms')} *`}
+            description={t('contact.agree_terms_desc')}
           />
 
           <Checkbox
             checked={formData.subscribeNewsletter}
             onChange={(e) => handleInputChange('subscribeNewsletter', e.target.checked)}
-            label="Subscribe to property updates and newsletter"
-            description="Receive notifications about new properties and market insights"
+            label={t('contact.subscribe_newsletter')}
+            description={t('contact.subscribe_newsletter_desc')}
           />
         </div>
 
@@ -253,7 +254,7 @@ export default function ContactForm({
               </svg>
             }
           >
-            {isSubmitting ? 'Sending Message...' : 'Send Message'}
+            {isSubmitting ? t('contact.sending_message') : t('contact.send_message')}
           </Button>
 
           <Button
@@ -273,7 +274,7 @@ export default function ContactForm({
               setErrors({});
             }}
           >
-            Clear Form
+            {t('contact.clear_form')}
           </Button>
         </div>
       </form>

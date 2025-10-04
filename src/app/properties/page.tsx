@@ -11,12 +11,14 @@ import { PropertyErrorBoundary, SearchErrorBoundary } from '@/components/ui/Spec
 import { SearchFilters, Property, PropertyType, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties } from '@/lib/utils';
+import { useTranslation } from '@/i18n';
 
 const SEARCH_DELAY = 300;
 
 // Component that uses useSearchParams
 function PropertiesContent() {
   const searchParams = useSearchParams();
+  const { t } = useTranslation();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(sampleProperties);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<SearchFilters>({});
@@ -84,10 +86,10 @@ function PropertiesContent() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-6 lg:mb-0">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Properties for Sale & Rent
+                {t('properties.page_title')}
               </h1>
               <p className="text-gray-600">
-                Discover your perfect property from our extensive collection across South Africa
+                {t('properties.page_subtitle')}
               </p>
             </div>
             
@@ -100,7 +102,7 @@ function PropertiesContent() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
-                <span className="text-sm font-medium">Saved Searches</span>
+                <span className="text-sm font-medium">{t('properties.saved_searches')}</span>
               </button>
             </div>
           </div>

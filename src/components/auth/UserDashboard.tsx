@@ -15,6 +15,7 @@ interface TabComponentProps {
 }
 
 function ProfileTab({ profile, updateProfile, uploadAvatar, loading }: any) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     first_name: profile?.first_name || '',
     last_name: profile?.last_name || '',
@@ -97,13 +98,13 @@ function ProfileTab({ profile, updateProfile, uploadAvatar, loading }: any) {
 
       {avatarFile && (
         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-          <p className="text-sm text-blue-800">Ready to upload: {avatarFile.name}</p>
+          <p className="text-sm text-blue-800">{t('dashboard.ready_to_upload', { filename: avatarFile.name })}</p>
           <div className="mt-2 space-x-2">
             <Button size="sm" onClick={handleAvatarUpload} loading={loading}>
-              Upload Avatar
+              {t('dashboard.upload_avatar')}
             </Button>
             <Button size="sm" variant="ghost" onClick={() => setAvatarFile(null)}>
-              Cancel
+              {t('dashboard.cancel')}
             </Button>
           </div>
         </div>
@@ -111,18 +112,18 @@ function ProfileTab({ profile, updateProfile, uploadAvatar, loading }: any) {
 
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Personal Information</h3>
+          <h3 className="text-lg font-semibold">{t('dashboard.personal_information')}</h3>
           {!isEditing ? (
             <Button variant="outline" onClick={() => setIsEditing(true)}>
-              Edit Profile
+              {t('dashboard.edit_profile')}
             </Button>
           ) : (
             <div className="space-x-2">
               <Button onClick={handleSave} loading={loading}>
-                Save Changes
+                {t('dashboard.save_changes')}
               </Button>
               <Button variant="ghost" onClick={() => setIsEditing(false)}>
-                Cancel
+                {t('dashboard.cancel')}
               </Button>
             </div>
           )}
@@ -130,23 +131,23 @@ function ProfileTab({ profile, updateProfile, uploadAvatar, loading }: any) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            label="First Name"
+            label={t('dashboard.first_name')}
             value={formData.first_name}
             onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
             disabled={!isEditing}
           />
           <Input
-            label="Last Name"
+            label={t('dashboard.last_name')}
             value={formData.last_name}
             onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
             disabled={!isEditing}
           />
           <Input
-            label="Phone Number"
+            label={t('dashboard.phone_number')}
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             disabled={!isEditing}
-            placeholder="+27 12 345 6789"
+            placeholder={t('dashboard.phone_placeholder')}
           />
           <Input
             label="Email Address"

@@ -182,12 +182,11 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16 animate-fadeInUp">
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
-                Get In Touch
+                {t('contact.get_in_touch')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8 rounded-full"></div>
               <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Have questions about our properties or need assistance finding your dream home? 
-                We're here to help you every step of the way.
+                {t('contact.contact_description')}
               </p>
             </div>
             
