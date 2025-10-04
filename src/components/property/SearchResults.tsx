@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Property, SearchFilters } from '@/types';
 import PropertyGrid from './PropertyGrid';
+import { useTranslation } from '@/i18n';
 
 interface SearchResultsProps {
   properties: Property[];
@@ -26,6 +27,7 @@ export default function SearchResults({
   hasMore = false,
   className = ''
 }: SearchResultsProps) {
+  const { t } = useTranslation();
 
   const [sortBy, setSortBy] = useState<SortOption>('relevance');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -33,13 +35,13 @@ export default function SearchResults({
 
   // Sort options with labels
   const sortOptions = [
-    { value: 'relevance', label: 'Most Relevant', icon: '🎯' },
-    { value: 'date-desc', label: 'Newest First', icon: '📅' },
-    { value: 'date-asc', label: 'Oldest First', icon: '📅' },
-    { value: 'price-asc', label: 'Price: Low to High', icon: '💰' },
-    { value: 'price-desc', label: 'Price: High to Low', icon: '💰' },
-    { value: 'size-desc', label: 'Size: Largest First', icon: '📐' },
-    { value: 'size-asc', label: 'Size: Smallest First', icon: '📐' },
+    { value: 'relevance', label: t('properties.most_relevant'), icon: '🎯' },
+    { value: 'date-desc', label: t('properties.newest_first'), icon: '📅' },
+    { value: 'date-asc', label: t('properties.oldest_first'), icon: '📅' },
+    { value: 'price-asc', label: t('properties.price_low_high'), icon: '💰' },
+    { value: 'price-desc', label: t('properties.price_high_low'), icon: '💰' },
+    { value: 'size-desc', label: t('properties.size_largest_first'), icon: '📐' },
+    { value: 'size-asc', label: t('properties.size_smallest_first'), icon: '📐' },
   ] as const;
 
   // Sort properties based on selected option
@@ -112,9 +114,9 @@ export default function SearchResults({
   // Format search summary
   const getSearchSummary = () => {
     const total = totalCount ?? properties.length;
-    if (total === 0) return 'No properties found';
-    if (total === properties.length) return `${total.toLocaleString()} properties found`;
-    return `Showing ${properties.length.toLocaleString()} of ${total.toLocaleString()} properties`;
+    if (total === 0) return t('search.no_properties_found');
+    if (total === properties.length) return t('search.properties_found', { count: total.toLocaleString() });
+    return t('search.showing_properties', { showing: properties.length.toLocaleString(), total: total.toLocaleString() });
   };
 
   const currentSortOption = sortOptions.find(option => option.value === sortBy);
@@ -165,7 +167,7 @@ export default function SearchResults({
               >
                 <span className="text-sm">{currentSortOption?.icon}</span>
                 <span className="text-sm font-medium text-gray-700">
-                  Sort: {currentSortOption?.label}
+                  {t('search.sort_colon')} {currentSortOption?.label}
                 </span>
                 <svg className={`w-4 h-4 text-gray-500 transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -208,7 +210,7 @@ export default function SearchResults({
                     ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
-                title="Grid view"
+                title={t('search.grid_view')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -221,7 +223,7 @@ export default function SearchResults({
                     ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
-                title="List view"
+                title={t('search.list_view')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -251,14 +253,14 @@ export default function SearchResults({
           <svg className="mx-auto w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Properties Found</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('search.no_properties_title')}</h3>
           <p className="text-gray-600 mb-6">
-            We couldn't find any properties matching your search criteria. Try adjusting your filters or search terms.
+            {t('search.no_properties_desc')}
           </p>
           <div className="space-y-2 text-sm text-gray-500">
-            <p>• Try removing some filters</p>
-            <p>• Search in a broader area</p>
-            <p>• Check your spelling</p>
+            <p>• {t('search.try_removing_filters')}</p>
+            <p>• {t('search.search_broader_area')}</p>
+            <p>• {t('search.check_spelling')}</p>
           </div>
         </div>
       ) : (

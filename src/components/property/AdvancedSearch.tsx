@@ -47,15 +47,15 @@ export default function AdvancedSearch({
   // Price ranges for South African market
   const priceRanges: PriceRange[] = [
     { label: t('search.any_price'), min: undefined, max: undefined },
-    { label: 'Under R500k', min: undefined, max: 500000 },
-    { label: 'R500k - R750k', min: 500000, max: 750000 },
-    { label: 'R750k - R1M', min: 750000, max: 1000000 },
-    { label: 'R1M - R1.5M', min: 1000000, max: 1500000 },
-    { label: 'R1.5M - R2M', min: 1500000, max: 2000000 },
-    { label: 'R2M - R3M', min: 2000000, max: 3000000 },
-    { label: 'R3M - R5M', min: 3000000, max: 5000000 },
-    { label: 'R5M - R10M', min: 5000000, max: 10000000 },
-    { label: 'R10M+', min: 10000000, max: undefined },
+    { label: t('search.under_500k'), min: undefined, max: 500000 },
+    { label: t('search.500k_750k'), min: 500000, max: 750000 },
+    { label: t('search.750k_1m'), min: 750000, max: 1000000 },
+    { label: t('search.1m_1_5m'), min: 1000000, max: 1500000 },
+    { label: t('search.1_5m_2m'), min: 1500000, max: 2000000 },
+    { label: t('search.2m_3m'), min: 2000000, max: 3000000 },
+    { label: t('search.3m_5m'), min: 3000000, max: 5000000 },
+    { label: t('search.5m_10m'), min: 5000000, max: 10000000 },
+    { label: t('search.over_10m'), min: 10000000, max: undefined },
   ];
 
   // Property type options with icons
@@ -315,7 +315,7 @@ export default function AdvancedSearch({
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
               }`}
             >
-              For Sale
+              {t('property.for_sale')}
             </button>
             <button
               type="button"
@@ -326,7 +326,7 @@ export default function AdvancedSearch({
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
               }`}
             >
-              To Rent
+              {t('property.to_rent')}
             </button>
           </div>
 
@@ -335,7 +335,7 @@ export default function AdvancedSearch({
             type="submit"
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Search
+            {t('common.search')}
           </button>
         </div>
 
@@ -346,7 +346,7 @@ export default function AdvancedSearch({
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium"
           >
-            <span>Advanced Filters</span>
+            <span>{t('search.advanced_filters')}</span>
             {activeFiltersCount > 0 && (
               <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs">
                 {activeFiltersCount}
@@ -368,7 +368,7 @@ export default function AdvancedSearch({
               onClick={handleClearFilters}
               className="text-sm text-gray-500 hover:text-gray-700"
             >
-              Clear all filters
+              {t('search.clear_all_filters')}
             </button>
           )}
         </div>
@@ -379,7 +379,7 @@ export default function AdvancedSearch({
             {/* Property Types */}
             <fieldset>
               <legend className="block text-sm font-medium text-gray-900 mb-3">
-                Property Type
+                {t('common.property_type')}
               </legend>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
                 {propertyTypes.map((type) => (
@@ -404,7 +404,7 @@ export default function AdvancedSearch({
             <div>
               <fieldset>
                 <legend className="block text-sm font-medium text-gray-900 mb-3">
-                  Price Range
+                  {t('common.price')} Range
                 </legend>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                   {priceRanges.map((range) => (
@@ -429,7 +429,7 @@ export default function AdvancedSearch({
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label htmlFor="bedrooms-select" className="block text-sm font-medium text-gray-900 mb-2">
-                  Bedrooms
+                  {t('common.bedrooms')}
                 </label>
                 <select
                   id="bedrooms-select"
@@ -448,7 +448,7 @@ export default function AdvancedSearch({
 
               <div>
                 <label htmlFor="bathrooms-select" className="block text-sm font-medium text-gray-900 mb-2">
-                  Bathrooms
+                  {t('common.bathrooms')}
                 </label>
                 <select
                   id="bathrooms-select"
@@ -469,13 +469,13 @@ export default function AdvancedSearch({
             <fieldset className="animate-fadeInUp" style={{ animationDelay: '400ms' }}>
               <legend className="flex items-center space-x-2 text-lg font-bold text-gray-900 mb-4">
                 <div className="w-1 h-6 bg-gradient-to-b from-indigo-500 to-blue-500 rounded-full"></div>
-                <span>Property Size (sqm)</span>
+                <span>{t('search.property_size_sqm')}</span>
               </legend>
               <div className="grid grid-cols-2 gap-4">
                 <div className="group">
                   <input
                     type="number"
-                    placeholder="Min size"
+                    placeholder={t('search.min_size')}
                     value={filters.minSquareMeters || ''}
                     onChange={(e) => handleFilterChange('minSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
                     className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -484,7 +484,7 @@ export default function AdvancedSearch({
                 <div className="group">
                   <input
                     type="number"
-                    placeholder="Max size"
+                    placeholder={t('search.max_size')}
                     value={filters.maxSquareMeters || ''}
                     onChange={(e) => handleFilterChange('maxSquareMeters', e.target.value ? parseInt(e.target.value) : undefined)}
                     className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -504,7 +504,7 @@ export default function AdvancedSearch({
                   <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                   </svg>
-                  <span>Save this search</span>
+                  <span>{t('search.save_this_search')}</span>
                 </button>
               </div>
             )}
@@ -520,18 +520,18 @@ export default function AdvancedSearch({
             <div className="relative">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center space-x-3">
                 <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-                <span>Save Search</span>
+                <span>{t('search.save_search')}</span>
               </h3>
               <div className="mb-6">
                 <label htmlFor="search-name-input" className="block text-lg font-semibold text-gray-700 mb-3">
-                  Search Name
+                  {t('search.search_name')}
                 </label>
                 <input
                   id="search-name-input"
                   type="text"
                   value={savedSearchName}
                   onChange={(e) => setSavedSearchName(e.target.value)}
-                  placeholder="e.g., 3BR Houses in Cape Town"
+                  placeholder={t('search.search_name_placeholder')}
                   className="w-full px-4 py-3 bg-white border-2 border-black rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -541,7 +541,7 @@ export default function AdvancedSearch({
                   onClick={() => setShowSaveModal(false)}
                   className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 hover:shadow-md"
                 >
-                  Cancel
+                  {t('search.cancel')}
                 </button>
                 <button
                   type="button"
@@ -549,7 +549,7 @@ export default function AdvancedSearch({
                   disabled={!savedSearchName.trim()}
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Save Search
+                  {t('search.save_search')}
                 </button>
               </div>
             </div>
