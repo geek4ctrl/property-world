@@ -185,7 +185,15 @@
     "copyright": "© 2024 PropertyWorld. Tous droits réservés.",
     "privacy_policy": "Politique de Confidentialité",
     "terms_of_service": "Conditions de Service",
-    "sitemap": "Plan du Site"
+    "sitemap": "Plan du Site",
+    "phone_number": "0860 102 302",
+    "email_address": "info@propertyworld.co.za",
+    "street_address": "123 Rue Principale",
+    "city_postal": "Le Cap, 8001",
+    "country": "Afrique du Sud",
+    "follow_twitter": "Suivez-nous sur Twitter",
+    "follow_facebook": "Suivez-nous sur Facebook",
+    "follow_linkedin": "Suivez-nous sur LinkedIn"
   },
   "calculator": {
     "mortgage_calculator": "Calculateur Hypothécaire",

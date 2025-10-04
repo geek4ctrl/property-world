@@ -185,7 +185,15 @@
     "copyright": "© 2024 PropertyWorld. All rights reserved.",
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service",
-    "sitemap": "Sitemap"
+    "sitemap": "Sitemap",
+    "phone_number": "0860 102 302",
+    "email_address": "info@propertyworld.co.za",
+    "street_address": "123 Main Street",
+    "city_postal": "Cape Town, 8001",
+    "country": "South Africa",
+    "follow_twitter": "Follow us on Twitter",
+    "follow_facebook": "Follow us on Facebook",
+    "follow_linkedin": "Follow us on LinkedIn"
   },
   "calculator": {
     "mortgage_calculator": "Mortgage Calculator",
