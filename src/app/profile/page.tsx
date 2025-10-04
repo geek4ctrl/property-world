@@ -7,11 +7,14 @@ import Link from 'next/link';
 import { updatePassword, isSupabaseAvailable } from '@/lib/supabase';
 import { useToast } from '@/hooks/useToast';
 import { ConfirmModal } from '@/components/ui/Modal';
+import { useTranslation } from '@/i18n';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 
 export default function ProfilePage() {
   const { user, signOut, loading, updateUser } = useAuth();
   const router = useRouter();
   const toast = useToast();
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [fullName, setFullName] = useState('');
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -50,7 +53,7 @@ export default function ProfilePage() {
 
   const handleSaveProfile = async () => {
     if (!isSupabaseAvailable()) {
-      toast.warning('Profile updates are not available in demo mode');
+      toast.warning(t('profile.profile_update_demo_warning'));
       setIsEditing(false);
       return;
     }
@@ -66,14 +69,14 @@ export default function ProfilePage() {
       });
       
       if (error) {
-        toast.error(`Failed to update profile: ${error.message}`);
+        toast.error(t('profile.profile_update_error', { error: error.message }));
       } else {
-        toast.success('Profile updated successfully!');
+        toast.success(t('profile.profile_update_success'));
         setIsEditing(false);
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      toast.error(`An unexpected error occurred while updating your profile: ${errorMessage}`);
+      toast.error(t('profile.unexpected_error_profile', { error: errorMessage }));
     } finally {
       setIsUpdating(false);
     }
@@ -81,22 +84,22 @@ export default function ProfilePage() {
   
   const handleChangePassword = async () => {
     if (!newPassword || !confirmPassword) {
-      toast.error('Please fill in all password fields');
+      toast.error(t('profile.password_fields_required'));
       return;
     }
     
     if (newPassword !== confirmPassword) {
-      toast.error('New passwords do not match');
+      toast.error(t('profile.passwords_no_match'));
       return;
     }
     
     if (newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters long');
+      toast.error(t('profile.password_min_length'));
       return;
     }
     
     if (!isSupabaseAvailable()) {
-      toast.warning('Password changes are not available in demo mode');
+      toast.warning(t('profile.password_change_demo_warning'));
       setShowPasswordModal(false);
       return;
     }
@@ -106,9 +109,9 @@ export default function ProfilePage() {
       const { error } = await updatePassword(newPassword);
       
       if (error) {
-        toast.error(`Failed to change password: ${error.message}`);
+        toast.error(t('profile.password_change_error', { error: error.message }));
       } else {
-        toast.success('Password changed successfully!');
+        toast.success(t('profile.password_change_success'));
         setShowPasswordModal(false);
         setCurrentPassword('');
         setNewPassword('');
@@ -116,7 +119,7 @@ export default function ProfilePage() {
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      toast.error(`An unexpected error occurred while changing your password: ${errorMessage}`);
+      toast.error(t('profile.unexpected_error_password', { error: errorMessage }));
     } finally {
       setIsChangingPassword(false);
     }
@@ -124,7 +127,7 @@ export default function ProfilePage() {
   
   const handleDeleteAccount = async () => {
     if (!isSupabaseAvailable()) {
-      toast.warning('Account deletion is not available in demo mode');
+      toast.warning(t('profile.delete_account_demo_warning'));
       setShowDeleteModal(false);
       return;
     }
@@ -133,11 +136,11 @@ export default function ProfilePage() {
     try {
       // Note: Supabase doesn't have a direct delete user method from client
       // This would typically require a server-side function or admin API call
-      toast.warning('Account deletion requires contacting support. Please email us to delete your account.');
+      toast.warning(t('profile.delete_account_contact_support'));
       setShowDeleteModal(false);
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      toast.error(`An unexpected error occurred: ${errorMessage}`);
+      toast.error(t('profile.unexpected_error_general', { error: errorMessage }));
     } finally {
       setIsDeleting(false);
     }
@@ -148,7 +151,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -164,11 +167,12 @@ export default function ProfilePage() {
                 href="/dashboard"
                 className="text-blue-600 hover:text-blue-800 transition-colors"
               >
-                ← Back to Dashboard
+                {t('profile.back_to_dashboard')}
               </Link>
-              <h1 className="text-xl font-semibold text-gray-900">Profile</h1>
+              <h1 className="text-xl font-semibold text-gray-900">{t('profile.title')}</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <LanguageSwitcher />
               <span className="text-gray-700">
                 {user?.user_metadata?.full_name || user?.email}
               </span>
@@ -176,7 +180,7 @@ export default function ProfilePage() {
                 onClick={handleSignOut}
                 className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
               >
-                Sign Out
+                {t('profile.sign_out')}
               </button>
             </div>
           </div>
@@ -186,8 +190,8 @@ export default function ProfilePage() {
       <main className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Account Information</h2>
-            <p className="text-sm text-gray-500 mt-1">Manage your account details and preferences.</p>
+            <h2 className="text-lg font-medium text-gray-900">{t('profile.account_information')}</h2>
+            <p className="text-sm text-gray-500 mt-1">{t('profile.account_subtitle')}</p>
           </div>
 
           <div className="px-6 py-4">
@@ -200,10 +204,10 @@ export default function ProfilePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Profile Picture</h3>
-                  <p className="text-sm text-gray-500">Upload a photo to personalize your account.</p>
+                  <h3 className="text-sm font-medium text-gray-900">{t('profile.profile_picture')}</h3>
+                  <p className="text-sm text-gray-500">{t('profile.profile_picture_subtitle')}</p>
                   <button className="mt-2 text-sm text-blue-600 hover:text-blue-800 transition-colors">
-                    Change Photo
+                    {t('profile.change_photo')}
                   </button>
                 </div>
               </div>
@@ -212,7 +216,7 @@ export default function ProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Full Name
+                    {t('profile.full_name')}
                   </label>
                   {isEditing ? (
                     <input
@@ -225,24 +229,24 @@ export default function ProfilePage() {
                     />
                   ) : (
                     <p className="text-gray-900 py-2" id="fullName-desc">
-                      {user?.user_metadata?.full_name || 'Not provided'}
+                      {user?.user_metadata?.full_name || t('profile.not_provided')}
                     </p>
                   )}
                 </div>
 
                 <div>
                   <div className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address
+                    {t('profile.email_address')}
                   </div>
                   <p className="text-gray-900 py-2">{user?.email}</p>
                   <p className="text-xs text-gray-500">
-                    {user?.email_confirmed_at ? '✓ Verified' : '⚠ Not verified'}
+                    {user?.email_confirmed_at ? t('profile.verified') : t('profile.not_verified')}
                   </p>
                 </div>
 
                 <div>
                   <div className="block text-sm font-medium text-gray-700 mb-1">
-                    Account Created
+                    {t('profile.account_created')}
                   </div>
                   <p className="text-gray-900 py-2">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
@@ -251,7 +255,7 @@ export default function ProfilePage() {
 
                 <div>
                   <div className="block text-sm font-medium text-gray-700 mb-1">
-                    Last Sign In
+                    {t('profile.last_sign_in')}
                   </div>
                   <p className="text-gray-900 py-2">
                     {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : 'N/A'}
@@ -272,7 +276,7 @@ export default function ProfilePage() {
                         {isUpdating && (
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                         )}
-                        <span>{isUpdating ? 'Saving...' : 'Save Changes'}</span>
+                        <span>{isUpdating ? t('profile.saving') : t('profile.save_changes')}</span>
                       </button>
                       <button
                         onClick={() => {
@@ -284,7 +288,7 @@ export default function ProfilePage() {
                         disabled={isUpdating}
                         className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Cancel
+                        {t('profile.cancel')}
                       </button>
                     </>
                   ) : (
@@ -292,7 +296,7 @@ export default function ProfilePage() {
                       onClick={() => setIsEditing(true)}
                       className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                     >
-                      Edit Profile
+                      {t('profile.edit_profile')}
                     </button>
                   )}
                   
@@ -300,14 +304,14 @@ export default function ProfilePage() {
                     onClick={() => setShowPasswordModal(true)}
                     className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors"
                   >
-                    Change Password
+                    {t('profile.change_password')}
                   </button>
                   
                   <button 
                     onClick={() => setShowDeleteModal(true)}
                     className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
                   >
-                    Delete Account
+                    {t('profile.delete_account')}
                   </button>
                 </div>
               </div>
@@ -318,16 +322,16 @@ export default function ProfilePage() {
         {/* Additional Settings */}
         <div className="bg-white shadow rounded-lg mt-6">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Preferences</h2>
-            <p className="text-sm text-gray-500 mt-1">Customize your experience.</p>
+            <h2 className="text-lg font-medium text-gray-900">{t('profile.preferences')}</h2>
+            <p className="text-sm text-gray-500 mt-1">{t('profile.preferences_subtitle')}</p>
           </div>
 
           <div className="px-6 py-4">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Email Notifications</h3>
-                  <p className="text-sm text-gray-500">Receive updates about your properties and account.</p>
+                  <h3 className="text-sm font-medium text-gray-900">{t('profile.email_notifications')}</h3>
+                  <p className="text-sm text-gray-500">{t('profile.email_notifications_subtitle')}</p>
                 </div>
                 <label htmlFor="emailNotifications" className="relative inline-flex items-center cursor-pointer">
                   <input 
@@ -337,7 +341,7 @@ export default function ProfilePage() {
                     checked={emailNotifications}
                     onChange={(e) => setEmailNotifications(e.target.checked)}
                     disabled={!isEditing}
-                    aria-label="Enable email notifications"
+                    aria-label={t('profile.email_notifications')}
                   />
                   <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-400 after:border-2 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
                 </label>
@@ -345,8 +349,8 @@ export default function ProfilePage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Marketing Communications</h3>
-                  <p className="text-sm text-gray-500">Receive tips, updates, and promotional content.</p>
+                  <h3 className="text-sm font-medium text-gray-900">{t('profile.marketing_communications')}</h3>
+                  <p className="text-sm text-gray-500">{t('profile.marketing_communications_subtitle')}</p>
                 </div>
                 <label htmlFor="marketingCommunications" className="relative inline-flex items-center cursor-pointer">
                   <input 
@@ -356,7 +360,7 @@ export default function ProfilePage() {
                     checked={marketingCommunications}
                     onChange={(e) => setMarketingCommunications(e.target.checked)}
                     disabled={!isEditing}
-                    aria-label="Enable marketing communications"
+                    aria-label={t('profile.marketing_communications')}
                   />
                   <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-400 after:border-2 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
                 </label>
@@ -370,12 +374,12 @@ export default function ProfilePage() {
       {showPasswordModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('profile.password_modal_title')}</h3>
             
             <div className="space-y-4">
               <div>
                 <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                  Current Password
+                  {t('profile.current_password')}
                 </label>
                 <input
                   id="currentPassword"
@@ -383,13 +387,13 @@ export default function ProfilePage() {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="w-full px-3 py-2 border-2 border-gray-400 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-500"
-                  placeholder="Enter current password"
+                  placeholder={t('profile.current_password_placeholder')}
                 />
               </div>
               
               <div>
                 <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                  New Password
+                  {t('profile.new_password')}
                 </label>
                 <input
                   id="newPassword"
@@ -397,13 +401,13 @@ export default function ProfilePage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full px-3 py-2 border-2 border-gray-400 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-500"
-                  placeholder="Enter new password"
+                  placeholder={t('profile.new_password_placeholder')}
                 />
               </div>
               
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                  Confirm New Password
+                  {t('profile.confirm_new_password')}
                 </label>
                 <input
                   id="confirmPassword"
@@ -411,7 +415,7 @@ export default function ProfilePage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full px-3 py-2 border-2 border-gray-400 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 hover:border-gray-500"
-                  placeholder="Confirm new password"
+                  placeholder={t('profile.confirm_new_password_placeholder')}
                 />
               </div>
             </div>
@@ -427,7 +431,7 @@ export default function ProfilePage() {
                 disabled={isChangingPassword}
                 className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Cancel
+                {t('profile.cancel')}
               </button>
               <button
                 onClick={handleChangePassword}
@@ -437,7 +441,7 @@ export default function ProfilePage() {
                 {isChangingPassword && (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                 )}
-                <span>{isChangingPassword ? 'Changing...' : 'Change Password'}</span>
+                <span>{isChangingPassword ? t('profile.changing_password') : t('profile.change_password')}</span>
               </button>
             </div>
           </div>
@@ -449,10 +453,10 @@ export default function ProfilePage() {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDeleteAccount}
-        title="Delete Account"
-        message="Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data, including saved properties and preferences."
-        confirmText={isDeleting ? 'Deleting...' : 'Delete Account'}
-        cancelText="Cancel"
+        title={t('profile.delete_account_title')}
+        message={t('profile.delete_account_message')}
+        confirmText={isDeleting ? t('profile.deleting') : t('profile.delete_account')}
+        cancelText={t('profile.cancel')}
         variant="danger"
       />
     </div>
