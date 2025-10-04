@@ -5,9 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AgentGrid from '@/components/agents/AgentGrid';
 import AgentSearch from '@/components/agents/AgentSearch';
-import { Agent } from '@/types/property';
 import { sampleProperties, additionalAgents } from '@/data/sampleProperties';
-import { useTranslation } from '@/i18n/translation';
 
 interface AgentFilters {
   search?: string;
@@ -17,7 +15,6 @@ interface AgentFilters {
 }
 
 export default function AgentsPage() {
-  const { t } = useTranslation();
   const [filters, setFilters] = useState<AgentFilters>({});
 
   // Combine all agents from properties and additional agents
@@ -118,7 +115,11 @@ export default function AgentsPage() {
                 <h2 className="text-2xl font-bold text-gray-900">
                   {filteredAgents.length === allAgents.length 
                     ? 'All Agents' 
-                    : `${filteredAgents.length} Agent${filteredAgents.length !== 1 ? 's' : ''} Found`}
+                    : (() => {
+                        const agentCountText = `${filteredAgents.length} Agent${filteredAgents.length !== 1 ? 's' : ''} Found`;
+                        return filters.search ? `${agentCountText} for "${filters.search}"` : agentCountText;
+                      })()
+                  }
                 </h2>
                 <p className="text-gray-600 mt-1">
                   Choose from our network of professional real estate agents

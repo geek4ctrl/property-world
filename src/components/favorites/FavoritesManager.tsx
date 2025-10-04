@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites } from '@/hooks/useUserProfile';
 import { useTranslation } from '@/i18n/translation';
 import PropertyCard from '@/components/property/PropertyCard';
-import { Property, PropertyType } from '@/types/property';
+import { PropertyType } from '@/types/property';
 import { sampleProperties } from '@/data/sampleProperties';
 import Link from 'next/link';
 
@@ -109,8 +109,8 @@ export default function FavoritesManager({ className = '' }: FavoritesManagerPro
           <div className="h-4 bg-gray-200 rounded w-1/2"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-gray-200 rounded-xl h-96"></div>
+          {Array.from({ length: 6 }, (_, i) => (
+            <div key={`skeleton-${i + 1}`} className="bg-gray-200 rounded-xl h-96"></div>
           ))}
         </div>
       </div>
@@ -129,7 +129,10 @@ export default function FavoritesManager({ className = '' }: FavoritesManagerPro
             <p className="text-gray-600">
               {favoriteCount === 0 
                 ? t('favorites.no_favorites_message')
-                : `You have ${favoriteCount} favorite propert${favoriteCount !== 1 ? 'ies' : 'y'}`
+                : (() => {
+                    const propertyWord = favoriteCount !== 1 ? 'ies' : 'y';
+                    return `You have ${favoriteCount} favorite propert${propertyWord}`;
+                  })()
               }
               {!isDatabaseAvailable && (
                 <span className="ml-2 text-orange-600 text-sm">
@@ -177,9 +180,9 @@ export default function FavoritesManager({ className = '' }: FavoritesManagerPro
             <div className="flex flex-col sm:flex-row gap-4">
               {/* Property Type Filter */}
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="block text-sm font-medium text-gray-700 mb-2">
                   Filter by Type
-                </label>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setFilterBy('all')}
@@ -332,4 +335,4 @@ export default function FavoritesManager({ className = '' }: FavoritesManagerPro
       )}
     </div>
   );
-}"
+}
