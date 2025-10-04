@@ -89,7 +89,7 @@ export default function HeroSection({ onSearch, loading = false }: HeroSectionPr
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fadeInUp" style={{ animationDelay: '800ms' }}>
           <div className="flex flex-col items-center text-white/60 hover:text-white transition-colors duration-300 cursor-pointer">
-            <span className="text-sm font-medium mb-2 hidden sm:block">Scroll to explore</span>
+            <span className="text-sm font-medium mb-2 hidden sm:block">{t('hero.scroll_to_explore')}</span>
             <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>

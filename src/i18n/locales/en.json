@@ -45,7 +45,8 @@
     "no_results": "No results found",
     "error": "An error occurred",
     "currency": "R",
-    "favorite": "Favorites"
+    "favorite": "Favorites",
+    "featured": "Featured"
   },
   "property": {
     "for_sale": "For Sale",
@@ -144,7 +145,8 @@
     "mortgage_calculator": "Mortgage Calculator",
     "buying_guide": "Buying Guide",
     "get_pre_approved": "Get Pre-Approved",
-    "find_agent": "Find an Agent"
+    "find_agent": "Find an Agent",
+    "view_all_featured_properties": "View All Featured Properties"
   },
   "homepage": {
     "featured_properties": "Featured Properties",
@@ -167,7 +169,8 @@
     "subtitle": "Discover thousands of properties for sale and rent across South Africa. From luxury homes to affordable apartments, find your dream property today.",
     "properties_listed": "Properties Listed",
     "happy_clients": "Happy Clients",
-    "trusted_agents": "Trusted Agents"
+    "trusted_agents": "Trusted Agents",
+    "scroll_to_explore": "Scroll to explore"
   },
   "footer": {
     "company_description": "South Africa's leading property portal, connecting buyers, sellers, and renters with their perfect properties.",

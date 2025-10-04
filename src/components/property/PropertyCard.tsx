@@ -182,7 +182,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
             {property.isFeatured && (
               <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 text-xs font-bold rounded-full shadow-lg border border-white/20 backdrop-blur-sm flex items-center space-x-1">
                 <span className="text-sm">✨</span>
-                <span>Featured</span>
+                <span>{t('common.featured')}</span>
               </span>
             )}
             {property.isNew && (

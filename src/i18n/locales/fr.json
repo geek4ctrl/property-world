@@ -45,7 +45,8 @@
     "no_results": "Aucun résultat trouvé",
     "error": "Une erreur s'est produite",
     "currency": "R",
-    "favorite": "Favoris"
+    "favorite": "Favoris",
+    "featured": "En Vedette"
   },
   "property": {
     "for_sale": "À Vendre",
@@ -144,7 +145,8 @@
     "mortgage_calculator": "Calculateur Hypothécaire",
     "buying_guide": "Guide d'Achat",
     "get_pre_approved": "Obtenir une Pré-Approbation",
-    "find_agent": "Trouver un Agent"
+    "find_agent": "Trouver un Agent",
+    "view_all_featured_properties": "Voir Toutes les Propriétés en Vedette"
   },
   "homepage": {
     "featured_properties": "Propriétés en Vedette",
@@ -167,7 +169,8 @@
     "subtitle": "Découvrez des milliers de propriétés à vendre et à louer à travers l'Afrique du Sud. Des maisons de luxe aux appartements abordables, trouvez la propriété de vos rêves aujourd'hui.",
     "properties_listed": "Propriétés Listées",
     "happy_clients": "Clients Satisfaits",
-    "trusted_agents": "Agents de Confiance"
+    "trusted_agents": "Agents de Confiance",
+    "scroll_to_explore": "Faites défiler pour explorer"
   },
   "footer": {
     "company_description": "Le portail immobilier leader d'Afrique du Sud, connectant acheteurs, vendeurs et locataires avec leurs propriétés parfaites.",

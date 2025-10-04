@@ -8,11 +8,13 @@ import PropertySearch from '@/components/property/PropertySearch';
 import { SearchFilters, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import Link from 'next/link';
+import { useTranslation } from '@/i18n';
 
 // Lazy load the mortgage calculator modal component
 const MortgageCalculatorModal = lazy(() => import('@/components/buy/MortgageCalculatorModal'));
 
 export default function BuyPage() {
+  const { t } = useTranslation();
   const [showMortgageCalc, setShowMortgageCalc] = useState(false);
 
   const handleSearch = (filters: SearchFilters) => {
@@ -190,7 +192,7 @@ export default function BuyPage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Properties for Sale</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('buy.featured_properties')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Handpicked premium properties from our most trusted agents
             </p>
@@ -201,7 +203,7 @@ export default function BuyPage() {
               href="/properties?listing=sale&featured=true"
               className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
             >
-              View All Featured Properties
+              {t('buy.view_all_featured_properties')}
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
