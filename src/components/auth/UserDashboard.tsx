@@ -322,12 +322,12 @@ export default function UserDashboard() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {profile?.first_name || 'User'}!
+                {t('dashboard.welcome_back', { name: profile?.first_name || 'User' })}
               </h1>
-              <p className="text-gray-600 mt-1">Manage your profile and property preferences</p>
+              <p className="text-gray-600 mt-1">{t('dashboard.manage_profile_preferences')}</p>
             </div>
             <Button variant="outline" onClick={signOut}>
-              Sign Out
+              {t('dashboard.sign_out')}
             </Button>
           </div>
         </div>
@@ -386,8 +386,8 @@ export default function UserDashboard() {
           
           {activeTab === 'activity' && (
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-              <p className="text-gray-500">Activity tracking coming soon...</p>
+              <h3 className="text-lg font-semibold mb-4">{t('dashboard.recent_activity')}</h3>
+              <p className="text-gray-500">{t('dashboard.activity_tracking_coming_soon')}</p>
             </div>
           )}
         </div>

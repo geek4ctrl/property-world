@@ -8,7 +8,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { Button } from '@/components/ui/FormComponents';
 
-const Header = memo(function Header() {
+interface HeaderProps {
+  variant?: 'default' | 'solid';
+}
+
+const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { t } = useTranslation();
@@ -45,9 +49,17 @@ const Header = memo(function Header() {
     setIsUserMenuOpen(false);
   };
 
+  const headerClasses = variant === 'solid' 
+    ? "bg-white shadow-lg sticky top-0 z-50 border-b border-gray-200"
+    : "glass-card bg-white/95 backdrop-blur-xl shadow-lg sticky top-0 z-50 border-b border-white/20";
+
+  const gradientOverlay = variant === 'solid' 
+    ? null 
+    : <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-white/50 to-purple-50/30 rounded-none"></div>;
+
   return (
-    <header className="glass-card bg-white/95 backdrop-blur-xl shadow-lg sticky top-0 z-50 border-b border-white/20">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-white/50 to-purple-50/30 rounded-none"></div>
+    <header className={headerClasses}>
+      {gradientOverlay}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}

@@ -499,7 +499,21 @@
     "clear_all_confirmation": "Are you sure you want to remove all your favorites? This action cannot be undone.",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "clear_success": "All favorites have been cleared"
+    "clear_success": "All favorites have been cleared",
+    "property_type_filter": "Property Type",
+    "sort_by": "Sort By",
+    "all_types": "All Types",
+    "apartment": "Apartment",
+    "house": "House",
+    "townhouse": "Townhouse",
+    "office": "Office",
+    "student_housing": "Student Housing",
+    "name_a_z": "Name (A-Z)",
+    "price_low_high": "Price (Low to High)",
+    "price_high_low": "Price (High to Low)",
+    "area_largest": "Area (Largest First)",
+    "bedrooms_most": "Bedrooms (Most First)",
+    "properties_count": "{{filtered}} of {{total}} properties"
   },
   "profile": {
     "title": "Profile",
@@ -583,6 +597,9 @@
   },
   "dashboard": {
     "welcome": "Welcome to your Dashboard",
+    "welcome_back": "Welcome back, {{name}}!",
+    "manage_profile_preferences": "Manage your profile and property preferences",
+    "sign_out": "Sign Out",
     "overview": "Overview",
     "profile_tab": "Profile",
     "favorites_tab": "Favorites",
@@ -616,7 +633,9 @@
     "account_settings": "Account Settings",
     "notifications": "Notifications",
     "privacy": "Privacy",
-    "security": "Security"
+    "security": "Security",
+    "recent_activity": "Recent Activity",
+    "activity_tracking_coming_soon": "Activity tracking coming soon..."
   },
   "contact": {
     "get_in_touch": "Get In Touch",

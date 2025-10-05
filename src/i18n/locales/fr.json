@@ -499,7 +499,21 @@
     "clear_all_confirmation": "Êtes-vous sûr de vouloir supprimer tous vos favoris ? Cette action est irréversible.",
     "confirm": "Confirmer",
     "cancel": "Annuler",
-    "clear_success": "Tous les favoris ont été supprimés"
+    "clear_success": "Tous les favoris ont été supprimés",
+    "property_type_filter": "Type de Propriété",
+    "sort_by": "Trier par",
+    "all_types": "Tous les Types",
+    "apartment": "Appartement",
+    "house": "Maison",
+    "townhouse": "Maison de Ville",
+    "office": "Bureau",
+    "student_housing": "Logement Étudiant",
+    "name_a_z": "Nom (A-Z)",
+    "price_low_high": "Prix (Bas vers Haut)",
+    "price_high_low": "Prix (Haut vers Bas)",
+    "area_largest": "Superficie (Plus Grande d'Abord)",
+    "bedrooms_most": "Chambres (Plus en Premier)",
+    "properties_count": "{{filtered}} sur {{total}} propriétés"
   },
   "profile": {
     "title": "Profil",
@@ -583,6 +597,9 @@
   },
   "dashboard": {
     "welcome": "Bienvenue dans votre Tableau de Bord",
+    "welcome_back": "Bon retour, {{name}} !",
+    "manage_profile_preferences": "Gérez votre profil et vos préférences immobilières",
+    "sign_out": "Se Déconnecter",
     "overview": "Aperçu",
     "profile_tab": "Profil",
     "favorites_tab": "Favoris",
@@ -616,7 +633,9 @@
     "account_settings": "Paramètres du Compte",
     "notifications": "Notifications",
     "privacy": "Confidentialité",
-    "security": "Sécurité"
+    "security": "Sécurité",
+    "recent_activity": "Activité Récente",
+    "activity_tracking_coming_soon": "Le suivi d'activité arrive bientôt..."
   },
   "contact": {
     "get_in_touch": "Nous Contacter",

@@ -72,8 +72,8 @@ export default function FavoritesPage() {
   if (!user) {
     return (
       <>
-        <Header />
-        <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Header variant="solid" />
+        <main className="min-h-screen bg-white flex items-center justify-center">
           <div className="text-center max-w-md mx-auto px-6">
             <div className="w-24 h-24 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
               <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,8 +106,8 @@ export default function FavoritesPage() {
   if (loading) {
     return (
       <>
-        <Header />
-        <main className="min-h-screen bg-gray-50">
+        <Header variant="solid" />
+        <main className="min-h-screen bg-white">
           <div className="container mx-auto px-4 py-8">
             <div className="text-center py-12">
               <div className="w-12 h-12 mx-auto mb-4 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
@@ -122,22 +122,9 @@ export default function FavoritesPage() {
 
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-gray-50">
+      <Header variant="solid" />
+      <main className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8">
-          {/* Breadcrumb */}
-          <nav className="mb-6">
-            <div className="flex items-center space-x-2 text-sm text-gray-500">
-              <Link href="/" className="hover:text-blue-600 transition-colors">
-                {t('navigation.home')}
-              </Link>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-              <span className="text-gray-900 font-medium">{t('favorites.title')}</span>
-            </div>
-          </nav>
-
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
@@ -174,7 +161,7 @@ export default function FavoritesPage() {
                 {/* Property Type Filter */}
                 <div className="flex-1">
                   <label htmlFor="type-filter" className="block text-sm font-medium text-gray-700 mb-1">
-                    Property Type
+                    {t('favorites.property_type_filter')}
                   </label>
                   <select
                     id="type-filter"
@@ -182,19 +169,19 @@ export default function FavoritesPage() {
                     onChange={(e) => setFilterType(e.target.value as PropertyType | 'all')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                   >
-                    <option value="all">All Types</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="house">House</option>
-                    <option value="townhouse">Townhouse</option>
-                    <option value="office">Office</option>
-                    <option value="student">Student Housing</option>
+                    <option value="all">{t('favorites.all_types')}</option>
+                    <option value="apartment">{t('favorites.apartment')}</option>
+                    <option value="house">{t('favorites.house')}</option>
+                    <option value="townhouse">{t('favorites.townhouse')}</option>
+                    <option value="office">{t('favorites.office')}</option>
+                    <option value="student">{t('favorites.student_housing')}</option>
                   </select>
                 </div>
 
                 {/* Sort Options */}
                 <div className="flex-1">
                   <label htmlFor="sort-by" className="block text-sm font-medium text-gray-700 mb-1">
-                    Sort By
+                    {t('favorites.sort_by')}
                   </label>
                   <select
                     id="sort-by"
@@ -202,18 +189,21 @@ export default function FavoritesPage() {
                     onChange={(e) => setSortBy(e.target.value as SortOption)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                   >
-                    <option value="name">Name (A-Z)</option>
-                    <option value="price-low">Price (Low to High)</option>
-                    <option value="price-high">Price (High to Low)</option>
-                    <option value="area">Area (Largest First)</option>
-                    <option value="bedrooms">Bedrooms (Most First)</option>
+                    <option value="name">{t('favorites.name_a_z')}</option>
+                    <option value="price-low">{t('favorites.price_low_high')}</option>
+                    <option value="price-high">{t('favorites.price_high_low')}</option>
+                    <option value="area">{t('favorites.area_largest')}</option>
+                    <option value="bedrooms">{t('favorites.bedrooms_most')}</option>
                   </select>
                 </div>
 
                 {/* Results Count */}
                 <div className="flex items-end">
                   <div className="text-sm text-gray-600 whitespace-nowrap">
-                    {filteredAndSortedProperties.length} of {favoriteProperties.length} properties
+                    {t('favorites.properties_count', { 
+                      filtered: filteredAndSortedProperties.length, 
+                      total: favoriteProperties.length 
+                    })}
                   </div>
                 </div>
               </div>
