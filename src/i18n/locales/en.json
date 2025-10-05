@@ -493,7 +493,13 @@
     "view_all": "View All Favorites",
     "sign_in": "Sign In",
     "create_account": "Create Account",
-    "generic_error": "Something went wrong. Please try again."
+    "generic_error": "Something went wrong. Please try again.",
+    "clear_all": "Clear All",
+    "clear_all_favorites": "Clear All Favorites",
+    "clear_all_confirmation": "Are you sure you want to remove all your favorites? This action cannot be undone.",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "clear_success": "All favorites have been cleared"
   },
   "profile": {
     "title": "Profile",

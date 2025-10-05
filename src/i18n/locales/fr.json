@@ -493,7 +493,13 @@
     "view_all": "Voir Tous les Favoris",
     "sign_in": "Se connecter",
     "create_account": "Créer un compte",
-    "generic_error": "Une erreur s'est produite. Veuillez réessayer."
+    "generic_error": "Une erreur s'est produite. Veuillez réessayer.",
+    "clear_all": "Tout Effacer",
+    "clear_all_favorites": "Effacer Tous les Favoris",
+    "clear_all_confirmation": "Êtes-vous sûr de vouloir supprimer tous vos favoris ? Cette action est irréversible.",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "clear_success": "Tous les favoris ont été supprimés"
   },
   "profile": {
     "title": "Profil",
