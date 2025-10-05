@@ -147,7 +147,7 @@ export default function MapViewPage() {
                     {searchResults.length}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
-                    Total Properties
+                    {t('property.stats_total_properties')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -155,7 +155,7 @@ export default function MapViewPage() {
                     {searchResults.filter(p => p.listingType === ListingType.FOR_SALE).length}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
-                    For Sale
+                    {t('property.stats_for_sale')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -163,7 +163,7 @@ export default function MapViewPage() {
                     {searchResults.filter(p => p.listingType === ListingType.TO_RENT).length}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
-                    To Rent
+                    {t('property.stats_to_rent')}
                   </div>
                 </div>
                 <div className="text-center">
@@ -171,7 +171,7 @@ export default function MapViewPage() {
                     {getSouthAfricaDisplay()}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
-                    South Africa
+                    {t('property.stats_south_africa')}
                   </div>
                 </div>
               </div>

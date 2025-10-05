@@ -76,15 +76,15 @@ export default function BuyPage() {
                 <div className="text-3xl font-bold text-white">
                   {sampleProperties.filter(p => p.listingType === ListingType.FOR_SALE).length}+
                 </div>
-                <div className="text-green-200">Properties for Sale</div>
+                <div className="text-green-200">{t('property.stats_properties_for_sale')}</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">R500K+</div>
-                <div className="text-green-200">Starting Price</div>
+                <div className="text-green-200">{t('property.stats_starting_price')}</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">30+</div>
-                <div className="text-green-200">Areas Covered</div>
+                <div className="text-green-200">{t('property.stats_areas_covered')}</div>
               </div>
             </div>
           </div>

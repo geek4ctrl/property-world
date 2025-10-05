@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { Property, PropertyType, ListingType } from '@/types';
+import { useTranslation } from '@/i18n/translation';
 
 // Map bounds interface - exported for use in other components
 export interface MapBounds {
@@ -169,6 +170,7 @@ const PropertyMapGrid = ({
   zoom = 12,
   center = [-26.2041, 28.0473]
 }: PropertyMapGridProps) => {
+  const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
@@ -458,39 +460,39 @@ const PropertyMapGrid = ({
             <svg className="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
             </svg>
-            Property Types
+            {t('property.property_types')}
           </h4>
           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-            {properties.length} properties
+            {properties.length} {t('common.properties')}
           </span>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
             <div className="w-4 h-4 rounded-full bg-green-500 shadow-sm border-2 border-white"></div>
             <div>
-              <span className="text-sm font-medium text-gray-700">Houses</span>
-              <div className="text-xs text-gray-500">Residential homes</div>
+              <span className="text-sm font-medium text-gray-700">{t('property.houses')}</span>
+              <div className="text-xs text-gray-500">{t('property.residential_homes')}</div>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
             <div className="w-4 h-4 rounded-full bg-blue-500 shadow-sm border-2 border-white"></div>
             <div>
-              <span className="text-sm font-medium text-gray-700">Apartments</span>
-              <div className="text-xs text-gray-500">Multi-unit buildings</div>
+              <span className="text-sm font-medium text-gray-700">{t('property.apartments')}</span>
+              <div className="text-xs text-gray-500">{t('property.multi_unit_buildings')}</div>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
             <div className="w-4 h-4 rounded-full bg-amber-500 shadow-sm border-2 border-white"></div>
             <div>
-              <span className="text-sm font-medium text-gray-700">Townhouses</span>
-              <div className="text-xs text-gray-500">Connected homes</div>
+              <span className="text-sm font-medium text-gray-700">{t('property.townhouses')}</span>
+              <div className="text-xs text-gray-500">{t('property.connected_homes')}</div>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
             <div className="w-4 h-4 rounded-full bg-purple-500 shadow-sm border-2 border-white"></div>
             <div>
-              <span className="text-sm font-medium text-gray-700">Offices</span>
-              <div className="text-xs text-gray-500">Commercial spaces</div>
+              <span className="text-sm font-medium text-gray-700">{t('property.offices')}</span>
+              <div className="text-xs text-gray-500">{t('property.commercial_spaces')}</div>
             </div>
           </div>
         </div>
