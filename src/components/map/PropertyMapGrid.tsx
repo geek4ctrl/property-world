@@ -412,7 +412,7 @@ const PropertyMapGrid = ({
       <div className="relative overflow-hidden rounded-xl shadow-lg border border-gray-200">
         {/* Skeleton loader for initial render */}
         {isLoading && loadingProgress === 0 && (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl animate-pulse" style={{ minHeight: '600px', height: '70vh' }}>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl animate-pulse" style={{ minHeight: '400px', height: 'calc(100vh - 400px)', maxHeight: '600px' }}>
             <div className="p-6 space-y-4">
               <div className="h-4 bg-gray-200 rounded w-1/4"></div>
               <div className="h-4 bg-gray-200 rounded w-1/3"></div>
@@ -424,7 +424,7 @@ const PropertyMapGrid = ({
         <div 
           ref={mapRef} 
           className={`bg-gradient-to-br from-blue-50 to-indigo-100 ${className} ${!isLoading ? 'map-container-loaded' : ''}`}
-          style={{ minHeight: '600px', height: '70vh', display: isLoading && loadingProgress === 0 ? 'none' : 'block' }}
+          style={{ minHeight: '400px', height: 'calc(100vh - 400px)', maxHeight: '600px', display: isLoading && loadingProgress === 0 ? 'none' : 'block' }}
         />
         
 

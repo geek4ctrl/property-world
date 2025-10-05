@@ -112,11 +112,11 @@ export default function MapViewPage() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
           
           {/* Search Sidebar */}
           <div className="lg:col-span-1 order-2 lg:order-1">
-            {/* Mobile Toggle Button */}
+            {/* Mobile & Tablet Toggle Button */}
             <div className="lg:hidden mb-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
