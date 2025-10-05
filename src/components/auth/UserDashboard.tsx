@@ -308,10 +308,10 @@ export default function UserDashboard() {
   }
 
   const tabs = [
-    { id: 'profile', name: 'Profile', icon: '👤' },
-    { id: 'favorites', name: 'Favorites', icon: '❤️', count: favorites.length },
-    { id: 'searches', name: 'Saved Searches', icon: '🔍', count: savedSearches.length },
-    { id: 'activity', name: 'Activity', icon: '📊' },
+    { id: 'profile', name: t('dashboard.profile_tab'), icon: '👤' },
+    { id: 'favorites', name: t('dashboard.favorites_tab'), icon: '❤️', count: favorites.length },
+    { id: 'searches', name: t('dashboard.searches_tab'), icon: '🔍', count: savedSearches.length },
+    { id: 'activity', name: t('dashboard.activity_tab'), icon: '📊' },
   ];
 
   return (

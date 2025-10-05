@@ -604,6 +604,7 @@
     "profile_tab": "Profil",
     "favorites_tab": "Favoris",
     "searches_tab": "Recherches Sauvegardées",
+    "activity_tab": "Activité",
     "settings_tab": "Paramètres",
     "upload_avatar": "Télécharger un Avatar",
     "ready_to_upload": "Prêt à télécharger : {filename}",
