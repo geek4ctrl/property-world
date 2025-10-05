@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Agent } from '@/types/property';
+import { useTranslation } from '@/i18n/translation';
 
 interface AgentGridProps {
   agents: Agent[];
@@ -15,6 +16,7 @@ interface AgentCardProps {
 
 function AgentCard({ agent }: AgentCardProps) {
   const [imageError, setImageError] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -79,7 +81,7 @@ function AgentCard({ agent }: AgentCardProps) {
             href={`/agents/${agent.id}`}
             className="block w-full p-3 text-center border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-medium"
           >
-            View Profile
+            {t('agents.view_profile')}
           </Link>
         </div>
       </div>

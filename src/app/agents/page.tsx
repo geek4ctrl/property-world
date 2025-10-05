@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import AgentGrid from '@/components/agents/AgentGrid';
 import AgentSearch from '@/components/agents/AgentSearch';
 import { sampleProperties, additionalAgents } from '@/data/sampleProperties';
+import { useTranslation } from '@/i18n/translation';
 
 interface AgentFilters {
   search?: string;
@@ -15,6 +16,7 @@ interface AgentFilters {
 }
 
 export default function AgentsPage() {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<AgentFilters>({});
 
   // Combine all agents from properties and additional agents
@@ -72,25 +74,25 @@ export default function AgentsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Find Your Perfect Agent
+                {t('agents.find_perfect_agent')}
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                Connect with experienced real estate professionals who know your area and can help you achieve your property goals.
+                {t('agents.connect_experienced_professionals')}
               </p>
               
               {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-12">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-2">{allAgents.length}+</div>
-                  <div className="text-gray-600">Expert Agents</div>
+                  <div className="text-gray-600">{t('agents.expert_agents')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-2">{agencies.length}+</div>
-                  <div className="text-gray-600">Partner Agencies</div>
+                  <div className="text-gray-600">{t('agents.partner_agencies')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-2">15+</div>
-                  <div className="text-gray-600">Years Experience</div>
+                  <div className="text-gray-600">{t('agents.years_experience')}</div>
                 </div>
               </div>
             </div>
@@ -114,15 +116,16 @@ export default function AgentsPage() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
                   {filteredAgents.length === allAgents.length 
-                    ? 'All Agents' 
+                    ? t('agents.all_agents')
                     : (() => {
-                        const agentCountText = `${filteredAgents.length} Agent${filteredAgents.length !== 1 ? 's' : ''} Found`;
-                        return filters.search ? `${agentCountText} for "${filters.search}"` : agentCountText;
+                        const agentText = filteredAgents.length === 1 ? t('agents.agent_found') : t('agents.agents_found');
+                        const agentCountText = `${filteredAgents.length} ${agentText}`;
+                        return filters.search ? `${agentCountText} ${t('agents.for_search')} "${filters.search}"` : agentCountText;
                       })()
                   }
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  Choose from our network of professional real estate agents
+                  {t('agents.choose_from_network')}
                 </p>
               </div>
             </div>
@@ -136,10 +139,10 @@ export default function AgentsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Why Choose Our Agents?
+                {t('agents.why_choose_our_agents')}
               </h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Our agents are carefully selected professionals with proven track records in the South African property market.
+                {t('agents.carefully_selected_professionals')}
               </p>
             </div>
 
@@ -150,8 +153,8 @@ export default function AgentsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Licensed & Certified</h3>
-                <p className="text-gray-600">All our agents are fully licensed and certified professionals.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('agents.licensed_certified')}</h3>
+                <p className="text-gray-600">{t('agents.fully_licensed_professionals')}</p>
               </div>
 
               <div className="text-center p-6">
@@ -161,8 +164,8 @@ export default function AgentsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Local Expertise</h3>
-                <p className="text-gray-600">Deep knowledge of local markets and neighborhoods.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('agents.local_expertise')}</h3>
+                <p className="text-gray-600">{t('agents.deep_knowledge_markets')}</p>
               </div>
 
               <div className="text-center p-6">
@@ -171,8 +174,8 @@ export default function AgentsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Client-Focused</h3>
-                <p className="text-gray-600">Committed to providing exceptional service and results.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('agents.client_focused')}</h3>
+                <p className="text-gray-600">{t('agents.exceptional_service_results')}</p>
               </div>
 
               <div className="text-center p-6">
@@ -181,8 +184,8 @@ export default function AgentsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Fast Response</h3>
-                <p className="text-gray-600">Quick response times and proactive communication.</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('agents.fast_response')}</h3>
+                <p className="text-gray-600">{t('agents.quick_response_communication')}</p>
               </div>
             </div>
           </div>

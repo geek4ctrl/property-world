@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from '@/i18n/translation';
 
 interface AgentFilters {
   search?: string;
@@ -16,6 +17,7 @@ interface AgentSearchProps {
 }
 
 export default function AgentSearch({ onSearch, agencies, className = '' }: AgentSearchProps) {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState<AgentFilters>({});
 
   const handleInputChange = (key: keyof AgentFilters, value: string) => {
@@ -32,19 +34,19 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
 
   return (
     <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Find Your Agent</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('agents.find_your_agent')}</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Search by Name/Agency */}
         <div>
           <label htmlFor="agent-search" className="block text-sm font-medium text-gray-700 mb-2">
-            Search by Name or Agency
+            {t('agents.search_by_name_agency')}
           </label>
           <div className="relative">
             <input
               id="agent-search"
               type="text"
-              placeholder="Enter name or agency..."
+              placeholder={t('agents.enter_name_agency')}
               value={filters.search || ''}
               onChange={(e) => handleInputChange('search', e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -58,13 +60,13 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
         {/* Location */}
         <div>
           <label htmlFor="agent-location" className="block text-sm font-medium text-gray-700 mb-2">
-            Location
+            {t('agents.location')}
           </label>
           <div className="relative">
             <input
               id="agent-location"
               type="text"
-              placeholder="City or area..."
+              placeholder={t('agents.city_or_area')}
               value={filters.location || ''}
               onChange={(e) => handleInputChange('location', e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -79,7 +81,7 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
         {/* Agency Filter */}
         <div>
           <label htmlFor="agent-agency" className="block text-sm font-medium text-gray-700 mb-2">
-            Agency
+            {t('agents.agency')}
           </label>
           <select
             id="agent-agency"
@@ -87,7 +89,7 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
             onChange={(e) => handleInputChange('agency', e.target.value)}
             className="w-full px-3 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">All Agencies</option>
+            <option value="">{t('agents.all_agencies')}</option>
             {agencies.map((agency) => (
               <option key={agency} value={agency}>
                 {agency}
@@ -99,7 +101,7 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
         {/* Specialization */}
         <div>
           <label htmlFor="agent-specialization" className="block text-sm font-medium text-gray-700 mb-2">
-            Specialization
+            {t('agents.specialization')}
           </label>
           <select
             id="agent-specialization"
@@ -107,14 +109,14 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
             onChange={(e) => handleInputChange('specialization', e.target.value)}
             className="w-full px-3 py-3 bg-white border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">All Specializations</option>
-            <option value="residential">Residential</option>
-            <option value="commercial">Commercial</option>
-            <option value="luxury">Luxury Properties</option>
-            <option value="student">Student Accommodation</option>
-            <option value="investment">Investment Properties</option>
-            <option value="first-time-buyers">First-Time Buyers</option>
-            <option value="rentals">Rentals</option>
+            <option value="">{t('agents.all_specializations')}</option>
+            <option value="residential">{t('agents.residential')}</option>
+            <option value="commercial">{t('agents.commercial')}</option>
+            <option value="luxury">{t('agents.luxury_properties')}</option>
+            <option value="student">{t('agents.student_accommodation')}</option>
+            <option value="investment">{t('agents.investment_properties')}</option>
+            <option value="first-time-buyers">{t('agents.first_time_buyers')}</option>
+            <option value="rentals">{t('agents.rentals')}</option>
           </select>
         </div>
       </div>
@@ -125,11 +127,11 @@ export default function AgentSearch({ onSearch, agencies, className = '' }: Agen
           onClick={handleReset}
           className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
         >
-          Clear All Filters
+          {t('agents.clear_all_filters')}
         </button>
         
         <div className="text-sm text-gray-500">
-          Use the filters above to find agents that match your specific needs
+          {t('agents.use_filters_find_agents')}
         </div>
       </div>
     </div>

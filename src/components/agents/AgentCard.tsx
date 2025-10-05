@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Agent } from '@/types/property';
+import { useTranslation } from '@/i18n/translation';
 
 interface AgentCardProps {
   agent: Agent;
@@ -12,6 +13,7 @@ interface AgentCardProps {
 
 export default function AgentCard({ agent, showFullInfo = false, className = '' }: AgentCardProps) {
   const [imageError, setImageError] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 ${className}`}>
@@ -78,14 +80,14 @@ export default function AgentCard({ agent, showFullInfo = false, className = '' 
             <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
             </svg>
-            Call
+            {t('agents.call')}
           </a>
           
           <Link
             href={`/agents/${agent.id}`}
             className="flex-1 inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
           >
-            View Profile
+            {t('agents.view_profile')}
           </Link>
         </div>
       </div>
