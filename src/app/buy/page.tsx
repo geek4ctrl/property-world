@@ -63,11 +63,10 @@ export default function BuyPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Buy Your Dream Home
+              {t('property.buy_dream_home_title')}
             </h1>
             <p className="text-xl text-green-100 max-w-3xl mx-auto mb-8">
-              Discover the perfect property for your next chapter. From starter homes to luxury estates, 
-              we have properties to match every budget and lifestyle.
+              {t('property.buy_dream_home_description')}
             </p>
             
             {/* Key Stats */}
@@ -93,8 +92,8 @@ export default function BuyPage() {
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-xl shadow-2xl p-6 border-2 border-green-200">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Find Properties for Sale</h3>
-                <p className="text-gray-600">Search our extensive database of properties for sale</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('property.find_properties_for_sale')}</h3>
+                <p className="text-gray-600">{t('property.search_extensive_database')}</p>
               </div>
               <PropertySearch 
                 onSearch={handleSearch}
@@ -110,9 +109,9 @@ export default function BuyPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Buying Tools & Resources</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('property.buying_tools_resources')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Everything you need to make informed property purchase decisions
+              {t('property.everything_you_need')}
             </p>
           </div>
 
@@ -124,13 +123,13 @@ export default function BuyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mortgage Calculator</h3>
-              <p className="text-gray-600 mb-4 text-sm">Calculate monthly payments and affordability</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('property.mortgage_calculator')}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{t('property.mortgage_calculator_desc')}</p>
               <button
                 onClick={() => setShowMortgageCalc(true)}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
               >
-                Calculate Now
+                {t('property.calculate_now')}
               </button>
             </div>
 
@@ -141,13 +140,13 @@ export default function BuyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Compare Properties</h3>
-              <p className="text-gray-600 mb-4 text-sm">Side-by-side property comparisons</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('property.compare_properties')}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{t('property.compare_properties_desc')}</p>
               <Link
                 href="/buy/compare"
                 className="block w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium text-center"
               >
-                Start Comparing
+                {t('property.start_comparing')}
               </Link>
             </div>
 
@@ -158,13 +157,13 @@ export default function BuyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Buying Guide</h3>
-              <p className="text-gray-600 mb-4 text-sm">Step-by-step home buying process</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('buy.buying_guide')}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{t('property.buying_guide_desc')}</p>
               <Link
                 href="/buy/guide"
                 className="block w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium text-center"
               >
-                Learn More
+                {t('property.learn_more')}
               </Link>
             </div>
 
@@ -175,13 +174,13 @@ export default function BuyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Saved Searches</h3>
-              <p className="text-gray-600 mb-4 text-sm">Get alerts for new matching properties</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('property.saved_searches')}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{t('property.saved_searches_desc')}</p>
               <Link
                 href="/buy/alerts"
                 className="block w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium text-center"
               >
-                Set Up Alerts
+                {t('property.set_up_alerts')}
               </Link>
             </div>
           </div>
@@ -194,7 +193,7 @@ export default function BuyPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('buy.featured_properties')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Handpicked premium properties from our most trusted agents
+              {t('property.handpicked_premium_description')}
             </p>
           </div>
           <PropertyGrid properties={featuredForSale} />
@@ -216,9 +215,9 @@ export default function BuyPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Browse by Price Range</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('property.browse_by_price_range')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Find properties that match your budget and requirements
+              {t('property.properties_match_budget')}
             </p>
           </div>
 
@@ -232,11 +231,11 @@ export default function BuyPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Starter Homes</h3>
-                  <p className="text-blue-600 font-semibold">Under R1.5M</p>
+                  <h3 className="text-xl font-bold text-gray-900">{t('buy.starter_homes')}</h3>
+                  <p className="text-blue-600 font-semibold">{t('buy.under_r1_5m')}</p>
                 </div>
               </div>
-              <p className="text-gray-600 mb-6">Perfect for first-time buyers and young families</p>
+              <p className="text-gray-600 mb-6">{t('buy.perfect_first_time_buyers')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 {affordableHomes.slice(0, 4).map((property) => (
                   <Link
@@ -254,7 +253,7 @@ export default function BuyPage() {
                 href="/properties?listing=sale&max_price=1500000"
                 className="block w-full text-center bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                View All Starter Homes
+                {t('buy.view_all_starter_homes')}
               </Link>
             </div>
 
@@ -267,11 +266,11 @@ export default function BuyPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Luxury Properties</h3>
-                  <p className="text-purple-600 font-semibold">R3M+</p>
+                  <h3 className="text-xl font-bold text-gray-900">{t('buy.luxury_properties')}</h3>
+                  <p className="text-purple-600 font-semibold">{t('buy.r3m_plus')}</p>
                 </div>
               </div>
-              <p className="text-gray-600 mb-6">Premium homes with exceptional features and locations</p>
+              <p className="text-gray-600 mb-6">{t('buy.premium_homes_exceptional')}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 {luxuryHomes.slice(0, 4).map((property) => (
                   <Link
@@ -289,7 +288,7 @@ export default function BuyPage() {
                 href="/properties?listing=sale&min_price=3000000"
                 className="block w-full text-center bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
               >
-                View All Luxury Properties
+                {t('buy.view_all_luxury_properties')}
               </Link>
             </div>
           </div>
@@ -300,9 +299,9 @@ export default function BuyPage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Home Buying Journey</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('buy.your_home_buying_journey')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Follow our simple step-by-step process to find and purchase your dream home
+              {t('buy.simple_step_by_step_process')}
             </p>
           </div>
 
@@ -310,29 +309,29 @@ export default function BuyPage() {
             {[
               {
                 step: 1,
-                title: "Get Pre-Approved",
-                description: "Determine your budget with mortgage pre-approval",
+                title: t('buy.get_pre_approved'),
+                description: t('buy.determine_budget_mortgage'),
                 icon: "calculator",
                 color: "blue"
               },
               {
                 step: 2,
-                title: "Search Properties",
-                description: "Browse and shortlist properties that match your criteria",
+                title: t('buy.search_properties'),
+                description: t('buy.browse_shortlist_properties'),
                 icon: "search",
                 color: "green"
               },
               {
                 step: 3,
-                title: "View & Compare",
-                description: "Schedule viewings and compare your favorite properties",
+                title: t('buy.view_compare'),
+                description: t('buy.schedule_viewings_compare'),
                 icon: "eye",
                 color: "purple"
               },
               {
                 step: 4,
-                title: "Make an Offer",
-                description: "Submit an offer and finalize the purchase",
+                title: t('buy.make_an_offer'),
+                description: t('buy.submit_offer_finalize'),
                 icon: "document",
                 color: "orange"
               }
@@ -352,7 +351,7 @@ export default function BuyPage() {
               href="/buy/guide"
               className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
             >
-              Get the Complete Buying Guide
+              {t('buy.get_complete_buying_guide')}
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
@@ -364,22 +363,22 @@ export default function BuyPage() {
       {/* CTA Section */}
       <section className="py-16 bg-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Your Home Search?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">{t('buy.ready_to_start_search')}</h2>
           <p className="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of successful home buyers who found their perfect property with PropertyWorld
+            {t('buy.join_thousands_successful_buyers')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/properties?listing=sale"
               className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-medium rounded-lg hover:bg-gray-100 transition-colors"
             >
-              Browse All Properties
+              {t('buy.browse_all_properties')}
             </Link>
             <button
               onClick={() => setShowMortgageCalc(true)}
               className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-green-600 transition-colors"
             >
-              Calculate Affordability
+              {t('buy.calculate_affordability')}
             </button>
           </div>
         </div>
