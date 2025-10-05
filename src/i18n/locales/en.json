@@ -193,6 +193,8 @@
     "save_this_search": "Save this search",
     "save_search": "Save Search",
     "search_name": "Search Name",
+    "filter_applied": "filter applied",
+    "filters_applied": "filters applied",
     "search_name_placeholder": "e.g., 3BR Houses in Cape Town",
     "cancel": "Cancel"
   },

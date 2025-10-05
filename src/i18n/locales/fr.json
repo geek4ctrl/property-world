@@ -193,6 +193,8 @@
     "save_this_search": "Sauvegarder cette recherche",
     "save_search": "Sauvegarder la Recherche",
     "search_name": "Nom de la Recherche",
+    "filter_applied": "filtre appliqué",
+    "filters_applied": "filtres appliqués",
     "search_name_placeholder": "ex: Maisons 3CH au Cap",
     "cancel": "Annuler"
   },

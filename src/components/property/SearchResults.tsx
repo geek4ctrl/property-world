@@ -152,7 +152,7 @@ export default function SearchResults({
             </h2>
             {getActiveFiltersCount() > 0 && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                {getActiveFiltersCount()} filters applied
+                {getActiveFiltersCount()} {getActiveFiltersCount() === 1 ? t('search.filter_applied') : t('search.filters_applied')}
               </span>
             )}
           </div>
