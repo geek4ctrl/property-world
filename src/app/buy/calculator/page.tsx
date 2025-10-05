@@ -50,10 +50,10 @@ export default function MortgageCalculatorPage() {
   const disposableIncome = monthlyIncome - monthlyExpenses - (calculation?.monthlyPayment || 0);
 
   const getAffordabilityStatus = () => {
-    if (affordabilityRatio <= 30) return { color: 'green', text: 'Excellent', description: 'Well within affordable range' };
-    if (affordabilityRatio <= 35) return { color: 'blue', text: 'Good', description: 'Manageable payment' };
-    if (affordabilityRatio <= 40) return { color: 'yellow', text: 'Caution', description: 'Higher payment ratio' };
-    return { color: 'red', text: 'Risk', description: 'May be difficult to afford' };
+    if (affordabilityRatio <= 30) return { color: 'green', text: t('calculator.excellent'), description: t('calculator.well_within_affordable') };
+    if (affordabilityRatio <= 35) return { color: 'blue', text: t('calculator.good'), description: t('calculator.manageable_payment') };
+    if (affordabilityRatio <= 40) return { color: 'yellow', text: t('calculator.caution'), description: t('calculator.higher_payment_ratio') };
+    return { color: 'red', text: t('calculator.risk'), description: t('calculator.may_be_difficult') };
   };
 
   const status = getAffordabilityStatus();
@@ -159,12 +159,12 @@ export default function MortgageCalculatorPage() {
 
             {/* Affordability Assessment */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Affordability Assessment</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('calculator.affordability_assessment')}</h2>
               
               <div className="space-y-4">
                 <div>
                   <label htmlFor="monthly-income" className="block text-sm font-medium text-gray-700 mb-2">
-                    Monthly Gross Income
+                    {t('calculator.monthly_gross_income')}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">R</span>
@@ -181,7 +181,7 @@ export default function MortgageCalculatorPage() {
 
                 <div>
                   <label htmlFor="monthly-expenses" className="block text-sm font-medium text-gray-700 mb-2">
-                    Monthly Expenses
+                    {t('calculator.monthly_expenses')}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">R</span>
@@ -195,7 +195,7 @@ export default function MortgageCalculatorPage() {
                     />
                   </div>
                   <div className="mt-1 text-xs text-gray-500">
-                    Include all monthly debts, living expenses, insurance, etc.
+                    {t('calculator.include_monthly_debts')}
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function MortgageCalculatorPage() {
           <div className="space-y-6">
             {/* Payment Calculation */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Payment Calculation</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('calculator.payment_calculation')}</h2>
               
               {calculation && (
                 <div className="space-y-4">
@@ -215,7 +215,7 @@ export default function MortgageCalculatorPage() {
                       <div className="text-3xl font-bold text-green-600">
                         R{Math.round(calculation.monthlyPayment).toLocaleString()}
                       </div>
-                      <div className="text-sm text-gray-600">Monthly Payment</div>
+                      <div className="text-sm text-gray-600">{t('calculator.monthly_payment')}</div>
                     </div>
                   </div>
 
@@ -224,25 +224,25 @@ export default function MortgageCalculatorPage() {
                       <div className="text-lg font-semibold text-gray-900">
                         R{calculation.loanAmount.toLocaleString()}
                       </div>
-                      <div className="text-sm text-gray-600">Loan Amount</div>
+                      <div className="text-sm text-gray-600">{t('calculator.loan_amount')}</div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-4">
                       <div className="text-lg font-semibold text-gray-900">
                         R{Math.round(calculation.totalPayment).toLocaleString()}
                       </div>
-                      <div className="text-sm text-gray-600">Total Payment</div>
+                      <div className="text-sm text-gray-600">{t('calculator.total_payment')}</div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-4">
                       <div className="text-lg font-semibold text-gray-900">
                         R{Math.round(calculation.totalInterest).toLocaleString()}
                       </div>
-                      <div className="text-sm text-gray-600">Total Interest</div>
+                      <div className="text-sm text-gray-600">{t('calculator.total_interest')}</div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-4">
                       <div className="text-lg font-semibold text-gray-900">
-                        {loanTerm} years
+                        {loanTerm} {t('calculator.years')}
                       </div>
-                      <div className="text-sm text-gray-600">Loan Term</div>
+                      <div className="text-sm text-gray-600">{t('calculator.loan_term')}</div>
                     </div>
                   </div>
                 </div>
@@ -251,7 +251,7 @@ export default function MortgageCalculatorPage() {
 
             {/* Affordability Status */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Affordability Status</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('calculator.affordability_status')}</h2>
               
               <div className={`bg-${status.color}-50 border border-${status.color}-200 rounded-lg p-4 mb-4`}>
                 <div className="flex items-center justify-between">
@@ -267,22 +267,22 @@ export default function MortgageCalculatorPage() {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Monthly Income:</span>
+                  <span className="text-sm text-gray-600">{t('calculator.monthly_income')}:</span>
                   <span className="font-semibold">R{monthlyIncome.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Monthly Expenses:</span>
+                  <span className="text-sm text-gray-600">{t('calculator.monthly_expenses')}:</span>
                   <span className="font-semibold text-red-600">-R{monthlyExpenses.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Mortgage Payment:</span>
+                  <span className="text-sm text-gray-600">{t('calculator.mortgage_payment')}:</span>
                   <span className="font-semibold text-red-600">
                     -R{calculation ? Math.round(calculation.monthlyPayment).toLocaleString() : '0'}
                   </span>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-900">Disposable Income:</span>
+                    <span className="text-sm font-medium text-gray-900">{t('calculator.disposable_income')}:</span>
                     <span className={`font-bold ${disposableIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                       R{Math.round(disposableIncome).toLocaleString()}
                     </span>
@@ -291,40 +291,40 @@ export default function MortgageCalculatorPage() {
               </div>
 
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-blue-900 mb-2">Banking Guidelines</h3>
+                <h3 className="font-semibold text-blue-900 mb-2">{t('calculator.banking_guidelines')}</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Mortgage payment should not exceed 30-35% of gross income</li>
-                  <li>• Banks typically require a minimum 10% deposit</li>
-                  <li>• Good credit score improves approval chances</li>
-                  <li>• Consider additional costs: transfer fees, bond registration, insurance</li>
+                  <li>• {t('calculator.mortgage_not_exceed')}</li>
+                  <li>• {t('calculator.banks_require_deposit')}</li>
+                  <li>• {t('calculator.good_credit_improves')}</li>
+                  <li>• {t('calculator.consider_additional_costs')}</li>
                 </ul>
               </div>
             </div>
 
             {/* Additional Costs */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Additional Purchase Costs</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('calculator.additional_purchase_costs')}</h2>
               
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Transfer Fees (approx.):</span>
+                  <span className="text-sm text-gray-600">{t('calculator.transfer_fees_approx')}:</span>
                   <span className="font-semibold">R{Math.round(propertyPrice * 0.01).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Bond Registration:</span>
+                  <span className="text-sm text-gray-600">{t('calculator.bond_registration')}:</span>
                   <span className="font-semibold">R{Math.round(calculation?.loanAmount ? calculation.loanAmount * 0.005 : 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Attorney Fees:</span>
+                  <span className="text-sm text-gray-600">{t('calculator.attorney_fees')}:</span>
                   <span className="font-semibold">R15,000 - R25,000</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Home Insurance (monthly):</span>
+                  <span className="text-sm text-gray-600">{t('calculator.home_insurance_monthly')}:</span>
                   <span className="font-semibold">R800 - R2,000</span>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-900">Estimated Total Additional:</span>
+                    <span className="text-sm font-medium text-gray-900">{t('calculator.estimated_total_additional')}:</span>
                     <span className="font-bold text-gray-900">
                       R{Math.round(propertyPrice * 0.015 + 20000).toLocaleString()}
                     </span>
@@ -337,17 +337,16 @@ export default function MortgageCalculatorPage() {
 
         {/* Get Pre-Approved CTA */}
         <div className="mt-12 bg-green-600 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Ready to Get Pre-Approved?</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">{t('calculator.ready_get_preapproved')}</h2>
           <p className="text-green-100 mb-6 max-w-2xl mx-auto">
-            Take the next step in your home buying journey. Get pre-approved to know your exact budget 
-            and show sellers you're a serious buyer.
+            {t('calculator.take_next_step')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="px-8 py-3 bg-white text-green-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
-              Find a Mortgage Advisor
+              {t('calculator.find_mortgage_advisor')}
             </button>
             <button className="px-8 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-green-600 transition-colors">
-              Download Calculation Report
+              {t('calculator.download_calculation_report')}
             </button>
           </div>
         </div>
