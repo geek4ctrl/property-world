@@ -11,7 +11,7 @@ import { PropertyErrorBoundary, SearchErrorBoundary } from '@/components/ui/Spec
 import { SearchFilters, Property, PropertyType, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import { filterProperties } from '@/lib/utils';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 const SEARCH_DELAY = 300;
 

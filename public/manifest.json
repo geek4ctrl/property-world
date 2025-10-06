@@ -1,7 +1,7 @@
 {
-  "name": "Tano - Property Search Platform",
-  "short_name": "Tano",
-  "description": "Find your perfect home with Tano property search platform",
+  "name": "Tanoluxe - Property Search Platform",
+  "short_name": "Tanoluxe",
+  "description": "Find your perfect home with Tanoluxe property search platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

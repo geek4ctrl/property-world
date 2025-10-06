@@ -21,7 +21,7 @@ export default function Footer() {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-xl">T</span>
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">Tano</h3>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">Tanoluxe</h3>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               {t('footer.company_description')}

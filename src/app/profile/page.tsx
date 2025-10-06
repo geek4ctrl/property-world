@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { updatePassword, isSupabaseAvailable } from '@/lib/supabase';
 import { useToast } from '@/hooks/useToast';
 import { ConfirmModal } from '@/components/ui/Modal';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 
 export default function ProfilePage() {

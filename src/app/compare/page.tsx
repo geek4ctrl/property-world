@@ -8,8 +8,10 @@ import Footer from '@/components/layout/Footer';
 import { useComparison } from '@/contexts/ComparisonContext';
 import { formatPrice } from '@/lib/utils';
 import { PropertyErrorBoundary } from '@/components/ui/SpecializedErrorBoundaries';
+import { useTranslation } from '@/i18n/translation';
 
 export default function ComparePage() {
+  const { t } = useTranslation();
   const { comparedProperties, removeFromComparison, clearComparison, comparisonCount } = useComparison();
   const [selectedImageIndexes, setSelectedImageIndexes] = useState<Record<string, number>>({});
 
@@ -294,10 +296,10 @@ export default function ComparePage() {
                             href={`/properties/${property.id}`}
                             className="block w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-center font-medium rounded-lg transition-colors"
                           >
-                            View Details
+                            {t('common.view_details')}
                           </Link>
                           <button className="block w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
-                            Contact Agent
+                            {t('property.contact_agent')}
                           </button>
                         </div>
                       </td>

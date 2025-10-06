@@ -2,7 +2,7 @@
 
 import RegisterForm from '@/components/auth/RegisterForm';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 export default function RegisterPage() {
   const { t } = useTranslation();

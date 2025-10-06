@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites } from '@/hooks/useUserProfile';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PropertyCard from '@/components/property/PropertyCard';

@@ -8,7 +8,7 @@ import PropertySearch from '@/components/property/PropertySearch';
 import { SearchFilters, ListingType } from '@/types';
 import { sampleProperties } from '@/data/sampleProperties';
 import Link from 'next/link';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 // Lazy load the mortgage calculator modal component
 const MortgageCalculatorModal = lazy(() => import('@/components/buy/MortgageCalculatorModal'));

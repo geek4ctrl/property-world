@@ -211,8 +211,8 @@ export function useFavorites(user: User | null) {
   const [isDatabaseAvailable, setIsDatabaseAvailable] = useState(true);
 
   // Local storage keys
-  const LOCAL_STORAGE_KEY = 'property-world-favorites';
-  const GUEST_FAVORITES_KEY = 'property-world-guest-favorites';
+  const LOCAL_STORAGE_KEY = 'tanoluxe-favorites';
+  const GUEST_FAVORITES_KEY = 'tanoluxe-guest-favorites';
 
   // Load favorites from local storage (for guest users or fallback)
   const loadLocalFavorites = () => {

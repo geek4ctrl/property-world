@@ -69,7 +69,7 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                 <span className="text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">T</span>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-blue-800 transition-all duration-300">
-                Tano
+                Tanoluxe
               </span>
             </Link>
           </div>

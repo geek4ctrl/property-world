@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button, Input, Textarea, Select, Checkbox } from '@/components/ui/FormComponents';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 interface ContactFormProps {
   readonly propertyId?: string;

@@ -193,7 +193,14 @@ const PropertyMapGrid = ({
   }, [onPropertySelect]);
 
   useEffect(() => {
-    if (!mapRef.current || propertiesWithCoords.length === 0) {
+    if (!mapRef.current) {
+      console.warn('Map container ref not available');
+      setIsLoading(false);
+      return;
+    }
+
+    if (propertiesWithCoords.length === 0) {
+      console.warn('No properties with coordinates found');
       setIsLoading(false);
       return;
     }
@@ -207,7 +214,6 @@ const PropertyMapGrid = ({
       try {
         const L = (await import('leaflet')).default;
         setLoadingProgress(20);
-        setLoadingStage('Setting up map configuration...');
         setLoadingStage('Setting up map configuration...');
         
         // Fix for default markers in Next.js

@@ -515,8 +515,7 @@ export default function AdvancedSearch({
       {/* Save Search Modal */}
       {showSaveModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="glass-card bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-8 animate-slideDown border border-white/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-purple-50/30 rounded-2xl"></div>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-slideDown border border-gray-200">
             <div className="relative">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center space-x-3">
                 <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>

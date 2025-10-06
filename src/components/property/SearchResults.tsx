@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Property, SearchFilters } from '@/types';
 import PropertyGrid from './PropertyGrid';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 interface SearchResultsProps {
   properties: Property[];

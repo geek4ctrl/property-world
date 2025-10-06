@@ -2,7 +2,7 @@
 
 import LoginForm from '@/components/auth/LoginForm';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import { useTranslation } from '@/i18n';
+import { useTranslation } from '@/i18n/translation';
 
 export default function LoginPage() {
   const { t } = useTranslation();

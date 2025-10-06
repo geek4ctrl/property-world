@@ -21,7 +21,10 @@ function getNestedValue(obj: any, keys: string[]): any {
 // Helper function to replace parameters in string
 function replaceParameters(str: string, params: Record<string, string | number>): string {
   return Object.entries(params).reduce((result, [param, val]) => {
-    return result.replace(new RegExp(`{${param}}`, 'g'), String(val));
+    // Support both {{param}} and {param} formats
+    return result
+      .replace(new RegExp(`{{${param}}}`, 'g'), String(val))
+      .replace(new RegExp(`{${param}}`, 'g'), String(val));
   }, str);
 }
 
