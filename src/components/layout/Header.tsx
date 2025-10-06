@@ -207,7 +207,7 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 15v-4m4 4v-4m4 4v-4" />
                           </svg>
-                          Dashboard
+                          {t('auth.dashboard')}
                         </Link>
                         <Link 
                           href="/favorites" 
@@ -227,7 +227,7 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                           <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
-                          Profile
+                          {t('auth.profile')}
                         </Link>
                         <div className="border-t border-gray-100 my-1"></div>
                         <button 
@@ -237,7 +237,7 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                           <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                           </svg>
-                          Sign Out
+                          {t('auth.sign_out')}
                         </button>
                       </div>
                     </div>
@@ -362,7 +362,7 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                     className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
                     onClick={closeMenu}
                   >
-                    Dashboard
+                    {t('auth.dashboard')}
                   </Link>
                   <Link 
                     href="/favorites" 
@@ -376,13 +376,13 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                     className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
                     onClick={closeMenu}
                   >
-                    Profile
+                    {t('auth.profile')}
                   </Link>
                   <button 
                     onClick={handleSignOut}
                     className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 transition-colors"
                   >
-                    Sign Out
+                    {t('auth.sign_out')}
                   </button>
                 </>
               ) : (
