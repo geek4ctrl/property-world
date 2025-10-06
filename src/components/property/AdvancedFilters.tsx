@@ -284,7 +284,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bedrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
+              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white text-gray-900 font-medium focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5, 6].map(num => (
@@ -300,7 +300,7 @@ export default function AdvancedFilters({
               onChange={(e) => updateFilters({ 
                 bathrooms: e.target.value ? parseInt(e.target.value) : undefined 
               })}
-              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
+              className="w-full px-4 py-4 border-2 border-black rounded-xl bg-white text-gray-900 font-medium focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none hover:border-gray-800 hover:bg-white hover:shadow-md transition-all duration-300"
             >
               <option value="">Any</option>
               {[1, 2, 3, 4, 5].map(num => (

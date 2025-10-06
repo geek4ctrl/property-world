@@ -217,7 +217,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectClasses = `
       form-input w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 ease-out
       focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none focus:bg-white
-      hover:border-gray-800 hover:bg-white hover:shadow-md appearance-none bg-white/90 backdrop-blur-sm text-gray-900
+      hover:border-gray-800 hover:bg-white hover:shadow-md appearance-none bg-white text-gray-900 font-medium
       overflow-hidden text-ellipsis whitespace-nowrap
       ${error ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-black'}
       ${className}
