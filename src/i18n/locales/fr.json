@@ -38,6 +38,8 @@
     "apply_filters": "Appliquer les Filtres",
     "clear_all": "Tout Effacer",
     "loading": "Chargement...",
+    "redirecting": "Redirection...",
+    "redirecting_to_dashboard": "Redirection vers le tableau de bord...",
     "search_results": "Résultats de Recherche",
     "found_properties": "Trouvé {count} {properties} correspondant à vos critères",
     "properties": "propriétés",

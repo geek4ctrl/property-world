@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/i18n/translation';
 
 interface ProtectedRouteProps {  
   readonly children: React.ReactNode;
@@ -17,6 +18,7 @@ export default function ProtectedRoute({
 }: Readonly<ProtectedRouteProps>) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!loading) {
@@ -35,20 +37,34 @@ export default function ProtectedRoute({
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
   }
 
-  // If we require auth and user is not authenticated, don't render children
+  // If we require auth and user is not authenticated, show loading while redirecting
   if (requireAuth && !user) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">{t('common.redirecting')}</p>
+        </div>
+      </div>
+    );
   }
 
-  // If we don't require auth (auth pages) and user is authenticated, don't render children
+  // If we don't require auth (auth pages) and user is authenticated, show loading while redirecting
   if (!requireAuth && user) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">{t('common.redirecting_to_dashboard')}</p>
+        </div>
+      </div>
+    );
   }
 
   return <>{children}</>;
