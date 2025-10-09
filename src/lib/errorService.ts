@@ -19,7 +19,7 @@ class ErrorService {
 
   // Log error locally
   logError(error: AppError, context?: ErrorContext) {
-    console.error('[PropertyWorld Error]', {
+    console.error('[Tanoluxe Error]', {
       message: error.message,
       stack: error.stack,
       code: error.code,

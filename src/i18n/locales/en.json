@@ -46,7 +46,8 @@
     "error": "An error occurred",
     "currency": "R",
     "favorite": "Favorites",
-    "featured": "Featured"
+    "featured": "Featured",
+    "back_to_home": "Back to Home"
   },
   "property": {
     "for_sale": "For Sale",

@@ -46,7 +46,8 @@
     "error": "Une erreur s'est produite",
     "currency": "R",
     "favorite": "Favoris",
-    "featured": "En Vedette"
+    "featured": "En Vedette",
+    "back_to_home": "Retour à l'Accueil"
   },
   "property": {
     "for_sale": "À Vendre",
