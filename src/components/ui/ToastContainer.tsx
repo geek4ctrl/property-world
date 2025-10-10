@@ -20,17 +20,17 @@ const ToastComponent = ({ toast, onRemove }: ToastProps) => {
   }, [toast.id, toast.duration, onRemove]);
 
   const getToastStyles = () => {
-    const baseStyles = "flex items-center p-4 mb-4 text-sm rounded-lg shadow-lg backdrop-blur-sm border";
+    const baseStyles = "flex items-start p-4 mb-4 text-sm rounded-lg shadow-lg backdrop-blur-sm border min-w-[320px]";
     
     switch (toast.type) {
       case 'success':
-        return `${baseStyles} bg-green-50/90 border-green-200 text-green-800`;
+        return `${baseStyles} bg-green-50/95 border-green-300 text-green-900`;
       case 'error':
-        return `${baseStyles} bg-red-50/90 border-red-200 text-red-800`;
+        return `${baseStyles} bg-red-50/95 border-red-300 text-red-900`;
       case 'warning':
-        return `${baseStyles} bg-yellow-50/90 border-yellow-200 text-yellow-800`;
+        return `${baseStyles} bg-yellow-50/95 border-yellow-300 text-yellow-900`;
       default:
-        return `${baseStyles} bg-blue-50/90 border-blue-200 text-blue-800`;
+        return `${baseStyles} bg-blue-50/95 border-blue-300 text-blue-900`;
     }
   };
 
@@ -69,13 +69,15 @@ const ToastComponent = ({ toast, onRemove }: ToastProps) => {
       onClick={() => onRemove(toast.id)}
     >
       {getIcon()}
-      <span className="flex-1">{toast.message}</span>
+      <div className="flex-1 whitespace-pre-line">
+        {toast.message}
+      </div>
       <button
         onClick={(e) => {
           e.stopPropagation();
           onRemove(toast.id);
         }}
-        className="ml-3 text-current hover:opacity-70 transition-opacity"
+        className="ml-3 text-current hover:opacity-70 transition-opacity flex-shrink-0"
         aria-label="Close notification"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">

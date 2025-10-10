@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button, Input } from '@/components/ui/FormComponents';
 import { supabase, isSupabaseAvailable } from '@/lib/supabase';
 import { useTranslation } from '@/i18n/translation';
+import { useToastContext } from '@/contexts/ToastContext';
 
 interface LoginFormProps {
   readonly onSuccess?: () => void;
@@ -23,6 +24,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
   const { signIn } = useAuth();
   const { t } = useTranslation();
   const router = useRouter();
+  const toast = useToastContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,13 +59,51 @@ export default function LoginForm({ onSuccess, redirectTo = '/dashboard' }: Read
       
       if (signInError) {
         setError(signInError.message);
+        
+        // Map error codes to translated messages
+        const errorCode = signInError.code || 'unknown_error';
+        
+        // Common authentication error codes
+        const translatedError = (() => {
+          switch (errorCode) {
+            case 'invalid_credentials':
+            case 'invalid_grant':
+              return t('auth.invalid_credentials');
+            case 'user_not_found':
+              return t('auth.user_not_found');
+            case 'email_not_confirmed':
+              return t('auth.account_not_verified');
+            case 'weak_password':
+              return t('auth.weak_password');
+            default:
+              // If no specific translation, use the original message
+              return signInError.message || t('auth.sign_in_error');
+          }
+        })();
+        
+        toast.error(translatedError, 6000); // Show for 6 seconds
+        
+        // Log full error details to console for debugging
+        console.error('Sign in error details:', {
+          code: errorCode,
+          message: signInError.message,
+          fullError: signInError
+        });
       } else if (onSuccess) {
+        toast.success(t('auth.sign_in_successful'));
         onSuccess();
       } else {
+        toast.success(t('auth.sign_in_successful'));
         router.push(redirectTo);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      const errorMessage = err instanceof Error ? err.message : t('auth.sign_in_error');
+      setError(errorMessage);
+      
+      // Show toast with translated error message
+      toast.error(errorMessage, 6000);
+      
+      console.error('Sign in exception:', err);
     } finally {
       setLoading(false);
     }

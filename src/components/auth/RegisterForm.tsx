@@ -21,6 +21,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: R
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(10);
   const [fullNameError, setFullNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -89,14 +90,29 @@ export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: R
         setError(signUpError.message);
       } else {
         setSuccess(true);
+        setCountdown(10);
+        
+        // Start countdown timer
+        const countdownInterval = setInterval(() => {
+          setCountdown(prev => {
+            if (prev <= 1) {
+              clearInterval(countdownInterval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        
         // Note: User will need to verify email before they can sign in
+        // Increased timeout to give user time to read the message
         setTimeout(() => {
+          clearInterval(countdownInterval);
           if (onSuccess) {
             onSuccess();
           } else {
             router.push('/auth/login?message=Check your email to verify your account');
           }
-        }, 2000);
+        }, 10000); // 10 seconds instead of 2 seconds
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
@@ -108,24 +124,47 @@ export default function RegisterForm({ onSuccess, redirectTo = '/dashboard' }: R
   if (success) {
     return (
       <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg text-center">
-        <div className="mb-4 text-green-600">
-          <svg className="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+        <div className="mb-6 text-green-600 animate-bounce">
+          <svg className="w-20 h-20 mx-auto" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('auth.registration_successful')}</h2>
-        <p className="text-gray-600 mb-4">
-          {t('auth.check_email_verification')}
-        </p>
-        <div className="space-y-3">
-          <Link href="/auth/login" className="inline-block">
-            <Button className="w-full">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">{t('auth.registration_successful')}</h2>
+        
+        {/* Email verification notice - prominent animated box */}
+        <div className="mb-6 p-6 bg-gradient-to-r from-blue-50 to-blue-100 border-4 border-blue-400 rounded-xl shadow-lg animate-pulse">
+          <div className="flex items-start justify-center mb-3">
+            <svg className="w-8 h-8 text-blue-600 mr-3 flex-shrink-0 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <div className="text-left">
+              <h3 className="text-xl font-bold text-blue-900 mb-2">{t('auth.check_your_email')}! 📧</h3>
+              <p className="text-base text-blue-900 font-medium">
+                {t('auth.check_email_verification')}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-6 p-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg">
+          <p className="text-gray-700 text-sm mb-2">
+            {t('auth.email_sent_to')}
+          </p>
+          <p className="text-lg font-bold text-gray-900">{email}</p>
+        </div>
+        
+        <div className="space-y-4">
+          <Link href="/auth/login" className="inline-block w-full">
+            <Button className="w-full text-lg py-3">
               {t('auth.go_to_login')}
             </Button>
           </Link>
-          <p className="text-sm text-gray-500">
-            {t('auth.auto_redirect_login')}
-          </p>
+          <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+            <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Redirecting in <strong className="text-blue-600">{countdown}</strong> seconds...</span>
+          </div>
         </div>
       </div>
     );

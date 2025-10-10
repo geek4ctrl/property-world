@@ -63,26 +63,29 @@ const createPropertyMarker = (
 ) => {
   const color = getPropertyColor(property);
   
+  // Use encodeURIComponent instead of btoa to avoid Latin1 encoding issues
+  const svgIcon = `
+    <svg width="36" height="54" viewBox="0 0 36 54" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="black" flood-opacity="0.3"/>
+        </filter>
+      </defs>
+      <path d="M18 0C8.1 0 0 8.1 0 18c0 18 18 36 18 36s18-18 18-36C36 8.1 27.9 0 18 0z" 
+            fill="${color}" 
+            stroke="white" 
+            stroke-width="2"
+            filter="url(#shadow)"/>
+      <circle cx="18" cy="18" r="10" fill="white" stroke="${color}" stroke-width="2"/>
+      <circle cx="18" cy="18" r="6" fill="${color}"/>
+      <text x="18" y="22" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Arial">
+        ${getPropertyTypeIcon(property.propertyType)}
+      </text>
+    </svg>
+  `;
+  
   const customIcon = L.icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa(`
-      <svg width="36" height="54" viewBox="0 0 36 54" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="black" flood-opacity="0.3"/>
-          </filter>
-        </defs>
-        <path d="M18 0C8.1 0 0 8.1 0 18c0 18 18 36 18 36s18-18 18-36C36 8.1 27.9 0 18 0z" 
-              fill="${color}" 
-              stroke="white" 
-              stroke-width="2"
-              filter="url(#shadow)"/>
-        <circle cx="18" cy="18" r="10" fill="white" stroke="${color}" stroke-width="2"/>
-        <circle cx="18" cy="18" r="6" fill="${color}"/>
-        <text x="18" y="22" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="Arial">
-          ${getPropertyTypeIcon(property.propertyType)}
-        </text>
-      </svg>
-    `),
+    iconUrl: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgIcon),
     iconSize: [36, 54],
     iconAnchor: [18, 54],
     popupAnchor: [0, -54],
@@ -229,7 +232,18 @@ const PropertyMapGrid = ({
 
         // Clear existing map if it exists
         if (mapInstanceRef.current) {
-          mapInstanceRef.current.remove();
+          try {
+            mapInstanceRef.current.remove();
+            mapInstanceRef.current = null;
+          } catch (e) {
+            console.warn('Error removing existing map:', e);
+            mapInstanceRef.current = null;
+          }
+        }
+        
+        // Clear the leaflet ID from the container if it exists
+        if (mapRef.current && (mapRef.current as any)._leaflet_id) {
+          (mapRef.current as any)._leaflet_id = undefined;
         }
 
         // Filter properties with coordinates
@@ -375,6 +389,11 @@ const PropertyMapGrid = ({
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+      // Clear the leaflet ID from the container
+      if (mapRef.current) {
+        (mapRef.current as any)._leaflet_id = undefined;
       }
     };
   }, [propertiesWithCoords, handlePropertySelection]);
