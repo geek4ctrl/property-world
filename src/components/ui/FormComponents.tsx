@@ -209,9 +209,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     const getIconColor = () => {
-      if (error) return 'text-red-400';
-      if (isFocused) return 'text-blue-400';
-      return 'text-gray-400';
+      if (error) return 'text-red-500';
+      if (isFocused) return 'text-blue-600';
+      return 'text-gray-600';
     };
 
     const selectClasses = `

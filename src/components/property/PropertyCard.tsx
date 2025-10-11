@@ -108,9 +108,9 @@ export default function PropertyCard({ property, className = '', variant = 'defa
       return 'text-blue-600 bg-blue-50/90';
     }
     if (maxReached) {
-      return 'text-gray-400 bg-gray-50/90 cursor-not-allowed';
+      return 'text-gray-500 bg-gray-50/90 cursor-not-allowed';
     }
-    return 'text-gray-600 hover:bg-white hover:text-blue-600';
+    return 'text-gray-700 hover:bg-white hover:text-blue-600';
   };
 
   const getImageNavigation = (direction: 'prev' | 'next') => {
@@ -202,8 +202,8 @@ export default function PropertyCard({ property, className = '', variant = 'defa
                 isInCompare 
                   ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-blue-500/25' 
                   : maxReached 
-                    ? 'bg-white/60 text-gray-400 cursor-not-allowed' 
-                    : 'bg-white/80 text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-xl'
+                    ? 'bg-white/60 text-gray-500 cursor-not-allowed' 
+                    : 'bg-white/80 text-gray-700 hover:bg-white hover:text-blue-600 hover:shadow-xl'
               }`}
               title={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
               aria-label={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
@@ -230,7 +230,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               className={`group p-3 backdrop-blur-xl rounded-xl shadow-lg transition-all duration-300 hover:scale-110 border border-white/20 disabled:cursor-not-allowed disabled:opacity-50 ${
                 isFavorited 
                   ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-red-500/25' 
-                  : 'bg-white/80 text-gray-600 hover:bg-white hover:text-red-500 hover:shadow-xl'
+                  : 'bg-white/80 text-gray-700 hover:bg-white hover:text-red-500 hover:shadow-xl'
               }`}
               aria-label={isFavorited ? t('favorites.heart_tooltip_remove') : t('favorites.heart_tooltip_add')}
               title={
@@ -263,7 +263,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               ) : (
                 <svg 
                   className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${
-                    isFavorited ? 'text-white fill-current' : 'text-gray-600'
+                    isFavorited ? 'text-white fill-current' : 'text-gray-700'
                   }`} 
                   fill={isFavorited ? 'currentColor' : 'none'} 
                   stroke="currentColor" 
@@ -453,7 +453,7 @@ export default function PropertyCard({ property, className = '', variant = 'defa
               <p className="text-sm font-semibold text-gray-900 truncate">{property.agent.name}</p>
               <p className="text-xs text-gray-500 truncate">{property.agent.agency}</p>
             </div>
-            <button className="ml-2 p-2 text-gray-400 hover:text-blue-600 transition-colors">
+            <button className="ml-2 p-2 text-gray-600 hover:text-blue-600 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
