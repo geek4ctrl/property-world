@@ -303,8 +303,20 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                 {t('navigation.properties')}
               </Link>
               <Link 
+                href="/map" 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  isActive('/map') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
+                onClick={closeMenu} 
+                prefetch={true}
+              >
+                {t('navigation.map_view')}
+              </Link>
+              <Link 
                 href="/buy" 
-                className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${isActive('/buy') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  isActive('/buy') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
                 onClick={closeMenu} 
                 prefetch={true}
               >
@@ -312,14 +324,18 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
               </Link>
               <Link 
                 href="/properties?listing=rent" 
-                className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${pathname.includes('listing=rent') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  pathname.includes('listing=rent') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
                 onClick={closeMenu}
               >
                 {t('navigation.rent')}
               </Link>
               <Link 
                 href="/agents" 
-                className={`block px-3 py-2 ${isActive('/agents') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  isActive('/agents') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                }`} 
                 onClick={closeMenu}
               >
                 {t('navigation.find_agent')}
@@ -327,7 +343,9 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
               {user && (
                 <Link 
                   href="/favorites" 
-                  className={`block px-3 py-2 rounded-md transition-all-normal hover:bg-blue-50 ${isActive('/favorites') ? 'text-blue-600 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:text-blue-600'}`} 
+                  className={`block px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                    isActive('/favorites') ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 shadow-md' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50/50'
+                  }`} 
                   onClick={closeMenu}
                   prefetch={true}
                 >
@@ -337,70 +355,72 @@ const Header = memo(function Header({ variant = 'default' }: HeaderProps) {
                   {t('favorites.title')}
                 </Link>
               )}
-              <div className="px-3 py-2">
+              
+              {/* Language Switcher */}
+              <div className="px-4 py-3 border-t border-gray-200/50 mt-2">
                 <LanguageSwitcher />
               </div>
               
               {loading ? (
-                <div className="animate-pulse bg-gray-200 h-8 mx-3 rounded"></div>
+                <div className="animate-pulse bg-gray-200 h-10 mx-4 my-2 rounded-xl"></div>
               ) : user ? (
                 <>
-                  <div className="px-3 py-2 border-t border-gray-200">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-blue-600 font-semibold text-sm">
+                  <div className="px-4 py-3 border-t border-gray-200/50 mt-2">
+                    <div className="flex items-center space-x-3 mb-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                        <span className="text-white font-bold text-sm">
                           {user.user_metadata?.full_name?.[0] || user.email?.[0] || 'U'}
                         </span>
                       </div>
-                      <span className="text-gray-900 font-medium">
-                        {user.user_metadata?.full_name || user.email}
-                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-900 font-semibold text-sm truncate">
+                          {user.user_metadata?.full_name || user.email}
+                        </p>
+                        <p className="text-gray-500 text-xs truncate">
+                          {user.email}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <Link 
                     href="/dashboard" 
-                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
+                    className="block px-4 py-3 rounded-xl transition-all duration-300 text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 hover:scale-105" 
                     onClick={closeMenu}
                   >
-                    {t('auth.dashboard')}
-                  </Link>
-                  <Link 
-                    href="/favorites" 
-                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
-                    onClick={closeMenu}
-                  >
-                    {t('favorites.title')}
+                    📊 {t('auth.dashboard')}
                   </Link>
                   <Link 
                     href="/profile" 
-                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
+                    className="block px-4 py-3 rounded-xl transition-all duration-300 text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 hover:scale-105" 
                     onClick={closeMenu}
                   >
-                    {t('auth.profile')}
+                    👤 {t('auth.profile')}
                   </Link>
                   <button 
                     onClick={handleSignOut}
-                    className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                    className="block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 text-red-600 hover:bg-red-50 hover:scale-105 mt-2 border-t border-gray-200/50"
                   >
-                    {t('auth.sign_out')}
+                    🚪 {t('auth.sign_out')}
                   </button>
                 </>
               ) : (
                 <>
-                  <Link 
-                    href="/auth/login" 
-                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors" 
-                    onClick={closeMenu}
-                  >
-                    {t('auth.sign_in')}
-                  </Link>
-                  <Link 
-                    href="/auth/register" 
-                    className="block px-3 py-2 bg-blue-600 text-white rounded-lg mx-3 mt-2 text-center" 
-                    onClick={closeMenu}
-                  >
-                    {t('auth.sign_up')}
-                  </Link>
+                  <div className="px-4 py-3 border-t border-gray-200/50 mt-2 space-y-2">
+                    <Link 
+                      href="/auth/login" 
+                      className="block px-4 py-3 rounded-xl transition-all duration-300 text-center text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 hover:scale-105 border-2 border-gray-200 hover:border-blue-300" 
+                      onClick={closeMenu}
+                    >
+                      {t('auth.sign_in')}
+                    </Link>
+                    <Link 
+                      href="/auth/register" 
+                      className="block px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-center font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300" 
+                      onClick={closeMenu}
+                    >
+                      {t('auth.sign_up')}
+                    </Link>
+                  </div>
                 </>
               )}
               </div>
